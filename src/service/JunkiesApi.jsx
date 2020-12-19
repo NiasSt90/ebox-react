@@ -78,7 +78,7 @@ export const junkiesApi = (authTokenSupplier) => {
 			nid: nid, origFilename: downloadfilename
 		};
 		const paramsStr = Object.entries(params).map(pair => pair.map(encodeURIComponent).join('=')).join("&")
-		return `${settings.REST_API_URL}/mischungx/download?${paramsStr}`
+		return `${settings.REST_API_URL}/mischungxl/download?${paramsStr}`
 	}
 
 	return {

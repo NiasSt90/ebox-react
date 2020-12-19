@@ -4,6 +4,7 @@ import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import QueueIcon from '@material-ui/icons/Queue';
 import {useArtistApi} from "../hooks/ArtistApi";
 import {useEffect, useState} from "react";
+import {usePlayerService} from "../hooks/PlayerService";
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -38,17 +39,25 @@ const useStyles = makeStyles((theme) => ({
 // 4. Kommentare
 // 5. Bookmark, Playcounts,
 export const FilterListSet = ({set}) => {
-	const classes = useStyles();
 	const artistApi = useArtistApi();
-	const [ artistImage, setArtistImage ] = useState("/static/images/dj_silhouette.png");
+	const playerService = usePlayerService()
+	const classes = useStyles();
+	const [ artistImage, setArtistImage ] = useState(process.env.PUBLIC_URL+"/images/dj_silhouette.png");
 	const artistID = set.artists && set.artists[0] && set.artists[0]["artistnid"];
 	useEffect(() => {
 		if (artistID) {
 			artistApi.artistInfo(artistID)
-					.then(info => artistApi.imageUrl(info, "large", "/static/images/dj_silhouette.png"))
+					.then(info => artistApi.imageUrl(info, "large", process.env.PUBLIC_URL+"/images/dj_silhouette.png"))
 					.then(setArtistImage);
 		}
 	}, [artistApi,artistID,artistImage,setArtistImage])
+
+	const enqueue = () => {
+		playerService.enqueue(set);
+	}
+	const play = () => {
+		playerService.play(set);
+	}
 
 	return <>
 		<Card className={classes.root} elevation={3}>
@@ -62,10 +71,10 @@ export const FilterListSet = ({set}) => {
 					</Typography>
 				</CardContent>
 				<div className={classes.controls}>
-					<IconButton aria-label="play/pause">
+					<IconButton aria-label="play/pause" onClick={play}>
 						<PlayArrowIcon className={classes.playIcon}/>
 					</IconButton>
-					<IconButton aria-label="enqueue">
+					<IconButton aria-label="enqueue" onClick={enqueue}>
 						<QueueIcon className={classes.playIcon}/>
 					</IconButton>
 				</div>

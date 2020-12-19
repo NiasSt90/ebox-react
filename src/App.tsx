@@ -5,11 +5,12 @@ import Public from "./components/Public";
 import PrivateRoute from "./components/PrivateRoute";
 import UserInfo from "./components/UserInfo";
 import LoginDialog from "./components/LoginDialog";
-import {CircularProgress, CssBaseline, Divider, Drawer, LinearProgress, makeStyles} from "@material-ui/core";
+import {Backdrop, CircularProgress, CssBaseline, Divider, Drawer, makeStyles} from "@material-ui/core";
 import {useAtom} from "jotai";
 import {FilterListMainView} from "./components/FilterListMainView";
 import {loadingAtom} from "./context/user";
 import {NavigationList} from "./components/NavigationList";
+import {EBoxAudioplayer} from "./components/EBoxAudioplayer";
 
 const drawerWidth = 240;
 const useStyles = makeStyles(theme => ({
@@ -22,6 +23,10 @@ const useStyles = makeStyles(theme => ({
     },
     drawerPaper: {
         width: drawerWidth,
+    },
+    backdrop: {
+        zIndex: theme.zIndex.drawer + 1,
+        color: '#fff',
     },
     // necessary for content to be below app bar
     toolbar: theme.mixins.toolbar,
@@ -50,12 +55,15 @@ function App() {
                         <NavigationList/>
                     </Drawer>
                     <main className={classes.content}>
-                        {loading && <LinearProgress variant="indeterminate" color="secondary"/>}
-
+                        {loading &&
+                        <Backdrop className={classes.backdrop} open={true}>
+						    <CircularProgress color="inherit" />
+                        </Backdrop>}
+                        <EBoxAudioplayer/>
                         <Route exact path="/"><Redirect to="/home"/></Route>
                         <Route path="/home" component={Public}/>
                         <Route path="/login"><LoginDialog/></Route>
-                        <PrivateRoute path='/sets/:id' component={FilterListMainView}/>
+                        <PrivateRoute path='/filter/:id' component={FilterListMainView}/>
                     </main>
                 </Router>
             </div>

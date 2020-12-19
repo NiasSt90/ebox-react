@@ -20,7 +20,7 @@ export const NavigationList = () => {
 				<ListItemText primary="Home"/>
 			</ListItem>
 			{filter && filter.filter(f => f.filtername !== "").map((filter, i) => (
-				<ListItem key={i} button component={Link} to={"/sets/" + filter.filterid}>
+				<ListItem key={i} button component={Link} to={"/filter/" + filter.filterid}>
 					<ListItemIcon><FilterListIcon/></ListItemIcon>
 					<ListItemText primary={filter.filtername}/>
 				</ListItem>
