@@ -1,19 +1,15 @@
-import React from 'react';
+import React, {Suspense} from "react";
 import './App.css';
-import {
-    BrowserRouter as Router,
-    Link,
-    Route,
-    Redirect
-} from 'react-router-dom'
+import {BrowserRouter as Router, Redirect, Route} from 'react-router-dom'
 import Public from "./components/Public";
 import PrivateRoute from "./components/PrivateRoute";
-import Protected from "./components/Protected";
 import UserInfo from "./components/UserInfo";
 import LoginDialog from "./components/LoginDialog";
-import {CssBaseline, Divider, Drawer, List, ListItem, ListItemIcon, ListItemText, makeStyles} from "@material-ui/core";
-import HomeIcon from '@material-ui/icons/Home';
-import {Provider} from "jotai";
+import {CircularProgress, CssBaseline, Divider, Drawer, LinearProgress, makeStyles} from "@material-ui/core";
+import {useAtom} from "jotai";
+import {FilterListMainView} from "./components/FilterListMainView";
+import {loadingAtom} from "./context/user";
+import {NavigationList} from "./components/NavigationList";
 
 const drawerWidth = 240;
 const useStyles = makeStyles(theme => ({
@@ -39,8 +35,9 @@ const useStyles = makeStyles(theme => ({
 
 function App() {
     const classes = useStyles();
+    const [ loading ] = useAtom(loadingAtom);
     return (
-        <Provider>
+        <Suspense fallback={<CircularProgress variant={"indeterminate"}/>}>
             <div className={classes.root}>
                 <CssBaseline/>
                 <Router>
@@ -50,27 +47,19 @@ function App() {
                             <UserInfo/>
                         </div>
                         <Divider/>
-                        <List>
-                            <ListItem button component={Link} to="/home">
-                                <ListItemIcon><HomeIcon/></ListItemIcon>
-                                <ListItemText primary="Home"/>
-                            </ListItem>
-                            <ListItem button component={Link} to="/protected">
-                                <ListItemIcon><HomeIcon/></ListItemIcon>
-                                <ListItemText primary="Alle Sets"/>
-                            </ListItem>
-                        </List>
+                        <NavigationList/>
                     </Drawer>
                     <main className={classes.content}>
-                        <div className={classes.toolbar}/>
+                        {loading && <LinearProgress variant="indeterminate" color="secondary"/>}
+
                         <Route exact path="/"><Redirect to="/home"/></Route>
                         <Route path="/home" component={Public}/>
                         <Route path="/login"><LoginDialog/></Route>
-                        <PrivateRoute path='/protected' component={Protected}/>
+                        <PrivateRoute path='/sets/:id' component={FilterListMainView}/>
                     </main>
                 </Router>
             </div>
-        </Provider>
+        </Suspense>
     );
 }
 

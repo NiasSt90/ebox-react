@@ -9,7 +9,7 @@ import {
 	Grid,
 	TextField, Typography
 } from "@material-ui/core";
-import useAuthService from "../service/AuthService";
+import useAuthService from "../hooks/AuthService";
 import settings from "../settings";
 
 const LoginDialog = () => {
