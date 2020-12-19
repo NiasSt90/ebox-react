@@ -3,14 +3,13 @@ import './App.css';
 import {BrowserRouter as Router, Redirect, Route} from 'react-router-dom'
 import Public from "./components/Public";
 import PrivateRoute from "./components/PrivateRoute";
-import UserInfo from "./components/UserInfo";
 import LoginDialog from "./components/LoginDialog";
-import {Backdrop, CircularProgress, CssBaseline, Divider, Drawer, makeStyles} from "@material-ui/core";
+import {Backdrop, CircularProgress, CssBaseline, makeStyles} from "@material-ui/core";
 import {useAtom} from "jotai";
 import {FilterListMainView} from "./components/FilterListMainView";
 import {loadingAtom} from "./context/user";
-import {NavigationList} from "./components/NavigationList";
 import {EBoxAudioplayer} from "./components/EBoxAudioplayer";
+import PersistentDrawerLeft from "./components/NavigationDrawer";
 
 const drawerWidth = 240;
 const useStyles = makeStyles(theme => ({
@@ -46,25 +45,19 @@ function App() {
             <div className={classes.root}>
                 <CssBaseline/>
                 <Router>
-                    <Drawer className={classes.drawer} variant="permanent"
-                            classes={{paper: classes.drawerPaper,}} anchor="left">
-                        <div className={classes.toolbar}>
-                            <UserInfo/>
-                        </div>
-                        <Divider/>
-                        <NavigationList/>
-                    </Drawer>
-                    <main className={classes.content}>
+                    <PersistentDrawerLeft>
                         {loading &&
-                        <Backdrop className={classes.backdrop} open={true}>
-						    <CircularProgress color="inherit" />
-                        </Backdrop>}
+								<Backdrop className={classes.backdrop} open={true}>
+									<CircularProgress color="inherit" />
+								</Backdrop>}
                         <EBoxAudioplayer/>
+
                         <Route exact path="/"><Redirect to="/home"/></Route>
                         <Route path="/home" component={Public}/>
                         <Route path="/login"><LoginDialog/></Route>
                         <PrivateRoute path='/filter/:id' component={FilterListMainView}/>
-                    </main>
+
+                    </PersistentDrawerLeft>
                 </Router>
             </div>
         </Suspense>

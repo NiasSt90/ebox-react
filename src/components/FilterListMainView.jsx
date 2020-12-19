@@ -15,9 +15,14 @@ export const FilterListMainView = () => {
 
 	return <>
 		<h3>Sets im Filter</h3>
-		<Grid container spacing={3}>
+		<Grid container spacing={3}
+				direction="row"
+				justify="space-evenly"
+				alignItems="stretch">
 			{sets && sets.map((set, i) =>
-				<Grid key={i} item xs><FilterListSet set={set}/></Grid>)
+				<Grid key={i} item xs>
+					<FilterListSet set={set}/>
+				</Grid>)
 			}
 		</Grid>
 	</>

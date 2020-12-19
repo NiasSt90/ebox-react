@@ -18,7 +18,8 @@ const useStyles = makeStyles((theme) => ({
 		flex: '1 0 auto',
 	},
 	cover: {
-		width: 151,
+		width: 200,
+		height: 200
 	},
 	controls: {
 		display: 'flex',
@@ -32,6 +33,8 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
+const defaultImageUrl = process.env.PUBLIC_URL+"/images/dj_silhouette.png";
+
 //SHOW:
 // 1. set.title/replacetitle (mehrere djs
 // 2. Genres
@@ -42,14 +45,13 @@ export const FilterListSet = ({set}) => {
 	const artistApi = useArtistApi();
 	const playerService = usePlayerService()
 	const classes = useStyles();
-	const [ artistImage, setArtistImage ] = useState(process.env.PUBLIC_URL+"/images/dj_silhouette.png");
+	const [ artistImage, setArtistImage ] = useState();
 	const artistID = set.artists && set.artists[0] && set.artists[0]["artistnid"];
 	useEffect(() => {
-		if (artistID) {
-			artistApi.artistInfo(artistID)
-					.then(info => artistApi.imageUrl(info, "large", process.env.PUBLIC_URL+"/images/dj_silhouette.png"))
-					.then(setArtistImage);
-		}
+		artistID ? artistApi.artistInfo(artistID)
+						.then(info => artistApi.imageUrl(info, "large", defaultImageUrl))
+						.then(setArtistImage)
+					: setArtistImage(defaultImageUrl);
 	}, [artistApi,artistID,artistImage,setArtistImage])
 
 	const enqueue = () => {
@@ -63,10 +65,8 @@ export const FilterListSet = ({set}) => {
 		<Card className={classes.root} elevation={3}>
 			<div className={classes.details}>
 				<CardContent className={classes.content}>
-					<Typography component="h5" variant="h5">
-						{set.title}
-					</Typography>
-					<Typography variant="subtitle1" color="textSecondary">
+					<Typography component="subtitle1" variant="subtitle1">{set.title}</Typography>
+					<Typography variant="subtitle2" color="textSecondary">
 						{set.dj ? set.dj.name : ''}
 					</Typography>
 				</CardContent>
@@ -78,15 +78,12 @@ export const FilterListSet = ({set}) => {
 						<QueueIcon className={classes.playIcon}/>
 					</IconButton>
 				</div>
-				<Typography variant={"subtitle2"}>{"produziert am " + new Date(set.setcreated * 1000).toLocaleDateString()}</Typography>
-				<Typography variant={"subtitle2"}>{"hochgeladen am " + new Date(set.created * 1000).toLocaleDateString()}</Typography>
-				{set.lastheard && <Typography variant={"subtitle2"}>{"zuletzt gehört am " + new Date(
-						set.lastheard * 1000).toLocaleDateString()}</Typography>}
 			</div>
 			<CardMedia
 					className={classes.cover}
 					title={set.title}
 					image={artistImage}
+					height={256}
 			/>
 		</Card>
 	</>
