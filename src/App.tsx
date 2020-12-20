@@ -1,12 +1,12 @@
 import React, {Suspense} from "react";
 import './App.css';
 import {BrowserRouter as Router, Redirect, Route} from 'react-router-dom'
-import Public from "./components/Public";
-import LoginDialog from "./components/LoginDialog";
+import Home from "./bundles/home/Home";
+import LoginDialog from "./bundles/login/LoginDialog";
 
 import {Backdrop, Box, CircularProgress, CssBaseline, makeStyles} from "@material-ui/core";
 import {useAtom} from "jotai";
-import {FilterListMainView} from "./components/FilterListMainView";
+import {FilterListMainView} from "./bundles/filter/FilterListMainView";
 import {loadingAtom} from "./context/user";
 import {EBoxAudioplayer} from "./components/EBoxAudioplayer";
 import PersistentDrawerLeft from "./components/NavigationDrawer";
@@ -51,7 +51,7 @@ function App() {
                             <EBoxAudioplayer/>
                         </Box>
                         <Route exact path="/"><Redirect to="/home"/></Route>
-                        <Route path="/home" component={Public}/>
+                        <Route path="/home" component={Home}/>
                         <Route path="/login"><LoginDialog/></Route>
                         <Route path='/filter/:id'
                                render={props => <FilterListMainView key={props.match.params.id || 'empty'} /> }/>

@@ -6,11 +6,11 @@ import reportWebVitals from './reportWebVitals';
 import {Provider} from "jotai";
 
 ReactDOM.render(
-  <React.StrictMode>
+  /*<React.StrictMode>*/
       <Provider>
         <App />
       </Provider>
-  </React.StrictMode>,
+  /*</React.StrictMode>,*/,
   document.getElementById('root')
 );
 

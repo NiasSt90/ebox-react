@@ -2,7 +2,7 @@ import {useEffect, useState} from "react";
 import {FilterListSet} from "./FilterListSet";
 import {useParams} from "react-router";
 import {Grid} from "@material-ui/core";
-import {useJunkiesApi} from "../hooks/JunkiesApi";
+import {useJunkiesApi} from "../../hooks/JunkiesApi";
 import {Waypoint} from "react-waypoint";
 
 export const FilterListMainView = () => {

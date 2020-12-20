@@ -2,9 +2,9 @@ import {makeStyles} from '@material-ui/core/styles';
 import {Card, CardContent, CardMedia, IconButton, Typography} from "@material-ui/core";
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import QueueIcon from '@material-ui/icons/Queue';
-import {useArtistApi} from "../hooks/ArtistApi";
+import {useArtistApi} from "../../hooks/ArtistApi";
 import {useEffect, useState} from "react";
-import {usePlayerService} from "../hooks/PlayerService";
+import {usePlayerService} from "../../hooks/PlayerService";
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -45,7 +45,7 @@ export const FilterListSet = ({nummer,set}) => {
 	const artistApi = useArtistApi();
 	const playerService = usePlayerService()
 	const classes = useStyles();
-	const [ artistImage, setArtistImage ] = useState();
+	const [ artistImage, setArtistImage ] = useState(defaultImageUrl);
 	const artistID = set.artists && set.artists[0] && set.artists[0]["artistnid"];
 	useEffect(() => {
 		artistID ? artistApi.artistInfo(artistID)
