@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import {FilterListSet} from "./FilterListSet";
+import {SetCardContainer} from "./SetCardContainer";
 import {useParams} from "react-router";
 import {Grid} from "@material-ui/core";
 import {useJunkiesApi} from "../../hooks/JunkiesApi";
@@ -28,7 +28,7 @@ export const FilterListMainView = () => {
 				alignItems="stretch">
 			{sets && sets.map((set, i) =>
 				<Grid key={i} item xs>
-					<FilterListSet nummer={i + 1} set={set}/>
+					<SetCardContainer nummer={i + 1} set={set}/>
 					{i === sets.length - 10 && (
 						<Waypoint onEnter={() => setPage(page + 1)}/>)
 					}
