@@ -1,7 +1,7 @@
 import {useArtistApi} from "../../hooks/ArtistApi";
 import {useEffect, useState} from "react";
 import {usePlayerService} from "../../hooks/PlayerService";
-import SetCard2 from "./SetCard2";
+import SetCard from "./SetCard";
 
 
 const defaultImageUrl = process.env.PUBLIC_URL+"/images/dj_silhouette.png";
@@ -37,5 +37,5 @@ export const SetCardContainer = ({nummer,set}) => {
 	}
 
 	const props = {nummer, set, artistImage, genres, playAction, enqueueAction};
-	return <SetCard2 {...props}/>
+	return <SetCard {...props}/>
 }
