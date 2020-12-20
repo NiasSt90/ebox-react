@@ -2,9 +2,9 @@ import React, {Suspense} from "react";
 import './App.css';
 import {BrowserRouter as Router, Redirect, Route} from 'react-router-dom'
 import Public from "./components/Public";
-import PrivateRoute from "./components/PrivateRoute";
 import LoginDialog from "./components/LoginDialog";
-import {Backdrop, CircularProgress, CssBaseline, makeStyles} from "@material-ui/core";
+
+import {Backdrop, Box, CircularProgress, CssBaseline, makeStyles} from "@material-ui/core";
 import {useAtom} from "jotai";
 import {FilterListMainView} from "./components/FilterListMainView";
 import {loadingAtom} from "./context/user";
@@ -46,20 +46,22 @@ function App() {
                 <CssBaseline/>
                 <Router>
                     <PersistentDrawerLeft>
-                        {loading &&
-								<Backdrop className={classes.backdrop} open={true}>
-									<CircularProgress color="inherit" />
-								</Backdrop>}
-                        <EBoxAudioplayer/>
-
+                        {/*TODO: ein HACK der den Player oben fixiert, nicht ser hübsch aber er scrollt erstmal nicht raus */}
+                        <Box position="fixed" width="100%" margin={-2} zIndex={10}>
+                            <EBoxAudioplayer/>
+                        </Box>
                         <Route exact path="/"><Redirect to="/home"/></Route>
                         <Route path="/home" component={Public}/>
                         <Route path="/login"><LoginDialog/></Route>
                         <Route path='/filter/:id'
                                render={props => <FilterListMainView key={props.match.params.id || 'empty'} /> }/>
-
-                        {/*<PrivateRoute path='/filter/:id' component={FilterListMainView}/>*/}
-
+                        {/*TODO: "render" statt "component" als Parameter benötigt wegen key=...
+                            <PrivateRoute path='/filter/:id' component={FilterListMainView}/>*/}
+                        {loading &&
+                            <Backdrop className={classes.backdrop} open={true}>
+                                <CircularProgress color="inherit" />
+                            </Backdrop>
+                        }
                     </PersistentDrawerLeft>
                 </Router>
             </div>

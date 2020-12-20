@@ -13,6 +13,8 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import {NavigationList} from "./NavigationList";
 import UserInfo from "./UserInfo";
+import {EBoxAudioplayer} from "./EBoxAudioplayer";
+import {Box} from "@material-ui/core";
 
 const drawerWidth = 240;
 
