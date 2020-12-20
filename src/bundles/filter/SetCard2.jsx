@@ -89,12 +89,12 @@ export default function SetCard2({nummer, set, genres, artistImage, playAction, 
 						{genres && <List disablePadding={true}>
 							<Divider/>
 							{genres.filter(g => g.name !== "set").slice(0,3).map(({name, tid}) => (
-									<>
+									<React.Fragment key={tid}>
 									<ListItem selected={false} disableGutters={true} classes={{root: classes.genreListItem}}>
 										<ListItemText classes={{root: classes.genreListItemText}}>{name}</ListItemText>
 									</ListItem>
 									<Divider/>
-								</>
+								</React.Fragment>
 							))}
 						</List>
 						}

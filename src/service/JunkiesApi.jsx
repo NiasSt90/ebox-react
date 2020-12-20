@@ -1,4 +1,4 @@
-import settings from "../settings";
+import settings, {appVersion} from "../settings";
 
 export const junkiesApi = (authTokenSupplier) => {
 	const authToken = authTokenSupplier;
@@ -72,6 +72,19 @@ export const junkiesApi = (authTokenSupplier) => {
 				.then(response => response.json());
 	}
 
+	const playinform = (nid) => {
+		const params = {
+			...authToken.token && {token: authToken.token},
+			id: nid,
+			caller: appVersion,
+			timestamp: new Date().getTime()/1000
+		}
+		const paramsStr = Object.entries(params).map(pair => pair.map(encodeURIComponent).join('=')).join("&")
+		const url = `${settings.REST_API_URL}/js-api/mischungxl/playinform?${paramsStr}`;
+		return customFetch(url, "POST")
+				.then(response => response.json());
+	}
+
 	const buildTrackUrl = (nid, downloadfilename) => {
 		const params = {
 			...authToken.token && {token: authToken.token},
@@ -87,6 +100,7 @@ export const junkiesApi = (authTokenSupplier) => {
 		setlist,
 		filterlist,
 		artistinfo,
+		playinform,
 		buildTrackUrl
 	};
 };

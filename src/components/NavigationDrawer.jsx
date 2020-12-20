@@ -11,10 +11,8 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import {NavigationList} from "./NavigationList";
+import {NavigationListContainer} from "./NavigationListContainer";
 import UserInfo from "./UserInfo";
-import {EBoxAudioplayer} from "./EBoxAudioplayer";
-import {Box} from "@material-ui/core";
 
 const drawerWidth = 240;
 
@@ -112,7 +110,7 @@ export default function PersistentDrawerLeft(props) {
 					</div>
 
 					<Divider />
-					<NavigationList/>
+					<NavigationListContainer/>
 
 				</Drawer>
 				<main className={clsx(classes.content, {[classes.contentShift]: open,})}>

@@ -28,6 +28,10 @@ export const useJunkiesApi = () => {
 						.then(result => {
 							return result;
 						})
+			},
+
+			playinform: (nid) => {
+				return junkiesApi(user).playinform(nid).then(result => result)
 			}
 		}
 	}, [user, setLoading]);
