@@ -41,7 +41,7 @@ const defaultImageUrl = process.env.PUBLIC_URL+"/images/dj_silhouette.png";
 // 3. Artists-Bilder oder Geist
 // 4. Kommentare
 // 5. Bookmark, Playcounts,
-export const FilterListSet = ({set}) => {
+export const FilterListSet = ({nummer,set}) => {
 	const artistApi = useArtistApi();
 	const playerService = usePlayerService()
 	const classes = useStyles();
@@ -63,9 +63,15 @@ export const FilterListSet = ({set}) => {
 
 	return <>
 		<Card className={classes.root} elevation={3}>
+			<CardMedia
+					className={classes.cover}
+					title={set.title}
+					image={artistImage}
+					height={256}
+			/>
 			<div className={classes.details}>
-				<CardContent className={classes.content}>
-					<Typography component="subtitle1" variant="subtitle1">{set.title}</Typography>
+				<CardContent style={{maxWidth: 200}} className={classes.content}>
+					<Typography component="h5" variant="subtitle1">{nummer + "." + set.title}</Typography>
 					<Typography variant="subtitle2" color="textSecondary">
 						{set.dj ? set.dj.name : ''}
 					</Typography>
@@ -79,12 +85,6 @@ export const FilterListSet = ({set}) => {
 					</IconButton>
 				</div>
 			</div>
-			<CardMedia
-					className={classes.cover}
-					title={set.title}
-					image={artistImage}
-					height={256}
-			/>
 		</Card>
 	</>
 }

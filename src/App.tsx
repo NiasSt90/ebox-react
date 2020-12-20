@@ -55,7 +55,10 @@ function App() {
                         <Route exact path="/"><Redirect to="/home"/></Route>
                         <Route path="/home" component={Public}/>
                         <Route path="/login"><LoginDialog/></Route>
-                        <PrivateRoute path='/filter/:id' component={FilterListMainView}/>
+                        <Route path='/filter/:id'
+                               render={props => <FilterListMainView key={props.match.params.id || 'empty'} /> }/>
+
+                        {/*<PrivateRoute path='/filter/:id' component={FilterListMainView}/>*/}
 
                     </PersistentDrawerLeft>
                 </Router>
