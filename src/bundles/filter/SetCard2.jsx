@@ -88,7 +88,7 @@ export default function SetCard2({nummer, set, genres, artistImage, playAction, 
 					<Box>
 						{genres && <List disablePadding={true}>
 							<Divider/>
-							{genres.filter(g => g.name !== "set").map(({name, tid}) => (
+							{genres.filter(g => g.name !== "set").slice(0,3).map(({name, tid}) => (
 									<>
 									<ListItem selected={false} disableGutters={true} classes={{root: classes.genreListItem}}>
 										<ListItemText classes={{root: classes.genreListItemText}}>{name}</ListItemText>
