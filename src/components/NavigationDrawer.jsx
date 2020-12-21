@@ -108,10 +108,8 @@ export default function PersistentDrawerLeft(props) {
 							{theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
 						</IconButton>
 					</div>
-
 					<Divider />
 					<NavigationListContainer/>
-
 				</Drawer>
 				<main className={clsx(classes.content, {[classes.contentShift]: open,})}>
 					<div className={classes.drawerHeader} />

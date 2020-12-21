@@ -4,12 +4,11 @@ import {BrowserRouter as Router, Redirect, Route} from 'react-router-dom'
 import Home from "./bundles/home/Home";
 import LoginDialog from "./bundles/login/LoginDialog";
 
-import {Backdrop, Box, CircularProgress, CssBaseline, makeStyles} from "@material-ui/core";
-import {useAtom} from "jotai";
+import {CircularProgress, CssBaseline, makeStyles} from "@material-ui/core";
 import {FilterListMainView} from "./bundles/filter/FilterListMainView";
-import {loadingAtom} from "./context/user";
-import {EBoxAudioplayer} from "./components/EBoxAudioplayer";
+import {EBoxPlayerContainer} from "./components/EBoxPlayerContainer";
 import PersistentDrawerLeft from "./components/NavigationDrawer";
+import {LoadingIndicator} from "./bundles/common/LoadingIndicator";
 
 const drawerWidth = 240;
 const useStyles = makeStyles(theme => ({
@@ -23,10 +22,6 @@ const useStyles = makeStyles(theme => ({
     drawerPaper: {
         width: drawerWidth,
     },
-    backdrop: {
-        zIndex: theme.zIndex.drawer + 1,
-        color: '#fff',
-    },
     // necessary for content to be below app bar
     toolbar: theme.mixins.toolbar,
     content: {
@@ -39,17 +34,12 @@ const useStyles = makeStyles(theme => ({
 
 function App() {
     const classes = useStyles();
-    const [ loading ] = useAtom(loadingAtom);
     return (
         <Suspense fallback={<CircularProgress variant={"indeterminate"}/>}>
             <div className={classes.root}>
                 <CssBaseline/>
                 <Router>
                     <PersistentDrawerLeft>
-                        {/*TODO: ein HACK der den Player oben fixiert, nicht ser hübsch aber er scrollt erstmal nicht raus */}
-                        <Box position="fixed" width="100%" margin={-2} zIndex={10}>
-                            <EBoxAudioplayer/>
-                        </Box>
                         <Route exact path="/"><Redirect to="/home"/></Route>
                         <Route path="/home" component={Home}/>
                         <Route path="/login"><LoginDialog/></Route>
@@ -57,12 +47,9 @@ function App() {
                                render={props => <FilterListMainView key={props.match.params.id || 'empty'} /> }/>
                         {/*TODO: "render" statt "component" als Parameter benötigt wegen key=...
                             <PrivateRoute path='/filter/:id' component={FilterListMainView}/>*/}
-                        {loading &&
-                            <Backdrop className={classes.backdrop} open={true}>
-                                <CircularProgress color="inherit" />
-                            </Backdrop>
-                        }
+                        <EBoxPlayerContainer/>
                     </PersistentDrawerLeft>
+                    <LoadingIndicator/>
                 </Router>
             </div>
         </Suspense>

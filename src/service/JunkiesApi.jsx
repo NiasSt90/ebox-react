@@ -81,14 +81,25 @@ export const junkiesApi = (authTokenSupplier) => {
 		}
 		const paramsStr = Object.entries(params).map(pair => pair.map(encodeURIComponent).join('=')).join("&")
 		const url = `${settings.REST_API_URL}/js-api/mischungxl/playinform?${paramsStr}`;
-		return customFetch(url, "POST")
-				.then(response => response.json());
+		return customFetch(url, "POST").then(response => response.json());
+	}
+
+	const vote = (nid, vote) => {
+		const params = {
+			...authToken.token && {token: authToken.token},
+			id: nid,
+			vote: vote,
+			timestamp: new Date().getTime()/1000
+		}
+		const paramsStr = Object.entries(params).map(pair => pair.map(encodeURIComponent).join('=')).join("&")
+		const url = `${settings.REST_API_URL}/js-api/mischungxl/vote?${paramsStr}`;
+		return customFetch(url, "POST").then(response => response.json());
 	}
 
 	const buildTrackUrl = (nid, downloadfilename) => {
 		const params = {
 			...authToken.token && {token: authToken.token},
-			nid: nid, origFilename: downloadfilename
+			nid: nid, trackname: downloadfilename
 		};
 		const paramsStr = Object.entries(params).map(pair => pair.map(encodeURIComponent).join('=')).join("&")
 		return `${settings.REST_API_URL}/mischungxl/download?${paramsStr}`
@@ -101,6 +112,7 @@ export const junkiesApi = (authTokenSupplier) => {
 		filterlist,
 		artistinfo,
 		playinform,
+		vote,
 		buildTrackUrl
 	};
 };

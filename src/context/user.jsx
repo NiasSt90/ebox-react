@@ -17,3 +17,5 @@ export const userAtom = atom(
 export const loadingAtom = atom(false);
 
 export const playlistAtom = atom([]);
+export const currentTrackAtom = atom();
+

@@ -32,6 +32,10 @@ export const useJunkiesApi = () => {
 
 			playinform: (nid) => {
 				return junkiesApi(user).playinform(nid).then(result => result)
+			},
+
+			vote: (nid, vote) => {
+				return junkiesApi(user).vote(nid, vote).then(result => result)
 			}
 		}
 	}, [user, setLoading]);
