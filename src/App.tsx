@@ -1,4 +1,4 @@
-import React, {Suspense} from "react";
+import React, {Suspense, useEffect} from "react";
 import './App.css';
 import {BrowserRouter as Router, Redirect, Route} from 'react-router-dom'
 import Home from "./bundles/home/Home";
@@ -10,6 +10,8 @@ import {EBoxPlayerContainer} from "./components/EBoxPlayerContainer";
 import PersistentDrawerLeft from "./components/NavigationDrawer";
 import {LoadingIndicator} from "./bundles/common/LoadingIndicator";
 import {NotifierMessageContainer} from "./bundles/common/NotifierMessageContainer";
+import {useAtom} from "jotai";
+import {toolbarSearchInputAtom} from "./context/atoms";
 
 const drawerWidth = 240;
 const useStyles = makeStyles(theme => ({

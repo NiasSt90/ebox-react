@@ -1,9 +1,9 @@
 import {NotifierMessage} from "./NotifierMessage";
 import {useAtom} from "jotai";
-import {notifyMessagAtom} from "../../context/atoms";
+import {notifyMessageAtom} from "../../context/atoms";
 
 export const NotifierMessageContainer = () => {
-	const [ msg, setMsg ] = useAtom(notifyMessagAtom);
+	const [ msg, setMsg ] = useAtom(notifyMessageAtom);
 
 	const closeMessage = () => {
 		console.log("close notify", msg);

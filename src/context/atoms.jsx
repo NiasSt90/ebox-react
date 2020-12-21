@@ -15,6 +15,11 @@ export const userAtom = atom(
 );
 
 export const loadingAtom = atom(false);
-export const notifyMessagAtom = atom();
+export const notifyMessageAtom = atom();
 export const playlistAtom = atom([]);
 export const currentTrackAtom = atom();
+
+export const pageTitleAtom = atom("Home");
+export const showToolbarSearchAtom = atom(true);
+export const toolbarSearchInputAtom = atom("");
+export const darkStateAtom = atom(false);

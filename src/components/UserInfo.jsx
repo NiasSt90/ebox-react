@@ -12,7 +12,7 @@ const UserInfo = () => {
 	return <Box m={1}>
 		{authService.isAuthenticated === true ?
 			<Typography variant={"subtitle2"}>
-				Angemeldet als {authService.user.name}
+				{authService.user.name}
 				<Tooltip title="Abmelden">
 					<IconButton onClick={() => {
 						authService.signout(() => history.push('/'))
