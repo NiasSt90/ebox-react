@@ -15,7 +15,6 @@ export const userAtom = atom(
 );
 
 export const loadingAtom = atom(false);
-
+export const notifyMessagAtom = atom();
 export const playlistAtom = atom([]);
 export const currentTrackAtom = atom();
-

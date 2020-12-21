@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {useAtom} from "jotai";
-import {currentTrackAtom, playlistAtom} from "../context/user";
+import {currentTrackAtom, playlistAtom} from "../context/atoms";
 import {usePlayerService} from "../hooks/PlayerService";
 import {EBoxPlayer} from "./EBoxPlayer";
 

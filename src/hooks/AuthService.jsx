@@ -1,7 +1,7 @@
 import {useMemo} from "react";
 import {useAtom} from "jotai";
 import {junkiesApi} from "../service/JunkiesApi";
-import {userAtom} from "../context/user";
+import {userAtom} from "../context/atoms";
 
 
 const useAuthService = () => {

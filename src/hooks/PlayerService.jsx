@@ -1,5 +1,5 @@
 import {useAtom} from "jotai";
-import {currentSetUrlAtom, currentTrackAtom, playlistAtom} from "../context/user";
+import {currentTrackAtom, notifyMessagAtom, playlistAtom} from "../context/atoms";
 import {useMemo} from "react";
 import {useJunkiesApi} from "./JunkiesApi";
 
@@ -12,6 +12,7 @@ function extractNidFromUrl(url) {
 export const usePlayerService = () => {
 	const [playlist, setPlaylist] = useAtom(playlistAtom)
 	const [currentTrack, setCurrentTrack] = useAtom(currentTrackAtom)
+	const [notifyMessage, setNotifyMessage] = useAtom(notifyMessagAtom);
 	const junkiesApi = useJunkiesApi()
 
 	return useMemo(() => {
@@ -28,6 +29,10 @@ export const usePlayerService = () => {
 				if (!currentTrack && newPlaylist.length > 0) {
 					setCurrentTrack(newPlaylist[0]);
 				}
+				setNotifyMessage({
+					message: `Die aktuelle Playlist wurde erweitert um #${tracks.length} Tracks aus dem Set ${set.title}.`,
+					severity: "success",
+					autohide: 3000 })
 			},
 
 			play: (set) => {
@@ -39,6 +44,10 @@ export const usePlayerService = () => {
 				console.log("replace playlist", tracks)
 				setPlaylist(tracks);
 				setCurrentTrack(tracks[0]);
+				setNotifyMessage({
+					message: `Die aktuelle Playlist wurde ersetzt mit #${tracks.length} Tracks aus dem Set ${set.title}.`,
+					severity: "success",
+					autohide: 3000 })
 			},
 
 			playinform: (url) => {
@@ -74,8 +83,12 @@ export const usePlayerService = () => {
 			vote: (url, vote) => {
 				console.log(`vote ${vote} for current `, url);
 				const nid = extractNidFromUrl(url);
-				junkiesApi.vote(nid, vote);
+				junkiesApi.vote(nid, vote)
+						.then((set) => setNotifyMessage({
+							message: `Das Set ${set.title} wurde erfolgreich mit ${set.votes.my} bewertet.`,
+							severity: "success",
+							autohide: 3000 }));
 			}
 		}
-	}, [junkiesApi, playlist, setPlaylist, currentTrack, setCurrentTrack]);
+	}, [junkiesApi, playlist, currentTrack, notifyMessage, setPlaylist, setCurrentTrack, setNotifyMessage]);
 }

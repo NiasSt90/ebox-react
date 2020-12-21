@@ -9,6 +9,7 @@ import {FilterListMainView} from "./bundles/filter/FilterListMainView";
 import {EBoxPlayerContainer} from "./components/EBoxPlayerContainer";
 import PersistentDrawerLeft from "./components/NavigationDrawer";
 import {LoadingIndicator} from "./bundles/common/LoadingIndicator";
+import {NotifierMessageContainer} from "./bundles/common/NotifierMessageContainer";
 
 const drawerWidth = 240;
 const useStyles = makeStyles(theme => ({
@@ -47,6 +48,8 @@ function App() {
                                render={props => <FilterListMainView key={props.match.params.id || 'empty'} /> }/>
                         {/*TODO: "render" statt "component" als Parameter benötigt wegen key=...
                             <PrivateRoute path='/filter/:id' component={FilterListMainView}/>*/}
+
+                        <NotifierMessageContainer/>
                         <EBoxPlayerContainer/>
                     </PersistentDrawerLeft>
                     <LoadingIndicator/>
