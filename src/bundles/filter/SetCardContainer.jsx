@@ -1,4 +1,4 @@
-import {useArtistApi} from "../../hooks/ArtistApi";
+import {useArtistService} from "../../hooks/ArtistService";
 import {useEffect, useState} from "react";
 import {usePlayerService} from "../../hooks/PlayerService";
 import SetCard from "./SetCard";
@@ -13,7 +13,7 @@ const defaultImageUrl = process.env.PUBLIC_URL+"/images/dj_silhouette.png";
 // 4. Kommentare
 // 5. Bookmark, Playcounts,
 export const SetCardContainer = ({nummer,set}) => {
-	const artistApi = useArtistApi();
+	const artistApi = useArtistService();
 	const playerService = usePlayerService()
 	const [ artistImage, setArtistImage ] = useState(defaultImageUrl);
 	const artistID = set.artists && set.artists[0] && set.artists[0]["artistnid"];

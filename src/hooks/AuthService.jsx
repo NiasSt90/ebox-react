@@ -1,6 +1,6 @@
 import {useMemo} from "react";
 import {useAtom} from "jotai";
-import {junkiesApi} from "../service/JunkiesApi";
+import {junkiesApi} from "../api/JunkiesApi";
 import {userAtom} from "../context/atoms";
 
 

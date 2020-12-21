@@ -1,7 +1,7 @@
 import {useAtom} from "jotai";
 import {currentTrackAtom, notifyMessagAtom, playlistAtom} from "../context/atoms";
 import {useMemo} from "react";
-import {useJunkiesApi} from "./JunkiesApi";
+import {useJunkiesService} from "./JunkiesService";
 
 function extractNidFromUrl(url) {
 	const queryString = url.substr(url.indexOf("?"));
@@ -13,7 +13,7 @@ export const usePlayerService = () => {
 	const [playlist, setPlaylist] = useAtom(playlistAtom)
 	const [currentTrack, setCurrentTrack] = useAtom(currentTrackAtom)
 	const [, setNotifyMessage] = useAtom(notifyMessagAtom);
-	const junkiesApi = useJunkiesApi()
+	const junkiesApi = useJunkiesService()
 
 	return useMemo(() => {
 		return {

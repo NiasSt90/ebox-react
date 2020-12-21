@@ -2,11 +2,11 @@ import {useEffect, useState} from "react";
 import {SetCardContainer} from "./SetCardContainer";
 import {useParams} from "react-router";
 import {Grid} from "@material-ui/core";
-import {useJunkiesApi} from "../../hooks/JunkiesApi";
+import {useJunkiesService} from "../../hooks/JunkiesService";
 import {Waypoint} from "react-waypoint";
 
 export const FilterListMainView = () => {
-	const junkiesApi = useJunkiesApi()
+	const junkiesApi = useJunkiesService()
 	const {id} = useParams()
 	const [ sets, setSets ] = useState([])
 	const [ page, setPage ] = useState(0)

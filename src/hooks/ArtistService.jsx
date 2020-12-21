@@ -1,9 +1,9 @@
 import {useAtom} from "jotai";
 import {loadingAtom, userAtom} from "../context/atoms";
 import {useMemo} from "react";
-import {junkiesApi} from "../service/JunkiesApi";
+import {junkiesApi} from "../api/JunkiesApi";
 
-export const useArtistApi = () => {
+export const useArtistService = () => {
 	const [user] = useAtom(userAtom);
 	const [, setLoading] = useAtom(loadingAtom);
 	return useMemo(() => {

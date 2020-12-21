@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from "react";
-import {useJunkiesApi} from "../hooks/JunkiesApi";
+import {useJunkiesService} from "../hooks/JunkiesService";
 import {NavigationList} from "./NavigationList";
 
 export const NavigationListContainer = () => {
-	const junkiesApi = useJunkiesApi()
+	const junkiesApi = useJunkiesService()
 	const [filter, setFilter] = useState([])
 	useEffect(() => {
 		junkiesApi.filterlist()

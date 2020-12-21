@@ -1,5 +1,5 @@
 import {atom} from "jotai";
-import {junkiesApi} from "../service/JunkiesApi";
+import {junkiesApi} from "../api/JunkiesApi";
 
 const localUserAtom = atom(JSON.parse(localStorage.getItem("user") ?? '{}'));
 export const userAtom = atom(
