@@ -12,7 +12,7 @@ function extractNidFromUrl(url) {
 export const usePlayerService = () => {
 	const [playlist, setPlaylist] = useAtom(playlistAtom)
 	const [currentTrack, setCurrentTrack] = useAtom(currentTrackAtom)
-	const [notifyMessage, setNotifyMessage] = useAtom(notifyMessagAtom);
+	const [, setNotifyMessage] = useAtom(notifyMessagAtom);
 	const junkiesApi = useJunkiesApi()
 
 	return useMemo(() => {
@@ -90,5 +90,5 @@ export const usePlayerService = () => {
 							autohide: 3000 }));
 			}
 		}
-	}, [junkiesApi, playlist, currentTrack, notifyMessage, setPlaylist, setCurrentTrack, setNotifyMessage]);
+	}, [junkiesApi, playlist, currentTrack, setPlaylist, setCurrentTrack, setNotifyMessage]);
 }

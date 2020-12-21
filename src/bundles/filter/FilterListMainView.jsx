@@ -10,22 +10,16 @@ export const FilterListMainView = () => {
 	const {id} = useParams()
 	const [ sets, setSets ] = useState([])
 	const [ page, setPage ] = useState(0)
-	const currentSets = sets;
 
 	useEffect(() => {
 		console.log(`FETCH: filterID=${id} page=${page}`)
 		junkiesApi.setlist({filterid:id, page: page})
-				.then(res => {
-					setSets([...currentSets, ...res])
-				});
+				.then(res => {setSets([...sets, ...res])});
 	}, [id, page, setSets, junkiesApi])
 
 	return <>
 		<h3>Sets im Filter</h3>
-		<Grid container spacing={3}
-				direction="row"
-				justify="space-evenly"
-				alignItems="stretch">
+		<Grid container spacing={3} direction="row" justify="space-evenly" alignItems="stretch">
 			{sets && sets.map((set, i) =>
 				<Grid key={i} item xs>
 					<SetCardContainer nummer={i + 1} set={set}/>

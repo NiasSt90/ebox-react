@@ -1,5 +1,5 @@
 import React from "react";
-import {Box, Container, Grid, Paper, Tooltip, Typography} from "@material-ui/core";
+import {Box, Grid, Paper, Tooltip, Typography} from "@material-ui/core";
 import AudioPlayer from "material-ui-audio-player";
 import IconButton from "@material-ui/core/IconButton";
 import ThumbUpIcon from "@material-ui/icons/ThumbUp";
@@ -14,6 +14,7 @@ import VolumeUpIcon from '@material-ui/icons/VolumeUp';
 import VolumeOffIcon from '@material-ui/icons/VolumeOff';
 import PlaylistPlayIcon from '@material-ui/icons/PlaylistPlay';
 import Divider from "@material-ui/core/Divider";
+import {makeStyles} from "@material-ui/core/styles";
 
 const icons = {
 	PlayIcon: PlayCircleOutlineIcon,
@@ -22,6 +23,35 @@ const icons = {
 	VolumeUpIcon: VolumeUpIcon,
 	VolumeOffIcon: VolumeOffIcon
 }
+
+const useStyles = makeStyles((theme) => ({
+	root: {
+		position: "fixed",
+		zIndex: 10,
+		bottom: "0%",
+		[theme.breakpoints.down('sm')]: {
+			width: "100%",
+			right:"0%",
+			left:"0%"
+		},
+		[theme.breakpoints.up('md')]: {
+			width: "80%",
+			right:"10%",
+			left:"10%"
+		},
+		[theme.breakpoints.up('lg')]: {
+			width: "60%",
+			right:"20%",
+			left:"20%"
+		},
+		[theme.breakpoints.up('xl')]: {
+			width: "40%",
+			right:"30%",
+			left:"30%"
+		},
+
+	}
+}))
 
 export const EBoxPlayer = ({
 	url,
@@ -35,8 +65,9 @@ export const EBoxPlayer = ({
 	onPlayed,
 	onFinished
 }) => {
+	const classes = useStyles();
 	return <>
-		<Box position="fixed" bottom="0%" right="10%" left="10%" width="80%" zIndex={10}>
+		<Box className={classes.root}>
 			<Paper elevation={6}>
 				<Grid container alignItems="center" spacing={2}>
 					<Grid item xs={12} style={{paddingBottom:"0"}}>
