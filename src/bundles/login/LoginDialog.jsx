@@ -46,7 +46,7 @@ const LoginDialog = () => {
 
 	return <Dialog open={true}>
 		<DialogTitle>
-			DJ-Junkies Login <Typography variant={"subtitle2"}>({settings.REST_API_URL})</Typography>
+			DJ-Junkies Login<Typography component="div" variant={"overline"}>({settings.REST_API_URL})</Typography>
 		</DialogTitle>
 		<DialogContent>
 			<form onSubmit={login}>
@@ -54,12 +54,24 @@ const LoginDialog = () => {
 					<Grid container spacing={2} direction={"column"}>
 						<Grid item>
 							<TextField name="username" label="Username" variant="outlined" InputLabelProps={{shrink: true}}
-										  value={values.username} onChange={handleInputChange}/>
+										  value={values.username} onChange={handleInputChange}
+										  onKeyPress={(ev) => {
+											  if (ev.key === 'Enter') {
+												  ev.preventDefault();//no submit if there were a button with type form
+												  login();
+											  }
+										  }}/>
 						</Grid>
 						<Grid item>
-						<TextField name="password" type="password" label="Passwort" variant="outlined"
-									  InputLabelProps={{shrink: true}}
-									  value={values.password} onChange={handleInputChange}/>
+							<TextField name="password" type="password" label="Passwort" variant="outlined"
+										  InputLabelProps={{shrink: true}}
+										  value={values.password} onChange={handleInputChange}
+										  onKeyPress={(ev) => {
+											  if (ev.key === 'Enter') {
+												  ev.preventDefault();//no submit if there were a button with type form
+												  login();
+											  }
+										  }}/>
 						</Grid>
 					</Grid>
 					<FormHelperText>{values.loginError}</FormHelperText>
@@ -69,10 +81,10 @@ const LoginDialog = () => {
 		<DialogActions>
 			<Button onClick={() => setValues({...values, redirectToHome: '/'})} color="secondary"
 					  variant="contained">Abbrechen</Button>
-			<Button type={"submit"} onClick={login} color="primary" variant="contained">Einloggen</Button>
+			<Button type="button" onClick={login} color="primary" variant="contained">Einloggen</Button>
 		</DialogActions>
 	</Dialog>
-;
+			;
 };
 
 export default LoginDialog;

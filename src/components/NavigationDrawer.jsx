@@ -147,7 +147,7 @@ export default function PersistentDrawerLeft(props) {
 							</Tooltip>
 							{!authService.isAuthenticated &&
 							 <Tooltip title="Anmelden..."><IconButton edge="end" component={Link} to="/login">
-								 <LockOpenIcon/></IconButton>
+								 <LockOpenIcon htmlColor={"white"}/></IconButton>
 							 </Tooltip>
 							}
 							{authService.isAuthenticated &&
