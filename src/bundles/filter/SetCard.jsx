@@ -62,6 +62,9 @@ export default function SetCard({nummer, set, genres, artistImage, playAction, e
 	const handleExpandClick = () => {
 		setExpanded(!expanded);
 	};
+	var duration = new Date(set.duration * 1000);
+	var durationHHMM = String(duration.getUTCHours()).padStart(2,"0")
+							 + "h:" + String(duration.getUTCMinutes()).padStart(2,"0")+"m";
 
 	return (
 			<Box display="flex">
@@ -115,9 +118,13 @@ export default function SetCard({nummer, set, genres, artistImage, playAction, e
 					</Card>
 				</Box>
 				<Box>
-					{genres && <List disablePadding={true}>
+					<List disablePadding={true}>
 						<Divider/>
-						{genres.filter(g => g.name !== "set").slice(0, 3).map(({name, tid}) => (
+						<ListItem selected={false} disableGutters={true} classes={{root: classes.genreListItem}}>
+							<ListItemText classes={{root: classes.genreListItemText}}>{durationHHMM}</ListItemText>
+						</ListItem>
+						<Divider/>
+						{genres && genres.filter(g => g.name !== "set").slice(0, 3).map(({name, tid}) => (
 								<React.Fragment key={tid}>
 									<ListItem selected={false} disableGutters={true} classes={{root: classes.genreListItem}}>
 										<ListItemText classes={{root: classes.genreListItemText}}>{name}</ListItemText>
@@ -126,7 +133,6 @@ export default function SetCard({nummer, set, genres, artistImage, playAction, e
 								</React.Fragment>
 						))}
 					</List>
-					}
 				</Box>
 			</Box>
 
