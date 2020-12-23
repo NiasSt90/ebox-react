@@ -108,7 +108,7 @@ export const junkiesApi = (authTokenSupplier) => {
 		}
 		const paramsStr = Object.entries(params).map(pair => pair.map(encodeURIComponent).join('=')).join("&")
 		const url = `${settings.REST_API_URL}/js-api/mischungxl/addbookmark?${paramsStr}`;
-		return customFetch(url, "POST", `[ ${nid} ]`).then(response => response.json());
+		return customFetch(url, "POST", [nid]).then(response => response.json());
 	}
 
 	const delbookmark = (nid) => {
@@ -118,7 +118,7 @@ export const junkiesApi = (authTokenSupplier) => {
 		}
 		const paramsStr = Object.entries(params).map(pair => pair.map(encodeURIComponent).join('=')).join("&")
 		const url = `${settings.REST_API_URL}/js-api/mischungxl/delbookmark?${paramsStr}`;
-		return customFetch(url, "POST",  `[ ${nid} ]`).then(response => response.json());
+		return customFetch(url, "POST",  [nid]).then(response => response.json());
 	}
 
 	const buildTrackUrl = (nid, downloadfilename) => {
