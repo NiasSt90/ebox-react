@@ -1,8 +1,13 @@
-import {Box, List, ListItem, ListItemText, Typography} from "@material-ui/core";
+import {Box, Link, List, ListItem, ListItemText, Typography} from "@material-ui/core";
 
 const Home = () => <>
 	<Box mt={6}>
 		<Typography variant="h5" paragraph>Der neue DJ-Junkies WEB-Client zum Musik hören...</Typography>
+		{/*<Typography gutterBottom="true" component={a}></Typography>*/}
+		<Typography gutterBottom="true">
+		Das Projekt ist OpenSource und der Quellcode ist <Link target="_blank" rel="noreferrer" href="https://github.com/NiasSt90/ebox-react">hier</Link> zu finden.
+		</Typography>
+
 		Was geht bisher:
 		<List>
 			<ListItem>

@@ -69,7 +69,7 @@ export default function SetCard({nummer, set, genres, artistImage, playAction, e
 	return (
 			<Box display="flex">
 				<Box>
-					<Card className={classes.root}>
+					<Card className={classes.root} raised={true}>
 						<CardHeader classes={{root: classes.cardHeaderRoot, content: classes.cardHeaderContent}}
 										avatar={<Avatar aria-label="recipe" className={classes.avatar}>{nummer}</Avatar>}
 										title={set.title} titleTypographyProps={{noWrap: true}}

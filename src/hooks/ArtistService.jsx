@@ -1,5 +1,5 @@
 import {useAtom} from "jotai";
-import {loadingAtom, userAtom} from "../context/atoms";
+import {userAtom} from "../context/atoms";
 import {useMemo} from "react";
 import {junkiesApi} from "../api/JunkiesApi";
 
