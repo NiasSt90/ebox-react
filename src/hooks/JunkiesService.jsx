@@ -12,22 +12,15 @@ export const useJunkiesService = () => {
 				return junkiesApi(user).buildTrackUrl(nid, downloadfilename);
 			},
 
-			filterlist: () => {
-				setLoading(true);
-				return junkiesApi(user).filterlist()
-						.finally(() => setLoading(false))
-						.then(result => {
-							return result.filters;
-						})
+			filterlist: (id= null) => {
+				return junkiesApi(user).filterlist(id)
+						.then(result => {return result.filters;})
 			},
 
 			setlist: (searchParams) => {
 				setLoading(true)
 				return junkiesApi(user).setlist(searchParams)
 						.finally(() => setLoading(false))
-						.then(result => {
-							return result;
-						})
 			},
 
 			playinform: (nid) => {

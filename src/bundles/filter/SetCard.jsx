@@ -20,7 +20,7 @@ import {Box, Divider, List, ListItem, ListItemText, Tooltip} from "@material-ui/
 
 const useStyles = makeStyles((theme) => ({
 	root: {
-		width: 350
+		width: 250
 	},
 	media: {
 		height: 0,

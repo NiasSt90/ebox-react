@@ -5,7 +5,7 @@ import Home from "./bundles/home/Home";
 import LoginDialog from "./bundles/login/LoginDialog";
 
 import {CircularProgress, CssBaseline, makeStyles} from "@material-ui/core";
-import {FilterListMainView} from "./bundles/filter/FilterListMainView";
+import {SetCardListContainer} from "./bundles/filter/SetCardListContainer";
 import {EBoxPlayerContainer} from "./components/EBoxPlayerContainer";
 import PersistentDrawerLeft from "./components/NavigationDrawer";
 import {LoadingIndicator} from "./bundles/common/LoadingIndicator";
@@ -47,9 +47,9 @@ function App() {
                         <Route path="/home" component={Home}/>
                         <Route path="/login"><LoginDialog/></Route>
                         <Route path='/filter/:id'
-                               render={props => <FilterListMainView key={props.match.params.id || 'empty'} /> }/>
+                               render={props => <SetCardListContainer key={props.match.params.id || 'empty'} /> }/>
                         {/*TODO: "render" statt "component" als Parameter benötigt wegen key=...
-                            <PrivateRoute path='/filter/:id' component={FilterListMainView}/>*/}
+                            <PrivateRoute path='/filter/:id' component={SetCardListContainer}/>*/}
 
                         <NotifierMessageContainer/>
                         <EBoxPlayerContainer/>

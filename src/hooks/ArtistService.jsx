@@ -5,16 +5,13 @@ import {junkiesApi} from "../api/JunkiesApi";
 
 export const useArtistService = () => {
 	const [user] = useAtom(userAtom);
-	const [, setLoading] = useAtom(loadingAtom);
 	return useMemo(() => {
 		return {
 			artistInfo: (artistnid) => {
 				if (sessionStorage.getItem("artist_" + artistnid)) {
 					return Promise.resolve(JSON.parse(sessionStorage.getItem("artist_" + artistnid)));
 				}
-				setLoading(true);
 				return junkiesApi(user).artistinfo(artistnid)
-						.finally(() => setLoading(false))
 						.then(info => {
 							sessionStorage.setItem("artist_" + artistnid, JSON.stringify(info));
 							return info;
@@ -38,7 +35,7 @@ export const useArtistService = () => {
 				return Promise.resolve(defUrl);
 			}
 		}
-	}, [user, setLoading]);
+	}, [user]);
 };
 
 const imageSize = {

@@ -7,7 +7,7 @@ const Home = () => <>
 		<List>
 			<ListItem>
 				<ListItemText>
-					<b>Filter/Set-List</b><br/>
+					<b>Filter/Set-List inkl Suche in Filtern (sobald REST-Service deployd)</b><br/>
 					endlos durch die (eigenen) Filter scrollen<br/>
 					Sets(mit allen Tracks) in Playlist ersetzen oder anhängen.
 				</ListItemText>

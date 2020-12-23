@@ -60,8 +60,13 @@ export const junkiesApi = (authTokenSupplier) => {
 				.then(response => response.json());
 	}
 
-	const filterlist = () => {
-		const url = `${settings.REST_API_URL}/js-api/mischungxl/getfilters?${authToken.token ? 'token=' + authToken.token : ''}`;
+	const filterlist = (id = null) => {
+		const params = {
+			...id && {id: id},
+			...authToken.token && {token: authToken.token},
+		}
+		const paramsStr = Object.entries(params).map(pair => pair.map(encodeURIComponent).join('=')).join("&")
+		const url = `${settings.REST_API_URL}/js-api/mischungxl/getfilters?${paramsStr}`;
 		return customFetch(url, "POST")
 				.then(response => response.json());
 	}

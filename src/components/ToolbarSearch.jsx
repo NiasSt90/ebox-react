@@ -52,7 +52,7 @@ export const ToolbarSearch = ({onSearch}) => {
 		//need to save to state because it's a controlled input
 		setValue(event.target.value);
 		//debounce and after 1s of no call do real update setToolbarSearchInput
-		debounce({fn: () => onSearch(event.target.value), timeout: 1000});
+		debounce({fn: () => onSearch(event.target.value), timeout: 500});
 	};
 	const clearSearchInput = () => {
 		setValue("");
