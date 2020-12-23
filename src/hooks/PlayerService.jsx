@@ -24,14 +24,24 @@ export const usePlayerService = () => {
 		})
 	}
 
+	function buildSetTrackInfos(set) {
+		return set.trackinfo.map(track => {
+					const url = junkiesApi.buildTrackUrl(set.nid, track.downloadfilename);
+					const artistID = set.artists && set.artists[0] && set.artists[0]["artistnid"];
+					return {
+						nid: set.nid,
+						artistID: artistID,
+						artist: track.artist,
+						title: track.title || set.title,
+						url: url
+					}
+				});
+	}
+
 	return useMemo(() => {
 		return {
 			enqueue: (set) => {
-				const tracks = set.trackinfo
-						.map(track => {
-							const url = junkiesApi.buildTrackUrl(set.nid, track.downloadfilename);
-							return {nid: set.nid, artist: track.artist, title: track.title || set.title, url: url}
-						});
+				const tracks = buildSetTrackInfos(set);
 				console.log("add to playlist", tracks)
 				let newPlaylist = [...playlist, ...tracks];
 				setPlaylist(newPlaylist);
@@ -45,11 +55,7 @@ export const usePlayerService = () => {
 			},
 
 			play: (set) => {
-				const tracks = set.trackinfo
-						.map(track => {
-							const url = junkiesApi.buildTrackUrl(set.nid, track.downloadfilename);
-							return {nid: set.nid, artist: track.artist, title: track.title || set.title, url: url}
-						});
+				const tracks = buildSetTrackInfos(set);
 				console.log("replace playlist", tracks)
 				setPlaylist(tracks);
 				setCurrentTrack(tracks[0]);

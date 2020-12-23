@@ -3,6 +3,7 @@ import {useAtom} from "jotai";
 import {currentTrackAtom, playlistAtom} from "../context/atoms";
 import {usePlayerService} from "../hooks/PlayerService";
 import {EBoxPlayer} from "./EBoxPlayer";
+import {MediaSessionHandler} from "./MediaSessionHandler";
 
 
 export const EBoxPlayerContainer = () => {
@@ -48,6 +49,7 @@ export const EBoxPlayerContainer = () => {
 	}, [player, action, setAction]);
 
 	return <>
+		<MediaSessionHandler/>
 		<EBoxPlayer url={url} currentTrack={currentTrack} playlist_len={playlist.length}
 						next={() => setAction({type: "next" , url: url})}
 						prev={() => setAction({type: "prev" , url: url})}
