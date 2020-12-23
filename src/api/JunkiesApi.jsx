@@ -101,6 +101,26 @@ export const junkiesApi = (authTokenSupplier) => {
 		return customFetch(url, "POST").then(response => response.json());
 	}
 
+	const addbookmark = (nid) => {
+		const params = {
+			...authToken.token && {token: authToken.token},
+			timestamp: new Date().getTime()/1000
+		}
+		const paramsStr = Object.entries(params).map(pair => pair.map(encodeURIComponent).join('=')).join("&")
+		const url = `${settings.REST_API_URL}/js-api/mischungxl/addbookmark?${paramsStr}`;
+		return customFetch(url, "POST", `[ ${nid} ]`).then(response => response.json());
+	}
+
+	const delbookmark = (nid) => {
+		const params = {
+			...authToken.token && {token: authToken.token},
+			timestamp: new Date().getTime()/1000
+		}
+		const paramsStr = Object.entries(params).map(pair => pair.map(encodeURIComponent).join('=')).join("&")
+		const url = `${settings.REST_API_URL}/js-api/mischungxl/delbookmark?${paramsStr}`;
+		return customFetch(url, "POST",  `[ ${nid} ]`).then(response => response.json());
+	}
+
 	const buildTrackUrl = (nid, downloadfilename) => {
 		const params = {
 			...authToken.token && {token: authToken.token},
@@ -118,6 +138,8 @@ export const junkiesApi = (authTokenSupplier) => {
 		artistinfo,
 		playinform,
 		vote,
+		addbookmark,
+		delbookmark,
 		buildTrackUrl
 	};
 };

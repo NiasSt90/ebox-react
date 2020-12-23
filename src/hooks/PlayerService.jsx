@@ -15,6 +15,15 @@ export const usePlayerService = () => {
 	const [, setNotifyMessage] = useAtom(notifyMessageAtom);
 	const junkiesApi = useJunkiesService()
 
+	const showError = (error) => {
+		console.log(error);
+		setNotifyMessage({
+			message:error.message,
+			severity: "error",
+			autohide: 10000
+		})
+	}
+
 	return useMemo(() => {
 		return {
 			enqueue: (set) => {
@@ -50,11 +59,26 @@ export const usePlayerService = () => {
 					autohide: 3000 })
 			},
 
+			toggleBookmark: (set) => {
+				if (set) {
+					junkiesApi.bookmark(set.nid, !set.bookmarked)
+							.then((set) => {
+										setNotifyMessage({
+											message: `Das Set ${set.title} wurde ${set.bookmark ? 'bookmarked' : 'de-bookmarked'}.`,
+											severity: "success",
+											autohide: 3000
+										})
+									}
+							)
+							.catch(showError)
+				}
+			},
+
 			playinform: (url) => {
 				console.log("playinform ", url);
 				const nid = extractNidFromUrl(url);
 				if (nid) {
-					junkiesApi.playinform(nid);
+					junkiesApi.playinform(nid).catch(showError);
 				}
 			},
 
@@ -87,7 +111,8 @@ export const usePlayerService = () => {
 						.then((set) => setNotifyMessage({
 							message: `Das Set ${set.title} wurde erfolgreich mit ${set.votes.my} bewertet.`,
 							severity: "success",
-							autohide: 3000 }));
+							autohide: 3000 }))
+						.catch(showError);
 			}
 		}
 	}, [junkiesApi, playlist, currentTrack, setPlaylist, setCurrentTrack, setNotifyMessage]);

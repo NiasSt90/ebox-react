@@ -31,11 +31,14 @@ export const SetCardContainer = ({nummer,set}) => {
 	const playAction = () => {
 		playerService.play(set);
 	}
+	const bookmarkAction = () => {
+		playerService.toggleBookmark(set);//TODO: das Ergebnis setzen, damit Rendering aktualisiert wird!
+	}
 	let genres = [];
 	if (set.taxonomy) {
 		genres = Object.values(set.taxonomy).map(t => ({name: t.name, tid: t.tid}));
 	}
 
-	const props = {nummer, set, artistImage, genres, playAction, enqueueAction};
+	const props = {nummer, set, artistImage, genres, playAction, enqueueAction, bookmarkAction};
 	return <SetCard {...props}/>
 }

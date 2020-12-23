@@ -55,7 +55,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-export default function SetCard({nummer, set, genres, artistImage, playAction, enqueueAction}) {
+export default function SetCard({nummer, set, genres, artistImage, playAction, enqueueAction, bookmarkAction}) {
 	const classes = useStyles();
 	const [expanded, setExpanded] = React.useState(false);
 
@@ -99,7 +99,7 @@ export default function SetCard({nummer, set, genres, artistImage, playAction, e
 								</IconButton>
 							</Tooltip>
 							<Tooltip title={"Set Bookmarken"}>
-								<IconButton>
+								<IconButton onClick={bookmarkAction}>
 									<FavoriteIcon/>
 								</IconButton>
 							</Tooltip>
