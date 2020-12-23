@@ -100,7 +100,7 @@ export default function SetCard({nummer, set, genres, artistImage, playAction, e
 							</Tooltip>
 							<Tooltip title={"Set Bookmarken"}>
 								<IconButton onClick={bookmarkAction}>
-									<FavoriteIcon/>
+									<FavoriteIcon color={set.bookmarked ? "secondary": "disabled"}/>
 								</IconButton>
 							</Tooltip>
 							<IconButton

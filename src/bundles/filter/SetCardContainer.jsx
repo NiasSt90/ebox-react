@@ -12,11 +12,16 @@ const defaultImageUrl = process.env.PUBLIC_URL+"/images/dj_silhouette.png";
 // 3. Artists-Bilder oder Geist
 // 4. Kommentare
 // 5. Bookmark, Playcounts,
-export const SetCardContainer = ({nummer,set}) => {
+export const SetCardContainer = ({nummer, set }) => {
 	const artistApi = useArtistService();
 	const playerService = usePlayerService()
 	const [ artistImage, setArtistImage ] = useState(defaultImageUrl);
+	const [ details, setDetails ] = useState(set);
 	const artistID = set.artists && set.artists[0] && set.artists[0]["artistnid"];
+	let genres = [];
+	if (details.taxonomy) {
+		genres = Object.values(details.taxonomy).map(t => ({name: t.name, tid: t.tid}));
+	}
 
 	useEffect(() => {
 		artistID ? artistApi.artistInfo(artistID)
@@ -26,19 +31,16 @@ export const SetCardContainer = ({nummer,set}) => {
 	}, [artistApi,artistID,artistImage,setArtistImage])
 
 	const enqueueAction = () => {
-		playerService.enqueue(set);
+		playerService.enqueue(details);
 	}
 	const playAction = () => {
-		playerService.play(set);
+		playerService.play(details);
 	}
 	const bookmarkAction = () => {
-		playerService.toggleBookmark(set);//TODO: das Ergebnis setzen, damit Rendering aktualisiert wird!
+		playerService.toggleBookmark(details).then((details) => {
+			setDetails(details)
+		});
 	}
-	let genres = [];
-	if (set.taxonomy) {
-		genres = Object.values(set.taxonomy).map(t => ({name: t.name, tid: t.tid}));
-	}
-
-	const props = {nummer, set, artistImage, genres, playAction, enqueueAction, bookmarkAction};
+	const props = {nummer, set:details, artistImage, genres, playAction, enqueueAction, bookmarkAction};
 	return <SetCard {...props}/>
 }

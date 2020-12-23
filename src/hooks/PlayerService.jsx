@@ -60,18 +60,9 @@ export const usePlayerService = () => {
 			},
 
 			toggleBookmark: (set) => {
-				if (set) {
-					junkiesApi.bookmark(set.nid, !set.bookmarked)
-							.then((set) => {
-										setNotifyMessage({
-											message: `Das Set ${set.title} wurde ${set.bookmark ? 'bookmarked' : 'de-bookmarked'}.`,
-											severity: "success",
-											autohide: 3000
-										})
-									}
-							)
-							.catch(showError)
-				}
+				return junkiesApi.bookmark(set.nid, !set.bookmarked)
+						.then(() => {return {...set, bookmarked: !set.bookmarked}})
+						.catch(showError)
 			},
 
 			playinform: (url) => {

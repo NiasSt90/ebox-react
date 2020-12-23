@@ -31,8 +31,8 @@ export const useJunkiesService = () => {
 				return junkiesApi(user).vote(nid, vote).then(result => result)
 			},
 
-			bookmark: (nid, on) => {
-				if (on === true) return junkiesApi(user).addbookmark(nid).then(result => result);
+			bookmark: (nid, createBookmark) => {
+				if (createBookmark === true) return junkiesApi(user).addbookmark(nid).then(result => result);
 				return junkiesApi(user).delbookmark(nid).then(result => result)
 			}
 		}
