@@ -8,7 +8,7 @@ export const SetCardList = ({sets, filterDefinition, onNextPage}) => {
 		<Grid container spacing={3} direction="row" justify="space-evenly" alignItems="stretch">
 			{sets && sets.map((set, i) =>
 					<Grid key={i} item xs>
-						<SetCardContainer nummer={i + 1} set={set}/>
+						<SetCardContainer nummer={i + 1} cardData={set}/>
 						{i === sets.length - 10 && (
 								<Waypoint onEnter={onNextPage}/>)
 						}

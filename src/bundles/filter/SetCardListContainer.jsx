@@ -12,7 +12,7 @@ export const SetCardListContainer = () => {
 	const [ filterDefinition, setFilterDefinition ] = useState();
 	const [ , setPageTitle] = useAtom(pageTitleAtom);
 	const [ toolbarSearchInput] = useAtom(toolbarSearchInputAtom);
-	const [ searchParams, setSearchParams ] = useState({filterid:id, s:"", page:0});
+	const [ searchParams, setSearchParams ] = useState();
 
 	const loadNextPage = () => {
 		setSearchParams({...searchParams, page: searchParams.page + 1});
@@ -23,24 +23,25 @@ export const SetCardListContainer = () => {
 		junkiesApi.filterlist(id).then(res => {
 			if (res.length === 1) {
 				console.log("Filter", res[0])
-				setFilterDefinition(res[0]);
-				setPageTitle("Filter " + res[0].filtername);
+				setFilterDefinition(() => res[0]);
+				setPageTitle((t) => "Filter " + res[0].filtername);
 			}
 		})
-	}, [])
-
-	useEffect(() => {
-		console.log("FETCH NEXT:", searchParams)
-		junkiesApi.setlist(searchParams).then(res => {
-			setSets([...sets, ...res])
-		});
-	}, [searchParams])
+	}, [junkiesApi,id,setPageTitle])
 
 	useEffect( ()=> {
 		console.log("START NEW SEARCH:" + toolbarSearchInput)
-		setSets([]);
-		setSearchParams({...searchParams, s:toolbarSearchInput, page:0});
-	}, [toolbarSearchInput]);
+		setSets(() => []);
+		setSearchParams(() => { return {filterid:id, s:toolbarSearchInput, page:0}});
+	}, [id,toolbarSearchInput]);
+
+	useEffect(() => {
+		if (searchParams) {
+			console.log("FETCH NEXT:", searchParams)
+			junkiesApi.setlist(searchParams).then(res => setSets([...sets, ...res]));
+		}
+	}, [searchParams])
+
 
 
 	return <SetCardList sets={sets} filterDefinition={filterDefinition} onNextPage={loadNextPage}/>

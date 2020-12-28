@@ -4,7 +4,7 @@ const Home = () => <>
 	<Box mt={6}>
 		<Typography variant="h5" paragraph>Der neue DJ-Junkies WEB-Client zum Musik hören...</Typography>
 		{/*<Typography gutterBottom="true" component={a}></Typography>*/}
-		<Typography gutterBottom="true">
+		<Typography gutterBottom>
 		Das Projekt ist OpenSource und der Quellcode ist <Link target="_blank" rel="noreferrer" href="https://github.com/NiasSt90/ebox-react">hier</Link> zu finden.
 		</Typography>
 

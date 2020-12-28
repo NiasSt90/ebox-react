@@ -1,6 +1,6 @@
 import {useAtom} from "jotai";
 import {currentTrackAtom, notifyMessageAtom, playlistAtom} from "../context/atoms";
-import {useMemo} from "react";
+import {useCallback, useMemo} from "react";
 import {useJunkiesService} from "./JunkiesService";
 
 function extractNidFromUrl(url) {
@@ -15,33 +15,20 @@ export const usePlayerService = () => {
 	const [, setNotifyMessage] = useAtom(notifyMessageAtom);
 	const junkiesApi = useJunkiesService()
 
-	const showError = (error) => {
+	const showError = useCallback((error) => {
 		console.log(error);
 		setNotifyMessage({
 			message:error.message,
 			severity: "error",
 			autohide: 10000
 		})
-	}
-
-	function buildSetTrackInfos(set) {
-		return set.trackinfo.map(track => {
-					const url = junkiesApi.buildTrackUrl(set.nid, track.downloadfilename);
-					const artistID = set.artists && set.artists[0] && set.artists[0]["artistnid"];
-					return {
-						nid: set.nid,
-						artistID: artistID,
-						artist: track.artist,
-						title: track.title || set.title,
-						url: url
-					}
-				});
-	}
+	}, [setNotifyMessage]);
 
 	return useMemo(() => {
 		return {
 			enqueue: (set) => {
-				const tracks = buildSetTrackInfos(set);
+				const artwork = set.artistDetails.map(a => a.images.extralarge);
+				const tracks = set.tracks.map(t => { return {...t, images: artwork}});
 				console.log("add to playlist", tracks)
 				let newPlaylist = [...playlist, ...tracks];
 				setPlaylist(newPlaylist);
@@ -55,7 +42,8 @@ export const usePlayerService = () => {
 			},
 
 			play: (set) => {
-				const tracks = buildSetTrackInfos(set);
+				const artwork = set.artistDetails.map(a => a.images.extralarge);
+				const tracks = set.tracks.map(t => { return {...t, images: artwork}});
 				console.log("replace playlist", tracks)
 				setPlaylist(tracks);
 				setCurrentTrack(tracks[0]);
@@ -112,5 +100,5 @@ export const usePlayerService = () => {
 						.catch(showError);
 			}
 		}
-	}, [junkiesApi, playlist, currentTrack, setPlaylist, setCurrentTrack, setNotifyMessage]);
+	}, [junkiesApi, playlist, currentTrack, showError, setPlaylist, setCurrentTrack, setNotifyMessage]);
 }

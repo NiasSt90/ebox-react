@@ -55,16 +55,14 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-export default function SetCard({nummer, set, genres, artistImage, playAction, enqueueAction, bookmarkAction}) {
+export default function SetCard({nummer, cardData, playAction, enqueueAction, bookmarkAction}) {
 	const classes = useStyles();
 	const [expanded, setExpanded] = React.useState(false);
-
 	const handleExpandClick = () => {
 		setExpanded(!expanded);
 	};
-	var duration = new Date(set.duration * 1000);
-	var durationHHMM = String(duration.getUTCHours()).padStart(2,"0")
-							 + "h:" + String(duration.getUTCMinutes()).padStart(2,"0")+"m";
+	var durationHHMM = String(cardData.duration.getUTCHours()).padStart(2,"0")
+							 + "h:" + String(cardData.duration.getUTCMinutes()).padStart(2,"0")+"m";
 
 	return (
 			<Box display="flex">
@@ -72,19 +70,19 @@ export default function SetCard({nummer, set, genres, artistImage, playAction, e
 					<Card className={classes.root} raised={true}>
 						<CardHeader classes={{root: classes.cardHeaderRoot, content: classes.cardHeaderContent}}
 										avatar={<Avatar aria-label="recipe" className={classes.avatar}>{nummer}</Avatar>}
-										title={set.title} titleTypographyProps={{noWrap: true}}
-										subheader={"produziert am " + new Date(set.setcreated * 1000).toLocaleDateString()}
+										title={cardData.title} titleTypographyProps={{noWrap: true}}
+										subheader={"produziert am " + cardData.created.toLocaleDateString()}
 										action={<IconButton aria-label="settings"><MoreVertIcon/></IconButton>}
 						/>
 
-						<CardMedia className={classes.media} image={artistImage} title={set.title}/>
+						<CardMedia className={classes.media} image={cardData.artistDetails[0].images.large} title={cardData.title}/>
 						<CardContent>
 							<Typography variant="body2" color="textPrimary" component="p" gutterBottom>
-								{set.title}
+								{cardData.title}
 							</Typography>
-							{set.lastheard && <Typography variant="body2" color="textSecondary" component="p">
-								{"zuletzt gehört am " + new Date(set.lastheard * 1000).toLocaleDateString() + " um "
-								 + new Date(set.lastheard * 1000).toLocaleTimeString() + " Uhr"}
+							{cardData.lastheard && <Typography variant="body2" color="textSecondary" component="p">
+								{"zuletzt gehört am " + cardData.lastheard.toLocaleDateString() + " um "
+								 + cardData.lastheard.toLocaleTimeString() + " Uhr"}
 							</Typography>}
 						</CardContent>
 						<CardActions disableSpacing>
@@ -100,7 +98,7 @@ export default function SetCard({nummer, set, genres, artistImage, playAction, e
 							</Tooltip>
 							<Tooltip title={"Set Bookmarken"}>
 								<IconButton onClick={bookmarkAction}>
-									<FavoriteIcon color={set.bookmarked ? "secondary": "disabled"}/>
+									<FavoriteIcon color={cardData.bookmarked ? "secondary": "disabled"}/>
 								</IconButton>
 							</Tooltip>
 							<IconButton
@@ -124,7 +122,7 @@ export default function SetCard({nummer, set, genres, artistImage, playAction, e
 							<ListItemText classes={{root: classes.genreListItemText}}>{durationHHMM}</ListItemText>
 						</ListItem>
 						<Divider/>
-						{genres && genres.filter(g => g.name !== "set").slice(0, 3).map(({name, tid}) => (
+						{cardData.genres && cardData.genres.filter(g => g.name !== "set").slice(0, 3).map(({name, tid}) => (
 								<React.Fragment key={tid}>
 									<ListItem selected={false} disableGutters={true} classes={{root: classes.genreListItem}}>
 										<ListItemText classes={{root: classes.genreListItemText}}>{name}</ListItemText>
