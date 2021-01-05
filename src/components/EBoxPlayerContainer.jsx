@@ -51,6 +51,8 @@ export const EBoxPlayerContainer = () => {
 	return <>
 		<MediaSessionHandler/>
 		<EBoxPlayer url={url} currentTrack={currentTrack} playlist_len={playlist.length}
+						onPlayed={() => setAction({type: "inform", url: url})}
+						onFinished={() => setAction({type: "next", url: url})}
 						next={() => setAction({type: "next" , url: url})}
 						prev={() => setAction({type: "prev" , url: url})}
 						voteGood={() => setAction({type: "vote_up" , url: url})}
