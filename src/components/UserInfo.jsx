@@ -4,7 +4,7 @@ import {Box, IconButton, Tooltip, Typography} from "@material-ui/core";
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import LockOpenIcon from '@material-ui/icons/LockOpen';
 import React from "react";
-import useAuthService from "../hooks/AuthService";
+import useAuthService from "../hooks/useAuthService";
 
 const UserInfo = () => {
 	const history = useHistory();

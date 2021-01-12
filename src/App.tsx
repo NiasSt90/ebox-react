@@ -6,7 +6,7 @@ import LoginDialog from "./bundles/login/LoginDialog";
 
 import {CircularProgress, createMuiTheme, CssBaseline} from "@material-ui/core";
 import {SetCardListContainer} from "./bundles/filter/SetCardListContainer";
-import {EBoxPlayerContainer} from "./components/EBoxPlayerContainer";
+import {EBoxPlayerContainer} from "./components/player/EBoxPlayerContainer";
 import PersistentDrawerLeft from "./components/NavigationDrawer";
 import {LoadingIndicator} from "./bundles/common/LoadingIndicator";
 import {NotifierMessageContainer} from "./bundles/common/NotifierMessageContainer";

@@ -9,7 +9,7 @@ const useAuthService = () => {
 	// Memoize so that a new object is only returned if something changes
 	return useMemo(() => {
 		return {
-			login: (username, password, callback) => {
+			login: (username:string, password:string, callback:Function) => {
 				junkiesApi({}).login(username, password)
 						.then(session => {
 							console.log(session.user);
@@ -21,7 +21,7 @@ const useAuthService = () => {
 							callback(error.message)
 						});
 			},
-			signout: (callback) => {
+			signout: (callback:Function) => {
 				setUser({});
 				callback();
 			},

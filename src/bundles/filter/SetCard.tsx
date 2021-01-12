@@ -17,6 +17,7 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 import QueueIcon from "@material-ui/icons/Queue";
 import {Box, Divider, List, ListItem, ListItemText, Tooltip} from "@material-ui/core";
+import {EBoxSet} from "../../hooks/types";
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -55,7 +56,15 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-export default function SetCard({nummer, cardData, playAction, enqueueAction, bookmarkAction}) {
+interface Props {
+	nummer: number;
+	cardData: EBoxSet;
+	playAction():void;
+	enqueueAction():void;
+	bookmarkAction():void;
+}
+
+export default function SetCard({nummer, cardData, playAction, enqueueAction, bookmarkAction}:Props) {
 	const classes = useStyles();
 	const [expanded, setExpanded] = React.useState(false);
 	const handleExpandClick = () => {
@@ -75,7 +84,7 @@ export default function SetCard({nummer, cardData, playAction, enqueueAction, bo
 										action={<IconButton aria-label="settings"><MoreVertIcon/></IconButton>}
 						/>
 
-						<CardMedia className={classes.media} image={cardData.artistDetails[0].images.large} title={cardData.title}/>
+						<CardMedia className={classes.media} image={cardData.artistDetails[0].artwork.large} title={cardData.title}/>
 						<CardContent>
 							<Typography variant="body2" color="textPrimary" component="p" gutterBottom>
 								{cardData.title}
@@ -87,14 +96,10 @@ export default function SetCard({nummer, cardData, playAction, enqueueAction, bo
 						</CardContent>
 						<CardActions disableSpacing>
 							<Tooltip title={"Abspielen"}>
-								<IconButton aria-label="play/pause" onClick={playAction}>
-									<PlayArrowIcon className={classes.actionIcon}/>
-								</IconButton>
+								<IconButton aria-label="play/pause" onClick={playAction}><PlayArrowIcon/></IconButton>
 							</Tooltip>
 							<Tooltip title={"in Playlist anhängen"}>
-								<IconButton aria-label="enqueue" onClick={enqueueAction}>
-									<QueueIcon className={classes.actionIcon}/>
-								</IconButton>
+								<IconButton aria-label="enqueue" onClick={enqueueAction}><QueueIcon/></IconButton>
 							</Tooltip>
 							<Tooltip title={"Set Bookmarken"}>
 								<IconButton onClick={bookmarkAction}>
@@ -122,10 +127,10 @@ export default function SetCard({nummer, cardData, playAction, enqueueAction, bo
 							<ListItemText classes={{root: classes.genreListItemText}}>{durationHHMM}</ListItemText>
 						</ListItem>
 						<Divider/>
-						{cardData.genres && cardData.genres.filter(g => g.name !== "set").slice(0, 3).map(({name, tid}) => (
-								<React.Fragment key={tid}>
+						{cardData.genres && cardData.genres.filter(g => g.name !== "set").slice(0, 3).map(genre => (
+								<React.Fragment key={genre.tid}>
 									<ListItem selected={false} disableGutters={true} classes={{root: classes.genreListItem}}>
-										<ListItemText classes={{root: classes.genreListItemText}}>{name}</ListItemText>
+										<ListItemText classes={{root: classes.genreListItemText}}>{genre.name}</ListItemText>
 									</ListItem>
 									<Divider/>
 								</React.Fragment>

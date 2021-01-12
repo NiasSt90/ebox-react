@@ -1,10 +1,17 @@
 import {Grid} from "@material-ui/core";
 import {SetCardContainer} from "./SetCardContainer";
 import {Waypoint} from "react-waypoint";
+import {EBoxFilter, EBoxSet} from "../../hooks/types";
 
-export const SetCardList = ({sets, filterDefinition, onNextPage}) => {
+interface Props {
+	sets: EBoxSet[];
+	filter?: EBoxFilter;
+	onNextPage():void;
+}
+
+export const SetCardList = ({sets, filter, onNextPage}:Props) => {
 	return <>
-		<h3>Sets im Filter {filterDefinition && filterDefinition.filtername}</h3>
+		<h3>Sets im Filter {filter && filter.filtername}</h3>
 		<Grid container spacing={3} direction="row" justify="space-evenly" alignItems="stretch">
 			{sets && sets.map((set, i) =>
 					<Grid key={i} item xs>

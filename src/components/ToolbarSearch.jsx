@@ -3,7 +3,7 @@ import {fade, InputBase} from "@material-ui/core";
 import ClearIcon from "@material-ui/icons/Clear";
 import React, {useState} from "react";
 import {makeStyles} from "@material-ui/core/styles";
-import useDebounce from "../hooks/Debounce";
+import useDebounce from "../hooks/useDebounce";
 
 const useStyles = makeStyles((theme) => ({
 	search: {

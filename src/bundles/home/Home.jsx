@@ -12,7 +12,7 @@ const Home = () => <>
 		<List>
 			<ListItem>
 				<ListItemText>
-					<b>Filter/Set-List inkl Suche in Filtern (sobald REST-Service deployd)</b><br/>
+					<b>Filter/Set-List inkl Suche in Filtern</b><br/>
 					endlos durch die (eigenen) Filter scrollen<br/>
 					Sets(mit allen Tracks) in Playlist ersetzen oder anhängen.
 				</ListItemText>
@@ -21,9 +21,7 @@ const Home = () => <>
 				<ListItemText>
 					<b>Player</b><br/>
 					Musik abspielen (einloggen notwendig, sonst 403 beim Zugriff auf File-URL).<br/>
-					Achtung: Player aktuell mit Autoplay, d.h. enqueue führt zum Play, aber das Icon im Player wechselt nicht.<br/>
-					Ohne Autostart würde er nicht am Ende zum nächsten Eintrag der Playlist wechseln.<br/>
-					Hier werd ich wohl ne andere Komponente nehmen müssen, die aktuelle hat da ein paar Mängel.
+					MediaSession-Support mit allen Aktionen, next/prev/seek/... wenn im Browser verfügbar
 				</ListItemText>
 			</ListItem>
 			<ListItem>

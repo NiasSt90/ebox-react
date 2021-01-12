@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {useJunkiesService} from "../hooks/JunkiesService";
+import {useJunkiesService} from "../hooks/useJunkiesService";
 import {NavigationList} from "./NavigationList";
 
 export const NavigationListContainer = () => {

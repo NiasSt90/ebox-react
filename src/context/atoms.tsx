@@ -1,5 +1,7 @@
 import {atom} from "jotai";
 import {junkiesApi} from "../api/JunkiesApi";
+import {NotifyMessage, PlaylistItem} from "../hooks/types";
+import {PlaylistState} from "../components/player/types";
 
 const localUserAtom = atom(JSON.parse(localStorage.getItem("user") ?? '{}'));
 export const userAtom = atom(
@@ -15,9 +17,14 @@ export const userAtom = atom(
 );
 
 export const loadingAtom = atom(false);
-export const notifyMessageAtom = atom();
-export const playlistAtom = atom([]);
-export const currentTrackAtom = atom();
+export const notifyMessageAtom = atom<NotifyMessage | null>(null);
+
+export const playlistAtom = atom<PlaylistItem[]>([] as PlaylistItem[]);
+export const playlistStateAtom = atom<PlaylistState>({
+	currentTrack: null,
+	repeat: "all",
+	shuffle: false,
+});
 
 export const pageTitleAtom = atom("Home");
 export const showToolbarSearchAtom = atom(true);
