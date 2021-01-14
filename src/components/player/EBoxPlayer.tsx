@@ -31,7 +31,7 @@ import MoreIcon from "@material-ui/icons/MoreVert";
 import {Repeat, RepeatOne} from "@material-ui/icons";
 import {AudioControls, AudioState, PlaylistControls, PlaylistState} from "./types";
 import {readableTime} from "../../bundles/common/helper";
-import {EBoxVote} from "../../hooks/types";
+import {EBoxVote, PlaylistItem} from "../../hooks/types";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -74,9 +74,10 @@ interface Props {
     playlistControls: PlaylistControls;
     playlistState: PlaylistState;
     voteFunction: (nid: number, vote: EBoxVote) => void;
+    startCommentFunction: (item: PlaylistItem) => void;
 }
 
-export const EBoxPlayer = ({audioState, audioControls, playlistState, playlistControls, voteFunction}: Props) => {
+export const EBoxPlayer: React.FC<Props> = ({audioState, audioControls, playlistState, playlistControls, voteFunction, startCommentFunction}: Props) => {
     const classes = useStyles();
     const [anchorEl, setAnchorEl] = React.useState<Element | null>();
     const handleClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -138,42 +139,24 @@ export const EBoxPlayer = ({audioState, audioControls, playlistState, playlistCo
 
             {playlistState.currentTrack &&
 				<Menu anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose}>
-					<MenuItem onClick={handleClose}>
-						<ListItemIcon onClick={() => alert("TODO")}>
-							<AddCommentIcon/>
-						</ListItemIcon>
+					<MenuItem onClick={() => {startCommentFunction(playlistState.currentTrack!);handleClose()}}>
+						<ListItemIcon><AddCommentIcon/></ListItemIcon>
 						<ListItemText>Kommentieren</ListItemText>
 					</MenuItem>
-					<MenuItem onClick={handleClose}>
-						<ListItemIcon
-								onClick={() => playlistState.currentTrack && voteFunction(playlistState.currentTrack?.nid,
-                            "good")}>
-							<ThumbUpIcon/>
-						</ListItemIcon>
+					<MenuItem onClick={() => {voteFunction(playlistState.currentTrack!.nid,"good");handleClose()}}>
+						<ListItemIcon><ThumbUpIcon/></ListItemIcon>
 						<ListItemText>gut bewerten</ListItemText>
 					</MenuItem>
-					<MenuItem onClick={handleClose}>
-						<ListItemIcon
-								onClick={() => playlistState.currentTrack && voteFunction(playlistState.currentTrack?.nid,
-                            "neutral")}>
-							<ThumbsUpDownIcon/>
-						</ListItemIcon>
+					<MenuItem onClick={() => {voteFunction(playlistState.currentTrack!.nid,"neutral");handleClose()}}>
+						<ListItemIcon><ThumbsUpDownIcon/></ListItemIcon>
 						<ListItemText>mittelmäßig bewerten</ListItemText>
 					</MenuItem>
-					<MenuItem onClick={handleClose}>
-						<ListItemIcon
-								onClick={() => playlistState.currentTrack && voteFunction(playlistState.currentTrack?.nid,
-                            "bad")}>
-							<ThumbDownIcon/>
-						</ListItemIcon>
+					<MenuItem onClick={() => {voteFunction(playlistState.currentTrack!.nid, "bad");handleClose()}}>
+						<ListItemIcon><ThumbDownIcon/></ListItemIcon>
 						<ListItemText>schlecht bewerten</ListItemText>
 					</MenuItem>
-					<MenuItem onClick={handleClose}>
-						<ListItemIcon
-								onClick={() => playlistState.currentTrack && voteFunction(playlistState.currentTrack?.nid,
-                            "canceled")}>
-							<HighlightOffIcon/>
-						</ListItemIcon>
+					<MenuItem onClick={() => {voteFunction(playlistState.currentTrack!.nid,"canceled");handleClose()}}>
+						<ListItemIcon><HighlightOffIcon/></ListItemIcon>
 						<ListItemText>Bewertung entfernen</ListItemText>
 					</MenuItem>
 				</Menu>

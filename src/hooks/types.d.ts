@@ -11,6 +11,7 @@ export interface JunkiesService {
     playinform(nid: number):Promise;
     vote(nid: number, vote: EBoxVote):Promise;
     bookmark(nid: number, createBookmark: boolean): Promise;
+    createComment(nid: number, text: string): Promise;
 }
 
 export interface EBoxFilter {

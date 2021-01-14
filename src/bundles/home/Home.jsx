@@ -26,12 +26,17 @@ const Home = () => <>
 			</ListItem>
 			<ListItem>
 				<ListItemText>
-					Musik Next/Prev aus der Playlist (Anzeige der Playlist kommt nach Player)
+					Next/Prev aus der Playlist (Anzeige der Playlist kommt nach Player)
 				</ListItemText>
 			</ListItem>
 			<ListItem>
 				<ListItemText>
-					Musik Vote - Gut/Neutral/Schlecht des aktuelle gehörten Sets
+					Bewertung - Gut/Neutral/Schlecht des aktuelle gehörten Sets
+				</ListItemText>
+			</ListItem>
+			<ListItem>
+				<ListItemText>
+					Kommentar - zum aktuell gehörten Set
 				</ListItemText>
 			</ListItem>
 		</List>

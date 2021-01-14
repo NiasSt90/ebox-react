@@ -121,6 +121,16 @@ export const junkiesApi = (authTokenSupplier) => {
 		return customFetch(url, "POST",  [nid]).then(response => response.json());
 	}
 
+	const createComment = (nid, commentText) => {
+		const params = {
+			...authToken.token && {token: authToken.token}
+		}
+		const paramsStr = Object.entries(params).map(pair => pair.map(encodeURIComponent).join('=')).join("&")
+		const url = `${settings.REST_API_URL}/js-api/comment?${paramsStr}`;
+		return customFetch(url, "POST", {nid:nid, subject:"ReactWeb", comment:commentText})
+				.then(response => response.json());
+	}
+
 	const buildTrackUrl = (nid, downloadfilename) => {
 		const params = {
 			...authToken.token && {token: authToken.token},
@@ -140,6 +150,7 @@ export const junkiesApi = (authTokenSupplier) => {
 		vote,
 		addbookmark,
 		delbookmark,
+		createComment,
 		buildTrackUrl
 	};
 };

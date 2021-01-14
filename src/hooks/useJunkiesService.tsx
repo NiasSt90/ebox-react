@@ -76,18 +76,23 @@ export const useJunkiesService = (): JunkiesService => {
             },
 
             playinform: (nid: number) => {
-                return junkiesApi(user).playinform(nid).then(result => result).catch(showError)
+                return junkiesApi(user).playinform(nid).catch(showError)
             },
 
             vote: (nid: number, vote: EBoxVote) => {
-                return junkiesApi(user).vote(nid, mapEBoxVoteToNumber(vote)).then(result => result).catch(showError)
+                return junkiesApi(user).vote(nid, mapEBoxVoteToNumber(vote)).catch(showError)
             },
 
             bookmark: (nid: number, createBookmark: boolean) => {
                 if (createBookmark) {
-                    return junkiesApi(user).addbookmark(nid).then(result => result).catch(showError);
+                    return junkiesApi(user).addbookmark(nid).catch(showError);
                 }
-                return junkiesApi(user).delbookmark(nid).then(result => result).catch(showError)
+                return junkiesApi(user).delbookmark(nid).catch(showError)
+            },
+
+            createComment: (nid: number, text: string) => {
+                return junkiesApi(user).createComment(nid, text)
+                    .catch(showError);
             }
         }
     }, [user, showError, setLoading]);

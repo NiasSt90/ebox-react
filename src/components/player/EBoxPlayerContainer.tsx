@@ -1,19 +1,21 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import {EBoxPlayer} from "./EBoxPlayer";
 import {useAudio} from "./hooks/useAudio";
 import {useMediaSession} from "./hooks/useMediaSession";
 import {usePlaylist} from "./hooks/usePlaylist";
-import {ArtistImageSizes, EBoxVote, NotifyMessage} from "../../hooks/types";
+import {ArtistImageSizes, EBoxVote, NotifyMessage, PlaylistItem} from "../../hooks/types";
 import {mapArtistImageSizes} from "../../bundles/common/helper";
 import {useJunkiesService} from "../../hooks/useJunkiesService";
 import {useAtom} from "jotai";
 import {notifyMessageAtom} from "../../context/atoms";
+import {CommentDialog} from "./CommentDialog";
 
 
 export const EBoxPlayerContainer = () => {
 	const playlistCtrl = usePlaylist();
 	const junkiesService = useJunkiesService();
 	const [, setNotifyMessage] = useAtom(notifyMessageAtom);
+	const [ commentDlgItem, setCommentDlgItem ] = useState<PlaylistItem|null>(null);
 
 	const state = playlistCtrl.state;
 	const audio = useAudio({
@@ -67,11 +69,24 @@ export const EBoxPlayerContainer = () => {
 		} as NotifyMessage));
 	}
 
+	const startComment = (item: PlaylistItem) => {
+		console.log("START COMMENT FOR ", item);
+		setCommentDlgItem(item);
+	}
+	const submitComment = (text: string, item: PlaylistItem) => {
+		junkiesService.createComment(item.nid, text)
+			.then(setCommentDlgItem(null));
+	}
+
 	return <>
 		{audio.element}
 		<EBoxPlayer audioControls={audio.controls} audioState={audio.state}
 					playlistControls={playlistCtrl.controls} playlistState={playlistCtrl.state}
-					voteFunction={voteFunction}
+					voteFunction={voteFunction} startCommentFunction={startComment}
 		/>
+		{commentDlgItem != null &&
+		<CommentDialog
+			open={Boolean(commentDlgItem)} item={commentDlgItem}
+			handleComment={submitComment} handleClose={() => setCommentDlgItem(null)}/>}
 	</>
 }
