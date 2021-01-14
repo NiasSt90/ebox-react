@@ -65,7 +65,6 @@ export const useAudio = ({
                 if (!el) {
                     return;
                 }
-                console.log("buffered", parseTimeRange(el.buffered));
                 mergeToState({ buffered: parseTimeRange(el.buffered) });
             },
             onError: () => onError('There was an error playing the audio file'),
@@ -103,6 +102,7 @@ export const useAudio = ({
         const el = ref.current!;
         mergeToState({paused: el.paused,});
         if (autoPlay && el.paused) {
+            console.log("autoplay -> start playing", src)
             el.play();
         }
     }, [src, autoPlay, mergeToState]);

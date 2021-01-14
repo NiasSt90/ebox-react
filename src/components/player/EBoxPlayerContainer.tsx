@@ -49,7 +49,7 @@ export const EBoxPlayerContainer = () => {
 	useEffect(() => {
 		audio.controls.setEndedCallback(playlistCtrl.controls.next);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [])
+	}, [playlistCtrl.controls.next])
 
 	//send playinform
 	useEffect(() => {
