@@ -31,3 +31,20 @@ export const mapEBoxVoteToNumber = (vote: EBoxVote): number => {
         case "good":return 5;
     }
 }
+
+export const mapNumberToEBoxVote = (voteNumber: number|undefined): EBoxVote|undefined => {
+    if (voteNumber === undefined) return undefined;
+    switch (voteNumber) {
+        case 1: return "bad";
+        case 2: return "bad";
+        case 3: return "neutral";
+        case 4: return "neutral";
+        case 5: return "good";
+    }
+}
+
+export function extractNidFromUrl(url: string): number {
+    const queryString = url.substr(url.indexOf("?"));
+    const urlParams = new URLSearchParams(queryString);
+    return Number.parseInt(urlParams.get("nid") as string);
+}

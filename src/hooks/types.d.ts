@@ -54,6 +54,7 @@ export interface EBoxSet {
     created: Date;
     lastheard?: Date;
     bookmarked: boolean;
+    myVote?: EBoxVote;
     genres?: EBoxGenre[];
     artists: number[];
     artistDetails: EBoxArtist[];
@@ -65,5 +66,6 @@ export interface PlaylistItem {
     url: string;
     title: string;
     artist?: string;
+    myVote?: EBoxVote;
     artwork: {[size in ArtistImageSizes]?: string}
 }

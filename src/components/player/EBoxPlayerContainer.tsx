@@ -9,26 +9,28 @@ import {useJunkiesService} from "../../hooks/useJunkiesService";
 import {useAtom} from "jotai";
 import {notifyMessageAtom} from "../../context/atoms";
 import {CommentDialog} from "./CommentDialog";
+import {useVoteReminder} from "./hooks/useVoteReminder";
 
 
 export const EBoxPlayerContainer = () => {
 	const playlistCtrl = usePlaylist();
 	const junkiesService = useJunkiesService();
 	const [, setNotifyMessage] = useAtom(notifyMessageAtom);
-	const [ commentDlgItem, setCommentDlgItem ] = useState<PlaylistItem|null>(null);
+	const [commentDlgItem, setCommentDlgItem] = useState<PlaylistItem | null>(null);
 
 	const state = playlistCtrl.state;
 	const audio = useAudio({
 		src: state.currentTrack?.url as string,
 		autoPlay: state.currentTrack !== null,
-		onError: (event: any) => console.log("PLAYBACK ERROR", event)});
-
+		onError: (event: any) => console.log("PLAYBACK ERROR", event)
+	});
+	useVoteReminder({playlistState: state, audioState: audio.state});
 	useMediaSession({
 		element: audio.element,
 		mediaMetadata: {
 			title: state.currentTrack?.title as string,
 			artist: state.currentTrack?.artist as string,
-			album:"",
+			album: "",
 			artwork: state.currentTrack ? Object.keys(state.currentTrack.artwork).map((key) => {
 				return {
 					src: state.currentTrack?.artwork[key as ArtistImageSizes] as string,
@@ -59,18 +61,21 @@ export const EBoxPlayerContainer = () => {
 			console.log("SEND playinform for Track", playlistCtrl.state.currentTrack)
 			junkiesService.playinform(playlistCtrl.state.currentTrack.nid);
 		}
-	}, [audio.state.paused, playlistCtrl.state.currentTrack,junkiesService])
+	}, [audio.state.paused, playlistCtrl.state.currentTrack, junkiesService])
 
-	const voteFunction = (nid: number, vote: EBoxVote) => {
-		junkiesService.vote(nid, vote).then(() => setNotifyMessage({
-			message: "das aktuelle Set wurde erfolgreich mit " + vote + " bewertet!",
-			severity: "success",
-			autohide: 3000
-		} as NotifyMessage));
+	const voteFunction = (item: PlaylistItem, vote: EBoxVote) => {
+		junkiesService.vote(item.nid, vote)
+			.then(() => {
+				item.myVote = vote !== "canceled" ? vote : undefined;
+				setNotifyMessage({
+					message: "das aktuelle Set wurde erfolgreich mit " + vote + " bewertet!",
+					severity: "success",
+					autohide: 3000
+				} as NotifyMessage)
+			});
 	}
 
 	const startComment = (item: PlaylistItem) => {
-		console.log("START COMMENT FOR ", item);
 		setCommentDlgItem(item);
 	}
 	const submitComment = (text: string, item: PlaylistItem) => {
@@ -81,12 +86,12 @@ export const EBoxPlayerContainer = () => {
 	return <>
 		{audio.element}
 		<EBoxPlayer audioControls={audio.controls} audioState={audio.state}
-					playlistControls={playlistCtrl.controls} playlistState={playlistCtrl.state}
-					voteFunction={voteFunction} startCommentFunction={startComment}
+						playlistControls={playlistCtrl.controls} playlistState={playlistCtrl.state}
+						voteFunction={voteFunction} startCommentFunction={startComment}
 		/>
 		{commentDlgItem != null &&
 		<CommentDialog
-			open={Boolean(commentDlgItem)} item={commentDlgItem}
-			handleComment={submitComment} handleClose={() => setCommentDlgItem(null)}/>}
+				open={Boolean(commentDlgItem)} item={commentDlgItem}
+				handleComment={submitComment} handleClose={() => setCommentDlgItem(null)}/>}
 	</>
 }

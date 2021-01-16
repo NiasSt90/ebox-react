@@ -10,6 +10,7 @@ function createPlaylistItems(set: EBoxSet):PlaylistItem[] {
         url:track.url,
         artist: track.artist,
         title: track.title,
+        myVote: set.myVote,
         artwork: set.artistDetails[0].artwork
     }});
 }

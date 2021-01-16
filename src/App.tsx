@@ -1,7 +1,6 @@
 import React, {Suspense} from "react";
 import './App.css';
 import {BrowserRouter as Router, Redirect, Route} from 'react-router-dom'
-import Home from "./bundles/home/Home";
 import LoginDialog from "./bundles/login/LoginDialog";
 
 import {CircularProgress, createMuiTheme, CssBaseline} from "@material-ui/core";
@@ -14,6 +13,7 @@ import {makeStyles, ThemeProvider} from '@material-ui/core/styles';
 import {darkTheme, lightTheme} from "./bundles/common/MyThemes";
 import {useAtom} from "jotai";
 import {darkStateAtom} from "./context/atoms";
+import {Home} from "./bundles/home/Home";
 
 
 const drawerWidth = 240;

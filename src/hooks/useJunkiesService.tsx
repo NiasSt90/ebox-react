@@ -4,7 +4,7 @@ import {useCallback, useMemo} from "react";
 import {junkiesApi} from "../api/JunkiesApi";
 import {defaultImageUrl} from "./useArtistDetails";
 import {EBoxSet, EBoxVote, JunkiesService, NotifyMessage} from "./types";
-import {mapEBoxVoteToNumber} from "../bundles/common/helper";
+import {mapEBoxVoteToNumber, mapNumberToEBoxVote} from "../bundles/common/helper";
 
 //convert from json format to our own EBoxSet format (reduced)
 function mapFromJsonSetlist(api: any, jsonSetList: Array<any>): EBoxSet[] {
@@ -18,6 +18,7 @@ function mapFromJsonSetlist(api: any, jsonSetList: Array<any>): EBoxSet[] {
             ...set.lastheard && {lastheard: new Date(set.lastheard * 1000)},
 
             bookmarked: set.bookmarked,
+            myVote: mapNumberToEBoxVote(Number.parseInt(set.votes?.my)),
             ...set.taxonomy && {genres: Object.values(set.taxonomy).map((t: any) => ({name: t.name, tid: t.tid}))},
 
             tracks: set.trackinfo.map((track: any) => {
