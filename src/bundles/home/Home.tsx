@@ -25,23 +25,20 @@ export const Home = () => {
 
 			createRoadmapEntry("Filter-Editor", "Filter bauen, anzeigen und persistent auf dj-junkies speichern/bearbeiten/löschen", false),
 			createRoadmapEntry("Artist-Anzeige", "Suche und Anzeige von DJs", false),
-
-				]
+	]
 	return <>
 		<Box mt={6}>
 			<Typography variant="h5" paragraph>Der neue DJ-Junkies WEB-Client zum Musik hören...</Typography>
-			{/*<Typography gutterBottom="true" component={a}></Typography>*/}
 			<Typography gutterBottom>
 				Das Projekt ist OpenSource und der Quellcode ist <Link target="_blank" rel="noreferrer" href="https://github.com/NiasSt90/ebox-react">hier</Link> zu finden.
 			</Typography>
 
 			aktueller Stand/Roadmap:
 			<List>
-				{roadmapEntries.map(entry =><>
-					<ListItem>
+				{roadmapEntries.map((entry, index) =><>
+					<ListItem key={index}>
 						{entry.finished && <ListItemIcon><DoneIcon /></ListItemIcon>}
 						<ListItemText primary={entry.title} secondary={entry.text}/>
-
 					</ListItem>
 					<Divider/>
 					</>
