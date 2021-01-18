@@ -18,12 +18,10 @@ export const SetCardContainer = ({nummer, cardData }:Props) => {
 
 	useEffect(() => {
 		let mounted = true;
-		if (artistDetails.length > 0) {
-			if (mounted) {
-				setDetails((details) => {
-					return {...details, artistDetails: artistDetails}
-				})
-			}
+		if (artistDetails.length > 0 && mounted) {
+			setDetails((details) => {
+				return {...details, artistDetails: artistDetails}
+			})
 		}
 		return () => {mounted = false;}
 	}, [artistDetails])

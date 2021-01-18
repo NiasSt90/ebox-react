@@ -15,6 +15,7 @@ export const useArtistDetails = ({artists}:Props):EBoxArtist[] => {
 	const [artistDetails, setArtistDetails] = useState<EBoxArtist[]>([] as EBoxArtist[]);
 
 	useEffect(() => {
+		let mounted = true;
 		artists.map(artistID =>
 				artistService.artistInfo(artistID).then((artistInfo) => {
 					let data:EBoxArtist = {
@@ -35,9 +36,12 @@ export const useArtistDetails = ({artists}:Props):EBoxArtist[] => {
 						}
 						data.name = artistInfo["lastfm_artistinfo"]["name"];
 					}
-					setArtistDetails((curData) => [...curData && [...curData], data]);
+					if (mounted) {
+						setArtistDetails((curData) => [...curData && [...curData], data]);
+					}
 				})
 		)
+		return () => {mounted = false;}
 	}, [artistService, artists])
 	return artistDetails;
 }
