@@ -14,6 +14,7 @@ import {darkTheme, lightTheme} from "./bundles/common/MyThemes";
 import {useAtom} from "jotai";
 import {darkStateAtom} from "./context/atoms";
 import {Home} from "./bundles/home/Home";
+import {PrivateRoute} from "./bundles/common/PrivateRoute";
 
 
 const drawerWidth = 240;
@@ -52,11 +53,8 @@ function App() {
                             <Route exact path="/"><Redirect to="/home"/></Route>
                             <Route path="/home" component={Home}/>
                             <Route path="/login"><LoginDialog/></Route>
-                            <Route path='/filter/:id'
+                            <PrivateRoute path='/filter/:id'
                                    render={props => <SetCardListContainer key={props.match.params.id || 'empty'}/>}/>
-                            {/*TODO: "render" statt "component" als Parameter benötigt wegen key=...
-                            <PrivateRoute path='/filter/:id' component={SetCardListContainer}/>*/}
-
                             <NotifierMessageContainer/>
                             <EBoxPlayerContainer/>
                         </PersistentDrawerLeft>

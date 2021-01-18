@@ -1,11 +1,18 @@
 import {Box, Divider, Link, List, ListItem, ListItemIcon, ListItemText, Typography} from "@material-ui/core";
 import DoneIcon from '@material-ui/icons/Done';
+import React, {useEffect} from "react";
+import {useAtom} from "jotai";
+import {pageTitleAtom} from "../../context/atoms";
 
 function createRoadmapEntry(title: string, text:string , finished: boolean) {
 	return { title: title, text: text, finished: finished};
 }
 
 export const Home = () => {
+	const [ , setPageTitle] = useAtom(pageTitleAtom);
+	useEffect(() => {
+		setPageTitle("Home")
+	}, [setPageTitle])
 	const roadmapEntries = [
 			createRoadmapEntry("Filter/Set-List inkl Suche in Filtern",
 					"endlos durch die (eigenen) Filter scrollen<br/>"
@@ -35,13 +42,13 @@ export const Home = () => {
 
 			aktueller Stand/Roadmap:
 			<List>
-				{roadmapEntries.map((entry, index) =><>
-					<ListItem key={index}>
+				{roadmapEntries.map((entry, index) =><React.Fragment key={index}>
+					<ListItem>
 						{entry.finished && <ListItemIcon><DoneIcon /></ListItemIcon>}
 						<ListItemText primary={entry.title} secondary={entry.text}/>
 					</ListItem>
 					<Divider/>
-					</>
+					</React.Fragment>
 				)}
 			</List>
 		</Box>
