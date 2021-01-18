@@ -39,7 +39,7 @@ export interface EBoxArtist {
     artwork: {[size in ArtistImageSizes]?: string}
 }
 
-type EBoxVote = "good"|"neutral"|"bad"|"canceled";
+export type EBoxVote = "good"|"neutral"|"bad"|"canceled";
 
 export interface EBoxTrack {
     nid: number;

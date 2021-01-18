@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useMemo, useState} from "react";
 import {EBoxPlayer} from "./EBoxPlayer";
 import {useAudio} from "./hooks/useAudio";
 import {useMediaSession} from "./hooks/useMediaSession";
@@ -10,6 +10,7 @@ import {useAtom} from "jotai";
 import {notifyMessageAtom} from "../../context/atoms";
 import {CommentDialog} from "./CommentDialog";
 import {useVoteReminder} from "./hooks/useVoteReminder";
+import {Messages} from "../../bundles/common/Messages";
 
 
 export const EBoxPlayerContainer = () => {
@@ -50,10 +51,18 @@ export const EBoxPlayerContainer = () => {
 	});
 
 	//chain end of track with playlist.next() call
-	useEffect(() => {
-		audio.controls.setEndedCallback(playlistCtrl.controls.next);
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [playlistCtrl.controls.next])
+	const onEndedCallback = useMemo( () => {
+		return (event: Event) => {
+			console.log(`Playing ended: repeat=${playlistCtrl.state.repeat} hasNext=`, playlistCtrl.controls.hasNext());
+			if (playlistCtrl.state.repeat === "single") {
+				audio.controls.play();
+			}
+			else if (playlistCtrl.controls.hasNext()) {
+				playlistCtrl.controls.next();
+			}
+		};
+	}, [audio.controls, playlistCtrl.controls, playlistCtrl.state.repeat])
+	useEffect(() => {audio.controls.setEndedCallback(onEndedCallback)}, [audio.controls, onEndedCallback])
 
 	//send playinform
 	useEffect(() => {
@@ -68,7 +77,7 @@ export const EBoxPlayerContainer = () => {
 			.then(() => {
 				item.myVote = vote !== "canceled" ? vote : undefined;
 				setNotifyMessage({
-					message: "das aktuelle Set wurde erfolgreich mit " + vote + " bewertet!",
+					message: Messages.voteMsg(vote),
 					severity: "success",
 					autohide: 3000
 				} as NotifyMessage)

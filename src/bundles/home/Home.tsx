@@ -11,7 +11,7 @@ export const Home = () => {
 					"endlos durch die (eigenen) Filter scrollen<br/>"
 					+ "Sets(mit allen Tracks) in Playlist ersetzen oder anhängen.", true),
 			createRoadmapEntry("MusicPlayer", "Musik abspielen inkl. Untstützung der Mediasession(Keys)", true),
-			createRoadmapEntry("Playlist-Next/Prev/Seek", "Shuffle/Repeat nocht ohne Funktion", true),
+			createRoadmapEntry("Playlist-Next/Prev/Seek/Repeat", "Shuffle noch ohne Funktion", true),
 			createRoadmapEntry("Bewerten", "das aktuell gespielte Set bewerten", true),
 			createRoadmapEntry("Kommentieren", "das aktuell gespielte Set kommentieren", true),
 			createRoadmapEntry("Vote-Reminder", "Desktop-Benachrichtigung am Ende des Sets zum Bewerten", true),
@@ -29,7 +29,7 @@ export const Home = () => {
 	return <>
 		<Box mt={6}>
 			<Typography variant="h5" paragraph>Der neue DJ-Junkies WEB-Client zum Musik hören...</Typography>
-			<Typography gutterBottom>
+			<Typography gutterBottom data-testid="home">
 				Das Projekt ist OpenSource und der Quellcode ist <Link target="_blank" rel="noreferrer" href="https://github.com/NiasSt90/ebox-react">hier</Link> zu finden.
 			</Typography>
 

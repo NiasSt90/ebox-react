@@ -23,14 +23,16 @@ export interface AudioControls {
 }
 
 export interface PlaylistControls {
-  addAll: (EBoxSet) => void;
-  replace: (EBoxSet) => void;
+  addAll: (set: EBoxSet) => void;
+  replace: (set: EBoxSet) => void;
   next: () => void;
   prev: () => void;
   toggleShuffle: () => void;
   toggleRepeat: () => void;
+  setRepeat: (repeat:PlaylistRepeat) => void;
   curPos: () => number;
   length: () => number;
+  hasNext: () => boolean;
 }
 
 type PlaylistRepeat = "single" | "none" | "all";

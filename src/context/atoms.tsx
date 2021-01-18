@@ -22,7 +22,7 @@ export const notifyMessageAtom = atom<NotifyMessage | null>(null);
 export const playlistAtom = atom<PlaylistItem[]>([] as PlaylistItem[]);
 export const playlistStateAtom = atom<PlaylistState>({
 	currentTrack: null,
-	repeat: "all",
+	repeat: "none",
 	shuffle: false,
 });
 
