@@ -23,6 +23,7 @@ import LockIcon from '@material-ui/icons/Lock';
 import useAuthService from "../hooks/useAuthService";
 import {Link, useHistory} from "react-router-dom";
 import {ToolbarSearch} from "./ToolbarSearch";
+import settings, {appVersion} from "../settings";
 
 const drawerWidth = 240;
 
@@ -149,7 +150,7 @@ export default function PersistentDrawerLeft(props) {
 							 </Tooltip>
 							}
 							{authService.isAuthenticated &&
-							 <Tooltip title={"Angemeldet als " + authService.user.name}>
+							 <Tooltip title={"Angemeldet als " + authService.user.name + " auf " + settings.REST_API_URL}>
 								 <IconButton edge="end" onClick={() => authService.signout(() => history.push('/'))}>
 									 <LockIcon htmlColor={"white"} />
 								 </IconButton>
@@ -170,7 +171,10 @@ export default function PersistentDrawerLeft(props) {
 				<Drawer className={classes.drawer} variant="persistent" anchor="left" open={open}
 						classes={{paper: classes.drawerPaper,}}>
 					<div className={classes.drawerHeader}>
-						<UserInfo/>
+						<Box>
+							<UserInfo/>
+							<Box fontSize={10}>{appVersion}</Box>
+						</Box>
 						<IconButton onClick={handleDrawerClose}>
 							{theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
 						</IconButton>

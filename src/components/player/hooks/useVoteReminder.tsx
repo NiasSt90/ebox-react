@@ -2,7 +2,7 @@ import {useEffect, useState} from "react";
 import {AudioState, PlaylistState} from "../types";
 import {PlaylistItem} from "../../../hooks/types";
 
-export const notifyImageUrl = process.env.PUBLIC_URL + "/images/manitobateam.png";
+export const notifyImageUrl = process.env.PUBLIC_URL + "/images/logo.png";
 
 export interface Props {
 	playlistState: PlaylistState;

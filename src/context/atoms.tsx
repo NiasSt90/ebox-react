@@ -6,9 +6,13 @@ import {PlaylistState} from "../components/player/types";
 const localUserAtom = atom(JSON.parse(localStorage.getItem("user") ?? '{}'));
 export const userAtom = atom(
 		async get => {
-			let sessionRes = await junkiesApi(get(localUserAtom)).connect();
-			console.log("Session from Server" , sessionRes);
-			return sessionRes.user;
+			let user = await junkiesApi(get(localUserAtom)).connect()
+				.then(session => session.user)
+				.catch((err) => {
+					return Promise.resolve(get(localUserAtom));
+				});
+			console.log("using user" , user);
+			return user;
 		},
 		(_get, set, update) => {
 			set(localUserAtom, update);

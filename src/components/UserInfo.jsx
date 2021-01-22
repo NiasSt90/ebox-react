@@ -9,7 +9,7 @@ import useAuthService from "../hooks/useAuthService";
 const UserInfo = () => {
 	const history = useHistory();
 	const authService = useAuthService();
-	return <Box m={1}>
+	return <Box>
 		{authService.isAuthenticated === true ?
 			<Typography variant={"subtitle2"}>
 				{authService.user.name}
