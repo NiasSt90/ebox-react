@@ -1,8 +1,9 @@
-import {Box, Divider, Link, List, ListItem, ListItemIcon, ListItemText, Typography} from "@material-ui/core";
+import {Divider, Grid, Link, List, ListItem, ListItemIcon, ListItemText, Typography} from "@material-ui/core";
 import DoneIcon from '@material-ui/icons/Done';
 import React, {useEffect} from "react";
 import {useAtom} from "jotai";
 import {pageTitleAtom} from "../../context/atoms";
+import {Logo} from "../../components/Logo";
 
 function createRoadmapEntry(title: string, text:string , finished: boolean) {
 	return { title: title, text: text, finished: finished};
@@ -34,7 +35,8 @@ export const Home = () => {
 			createRoadmapEntry("Artist-Anzeige", "Suche und Anzeige von DJs", false),
 	]
 	return <>
-		<Box mt={6}>
+		<Grid container>
+			<Grid item xs={12}><Logo/></Grid>
 			<Typography variant="h5" paragraph>Der neue DJ-Junkies WEB-Client zum Musik hören...</Typography>
 			<Typography gutterBottom data-testid="home">
 				Das Projekt ist OpenSource und der Quellcode ist <Link target="_blank" rel="noreferrer" href="https://github.com/NiasSt90/ebox-react">hier</Link> zu finden.
@@ -51,6 +53,6 @@ export const Home = () => {
 					</React.Fragment>
 				)}
 			</List>
-		</Box>
+		</Grid>
 	</>
 }
