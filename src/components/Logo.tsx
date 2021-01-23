@@ -1,75 +1,85 @@
 import React from "react";
 import {makeStyles} from "@material-ui/core/styles";
 
-const cubeDist = "146px";
+const cubeDist = "102px";
 
 //const logoFont =  "'Fredoka One'";
 const logoFont1 = "'Orbitron', sans-serif";
 const logoFont2 = "'Monoton', cursive;";
 
 const useStyles = makeStyles((theme) => ({
+	root: {
+		perspective: 1000,
+		display: "flex",
+		flexDirection: "column",
+		justifyContent: "flex-start",
+		alignItems: "center"
+	},
 	cube: {
-		width: 280,
-		height: 280,
-		margin: "100px auto 100px auto",
-		perspective: 5000,
+		width: "200px",
+		height: "200px",
+		margin: "60px auto 60px auto",
 		transformStyle: "preserve-3d",
 		//transform: "rotate3d(-4, -6, 1.65, 54deg)",
-		transform: "rotate3d(-4, -10, 1.57, 45deg)",
+		//transform: "rotate3d(-4, -10, 1.57, 45deg)",
+		//transform: "rotate3d(1.1, -3.2, -0.5, 45deg)",
+		//transform: "rotate3d(1, 0, 0, 25deg) rotate3d(0, -1, 0, 45deg)",
+		transform: "rotate3d(1, 0, 0, 25deg) rotate3d(0, -1, 0, 35deg)",
 		position: "relative",
 		'& div': {
 			width: "100%",
 			height: "100%",
 			position: "absolute",
-			zIndex: 1,
-			left: 0,
-			top: 0,
 			fontFamily: logoFont1,
-			fontSize: 48,
-			lineHeight: "510px",
-			textAlign: "center",
-			verticalAlign: "borderBottom",
+			fontSize: 30,
 			fontWeight: "bold",
 			textTransform: "uppercase",
 			textShadow: "2px 2px 5px grey",
 			color: "rgba(0,0,0,0.5)"
 		}
 	},
-	speaker: {
-	},
 	cubeFaceFront: {
 		transform: `rotateY(0deg) translateZ(${cubeDist})`,
-		border: "2px solid rgba(0,0,0,0.3)",
+		border: "5px solid rgba(0,0,0,0.3)",
 		background: "rgba(238, 234, 196 , 0.5)",
+		display: "flex",
+		alignItems: "flex-start",
+		justifyContent: "center",
+		'& span': {
+			alignSelf: "flex-end"
+		}
 	},
 	cubeFaceBack: {
 		transform: `rotateY(180deg) translateZ(${cubeDist})`,
-		border: "2px solid rgba(0,0,0,0.3)",
+		border: "5px solid rgba(0,0,0,0.3)",
 		background: "rgba(235, 211, 187 , 0.5)",
 	},
 	cubeFaceTop: {
 		transform: `rotateX(90deg) translateZ(${cubeDist})`,
-		border: "2px solid rgba(0,0,0,0.3)",
+		border: "5px solid rgba(0,0,0,0.3)",
 		background: "rgba(169, 197, 196 , 0.5)",
-		'& div': {
-			fontSize: 100,
-			transform: "rotateZ(-45deg) translateY(-100px)",
-		}
 	},
 	cubeFaceBottom: {
 		transform: `rotateX(-90deg) translateZ(${cubeDist})`,
-		border: "2px solid rgba(0,0,0,0.3)",
-		background: "rgba(199, 215, 205 , 0.5)"
+		border: "5px solid rgba(0,0,0,0.3)",
+		background: "rgba(0, 0, 0 , 0.3)"
 	},
 	cubeFaceRight: {
 		transform: `rotateY(90deg) translateZ(${cubeDist})`,
-		border: "2px solid rgba(0,0,0,0.3)",
-		background: "rgba(238, 234, 196, 0.5)"
+		border: "5px solid rgba(0,0,0,0.3)",
+		background: "rgba(238, 234, 196, 0.5)",
+		display: "flex",
+		justifyContent: "center",
+		'& span': {
+			alignSelf: "flex-end"
+		}
 	},
 	cubeFaceLeft: {
 		transform: `rotateY(-90deg) translateZ(${cubeDist})`,
-		border: "2px solid rgba(0,0,0,0.3)",
+		border: "5px solid rgba(0,0,0,0.3)",
 		background: "rgba(224, 230, 216 , 0.5)"
+	},
+	shadow: {
 	},
 	bottomText: {
 		fontFamily: logoFont2,
@@ -81,31 +91,31 @@ const useStyles = makeStyles((theme) => ({
 export const Logo = () => {
 	const classes = useStyles();
 	const speaker =
-		<svg className="progressOuter" height="300" width="300">
-			<circle stroke="rgba(0,0,0,0.8)" r="90" cx="150" cy="120" strokeWidth="40" fill="transparent"/>
-			<circle stroke="rgba(100,0,0,0.8)" r="30" cx="150" cy="120" fill="rgba(0,0,0,0.8)"/>
+		<svg className="progressOuter" height="100%" width="100%">
+			<circle stroke="rgba(0,0,0,0.8)" r="65" cx="100" cy="80" strokeWidth="15" fill="transparent"/>
+			<circle stroke="rgba(100,0,0,0.8)" r="25" cx="100" cy="80" fill="rgba(0,0,0,0.8)"/>
 		</svg>;
-
+	const shadow = <svg className="progressOuter" height="40" width="100%">
+		<ellipse cx="50%" cy="15" rx="40%" ry="12" fill="rgba(0,0,0,0.7)" strokeWidth="3" stroke="grey"/>
+	</svg>
 	return <>
-		<div className={classes.cube}>
-			<div className={classes.cubeFaceFront}>
-				<div className={classes.speaker}>
-					{speaker}
+		<div className={classes.root}>
+			<div className={classes.cube}>
+				<div className={classes.cubeFaceFront}>
+					<div>{speaker}</div>
+					<span>Electro</span>
 				</div>
-				<div>Electro</div>
-			</div>
-			<div className={classes.cubeFaceBack}></div>
-			<div className={classes.cubeFaceRight}>
-				<div className={classes.speaker}>
-					{speaker}
+				<div className={classes.cubeFaceBack}/>
+				<div className={classes.cubeFaceRight}>
+					<div>{speaker}</div>
+					<span>Box</span>
 				</div>
-				<div>Box</div>
+				<div className={classes.cubeFaceLeft}/>
+				<div className={classes.cubeFaceTop}/>
+				<div className={classes.cubeFaceBottom}/>
 			</div>
-			<div className={classes.cubeFaceLeft}></div>
-			<div className={classes.cubeFaceTop}>
-				<div>WEB</div></div>
-			<div className={classes.cubeFaceBottom}></div>
+			<div className={classes.shadow}>{shadow}</div>
+			<div className={classes.bottomText}>WEB</div>
 		</div>
-		<div className={classes.bottomText}>ElectroBox WEB</div>
 	</>
 }
