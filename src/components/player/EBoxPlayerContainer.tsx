@@ -2,7 +2,7 @@ import React, {useEffect, useMemo, useState} from "react";
 import {EBoxPlayer} from "./EBoxPlayer";
 import {useAudio} from "./hooks/useAudio";
 import {useMediaSession} from "./hooks/useMediaSession";
-import {usePlaylist} from "./hooks/usePlaylist";
+import {usePlaylist} from "../playlist/hooks/usePlaylist";
 import {ArtistImageSizes, EBoxVote, NotifyMessage, PlaylistItem} from "../../hooks/types";
 import {mapArtistImageSizes} from "../../bundles/common/helper";
 import {useJunkiesService} from "../../hooks/useJunkiesService";
@@ -11,6 +11,7 @@ import {notifyMessageAtom} from "../../context/atoms";
 import {CommentDialog} from "./CommentDialog";
 import {useVoteReminder} from "./hooks/useVoteReminder";
 import {Messages} from "../../bundles/common/Messages";
+import {EBoxPlaylistDialog} from "../playlist/EBoxPlaylistDialog";
 
 
 export const EBoxPlayerContainer = () => {
@@ -72,6 +73,13 @@ export const EBoxPlayerContainer = () => {
 		}
 	}, [audio.state.paused, playlistCtrl.state.currentTrack, junkiesService])
 
+	//clear playlist -> stop player
+	useEffect(() => {
+		if (playlistCtrl.state.currentTrack === null) {
+			audio.controls.clear();
+		}
+	}, [audio.controls, playlistCtrl.state.currentTrack])
+
 	const voteFunction = (item: PlaylistItem, vote: EBoxVote) => {
 		junkiesService.vote(item.nid, vote)
 			.then(() => {
@@ -98,6 +106,7 @@ export const EBoxPlayerContainer = () => {
 						playlistControls={playlistCtrl.controls} playlistState={playlistCtrl.state}
 						voteFunction={voteFunction} startCommentFunction={startComment}
 		/>
+		<EBoxPlaylistDialog playlist={playlistCtrl}/>
 		{commentDlgItem != null &&
 		<CommentDialog
 				open={Boolean(commentDlgItem)} item={commentDlgItem}

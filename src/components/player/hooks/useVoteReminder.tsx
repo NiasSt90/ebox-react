@@ -1,6 +1,7 @@
 import {useEffect, useState} from "react";
-import {AudioState, PlaylistState} from "../types";
+import {AudioState} from "../types";
 import {PlaylistItem} from "../../../hooks/types";
+import {PlaylistState} from "../../playlist/types";
 
 export const notifyImageUrl = process.env.PUBLIC_URL + "/images/logo.png";
 

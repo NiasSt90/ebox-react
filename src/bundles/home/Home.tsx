@@ -23,9 +23,9 @@ export const Home = () => {
 		createRoadmapEntry("Bewerten", "das aktuell gespielte Set bewerten", true),
 		createRoadmapEntry("Kommentieren", "das aktuell gespielte Set kommentieren", true),
 		createRoadmapEntry("Vote-Reminder", "Desktop-Benachrichtigung am Ende des Sets zum Bewerten", true),
-
-		createRoadmapEntry("Playlist-Shuffle/Repeat", "Shuffle/Repeat Support", false),
-		createRoadmapEntry("Playlist-Anzeige", "Anzeige der aktuellen Einträge mit Edit-Funktionen", false),
+		createRoadmapEntry("Playlist-Shuffle/Repeat", "Shuffle/Repeat Support", true),
+		createRoadmapEntry("Playlist-Anzeige", "Anzeige der aktuellen Einträge mit Edit-Funktionen", true),
+		createRoadmapEntry("PWA-App (alpha)", "Verfügbar als App mit ersten Offline Funktionen (Caching)", true),
 
 		createRoadmapEntry("Set-Kommentar", "Kommentar am Set anzeigen", false),
 		createRoadmapEntry("Set-Bewertungen", "Bewertungen (eigene und andere) am Set anzeigen", false),

@@ -92,6 +92,12 @@ export const useAudio = ({
             time = Math.min(el.duration, Math.max(0, time));
             el.currentTime = time || 0;
         },
+        clear: () => {
+            const el = ref.current;
+            if (el) {
+                el.srcObject = null;//TODO: manual duration clear needed?
+            }
+        },
         setEndedCallback: (callback: (event:Event) => void) => {
             mergeToState({ endedCallback: callback });
         },

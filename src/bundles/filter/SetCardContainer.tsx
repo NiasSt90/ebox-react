@@ -2,7 +2,7 @@ import {useEffect, useState} from "react";
 import {useArtistDetails} from "../../hooks/useArtistDetails";
 import {EBoxSet} from "../../hooks/types";
 import SetCard from "./SetCard";
-import {usePlaylist} from "../../components/player/hooks/usePlaylist";
+import {usePlaylist} from "../../components/playlist/hooks/usePlaylist";
 import {useJunkiesService} from "../../hooks/useJunkiesService";
 
 interface Props {

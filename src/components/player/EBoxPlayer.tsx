@@ -22,16 +22,16 @@ import SkipNextIcon from "@material-ui/icons/SkipNext";
 import FastForwardIcon from '@material-ui/icons/FastForward';
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import PauseIcon from '@material-ui/icons/Pause';
-import ShuffleIcon from '@material-ui/icons/Shuffle';
 import FastRewindIcon from '@material-ui/icons/FastRewind';
 import PlaylistPlayIcon from '@material-ui/icons/PlaylistPlay';
 import Divider from "@material-ui/core/Divider";
 import {makeStyles} from "@material-ui/core/styles";
 import MoreIcon from "@material-ui/icons/MoreVert";
 import {Repeat, RepeatOne} from "@material-ui/icons";
-import {AudioControls, AudioState, PlaylistControls, PlaylistState} from "./types";
+import {AudioControls, AudioState} from "./types";
 import {readableTime} from "../../bundles/common/helper";
 import {EBoxVote, PlaylistItem} from "../../hooks/types";
+import {PlaylistControls, PlaylistState} from "../playlist/types";
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -106,7 +106,9 @@ export const EBoxPlayer: React.FC<Props> = ({
 	return <>
 		<Paper className={classes.root} elevation={6}>
 			<Grid container item justify="space-around" xs={12}>
-				<IconButton><PlaylistPlayIcon/></IconButton>
+				<Tooltip title="aktuelle Playlist anzeigen">
+					<IconButton onClick={playlistControls.show}><PlaylistPlayIcon /></IconButton>
+				</Tooltip>
 				<Tooltip title={"Repeat " + playlistState.repeat}>
 					<IconButton size={"small"} onClick={playlistControls.toggleRepeat}>
 						{playlistState.repeat === "single" && <RepeatOne color={"primary"}/>}
@@ -135,11 +137,6 @@ export const EBoxPlayer: React.FC<Props> = ({
 				</Tooltip>
 				<Tooltip title="zum Nächsten Track/Set">
 					<IconButton size={"small"} onClick={playlistControls.next}><SkipNextIcon/></IconButton>
-				</Tooltip>
-				<Tooltip title={"Shuffle " + (playlistState.shuffle ? "enabled" : "disabled")}>
-					<IconButton size={"small"} onClick={playlistControls.toggleShuffle}>
-						<ShuffleIcon color={playlistState.shuffle ? "primary" : "disabled"}/>
-					</IconButton>
 				</Tooltip>
 				{playlistState.currentTrack && <Tooltip title="Weitere Aktionen">
 					<IconButton size={"small"} onClick={handleClick}><MoreIcon/></IconButton>

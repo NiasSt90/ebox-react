@@ -17,7 +17,6 @@ test('usePlaylist - initial state', () => {
 	const {result} = renderHook(() => usePlaylist(), {wrapper: AllTheProviders})
 	// initial state check
 	expect(result.current.state.currentTrack).toBeNull();
-	expect(result.current.state.shuffle).toEqual(false)
 	expect(result.current.state.repeat).toEqual("none")
 	expect(result.current.controls.hasNext()).toEqual(false);
 })
