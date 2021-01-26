@@ -62,7 +62,7 @@ export const ToolbarSearch = ({onSearch}) => {
 	return <>
 		<div className={classes.search}>
 			<div className={classes.searchIcon}><SearchIcon/></div>
-			<InputBase value={value} placeholder="Suchen…"
+			<InputBase value={value} placeholder="Sets Suchen…"
 						  classes={{input: classes.inputInput,}}
 						  onChange={debouncedSearchInputHandler}
 						  endAdornment={<ClearIcon htmlColor={"white"} onClick={clearSearchInput}/>}/>

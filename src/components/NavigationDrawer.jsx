@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import clsx from 'clsx';
 import {makeStyles, useTheme} from '@material-ui/core/styles';
-import {Box} from "@material-ui/core";
+import {Box, Switch, Tooltip} from "@material-ui/core";
 import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -16,14 +16,15 @@ import {NavigationListContainer} from "./NavigationListContainer";
 import UserInfo from "./UserInfo";
 import {useAtom} from "jotai";
 import {darkStateAtom, pageTitleAtom, showToolbarSearchAtom, toolbarSearchInputAtom} from "../context/atoms";
-import { Switch, Tooltip} from "@material-ui/core";
 import {Brightness4, Brightness7} from "@material-ui/icons";
 import LockOpenIcon from "@material-ui/icons/LockOpen";
 import LockIcon from '@material-ui/icons/Lock';
+import SystemUpdateIcon from '@material-ui/icons/SystemUpdate';
 import useAuthService from "../hooks/useAuthService";
 import {Link, useHistory} from "react-router-dom";
 import {ToolbarSearch} from "./ToolbarSearch";
 import settings, {appVersion} from "../settings";
+import {useServiceWorker} from "../ServiceWorkerProvider";
 
 const drawerWidth = 240;
 
@@ -112,6 +113,7 @@ export default function PersistentDrawerLeft(props) {
 	const [showToolbarSearch] = useAtom(showToolbarSearchAtom);
 	const [,setToolbarSearchInput] = useAtom(toolbarSearchInputAtom);
 	const [darkState,setDarkState] = useAtom(darkStateAtom);
+	const serviceWorker = useServiceWorker();
 
 
 
@@ -139,6 +141,13 @@ export default function PersistentDrawerLeft(props) {
 						<Box flexGrow={1}/>
 
 						<div className={classes.sectionDesktop}>
+							{serviceWorker.assetsUpdateReady &&
+							 <Tooltip title="Neue App-Version verfügbar...">
+								 <IconButton edge="end" onClick={() => serviceWorker.updateAssets()}>
+									 <SystemUpdateIcon htmlColor={"white"} />
+								 </IconButton>
+							 </Tooltip>
+							}
 							<Tooltip title="Theme wechseln">
 								<Switch checked={darkState}
 										  icon={<Brightness7/>} checkedIcon={<Brightness4 />}
@@ -159,6 +168,11 @@ export default function PersistentDrawerLeft(props) {
 						</div>
 
 						<div className={classes.sectionMobile}>
+							{serviceWorker.assetsUpdateReady &&
+							 <IconButton edge="end" onClick={() => serviceWorker.updateAssets()}>
+								 <SystemUpdateIcon htmlColor={"white"} />
+							 </IconButton>
+							}
 							<IconButton onClick={handleMobileMenuOpen} color="inherit">
 								<MoreIcon/>
 								{/*TODO: ...Menu muss noch  implementiert werden*/}
