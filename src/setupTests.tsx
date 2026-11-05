@@ -1,11 +1,8 @@
-// jest-dom adds custom jest matchers for asserting on DOM nodes.
-// allows you to do things like:
-// expect(element).toHaveTextContent(/react/i)
-// learn more: https://github.com/testing-library/jest-dom
-import '@testing-library/jest-dom';
+import '@testing-library/jest-dom/vitest';
 import {render} from "@testing-library/react";
 import { Provider } from 'jotai';
 import {ReactElement} from "react";
+import {ServiceWorkerProvider} from "./ServiceWorkerProvider";
 
 // @ts-ignore
 window.env = {
@@ -13,7 +10,7 @@ window.env = {
 }
 
 export const AllTheProviders = ({ children }:any) => {
-	return (<Provider>{children}</Provider>)
+	return (<ServiceWorkerProvider><Provider>{children}</Provider></ServiceWorkerProvider>)
 }
 const customRender = (ui:ReactElement, options:any = undefined) =>
 	render(ui, { wrapper: AllTheProviders, ...options })

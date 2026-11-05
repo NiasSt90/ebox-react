@@ -1,13 +1,14 @@
 ### STAGE 1: Build ###
-FROM node:12 as build
-RUN mkdir /usr/src/app
+FROM oven/bun:1 AS build
 WORKDIR /usr/src/app
-ENV PATH /usr/src/app/node_modules/.bin:$PATH
-COPY package.json package-lock.json tsconfig.json /usr/src/app/
-RUN npm install --silent
+COPY package.json bun.lock /usr/src/app/
+RUN bun install --frozen-lockfile
+COPY tsconfig.json tsconfig.node.json vite.config.ts index.html /usr/src/app/
 COPY public /usr/src/app/public
 COPY src /usr/src/app/src
-RUN npm run build
+ARG GIT_COMMIT
+ENV VITE_GIT_SHA=$GIT_COMMIT
+RUN bun run build
 
 ### STAGE 2: Production Environment ###
 # build for example with:

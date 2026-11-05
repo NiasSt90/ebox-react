@@ -5,7 +5,7 @@ server {
   listen 3000;
   root   /usr/share/nginx/html;
 
-  location /static {
+  location /assets {
     #dont add no-cache headers for static content...
   }
 

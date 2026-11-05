@@ -35,7 +35,7 @@ export const Home = () => {
 			"Filter bauen, anzeigen und persistent auf dj-junkies speichern/bearbeiten/löschen", false),
 		createRoadmapEntry("Artist-Anzeige", "Suche und Anzeige von DJs", false),
 	]
-	return <Grid container direction="row" justify="center" alignItems="center">
+	return <Grid container direction="row" justifyContent="center" alignItems="center">
 		<Grid item xs={12}><Logo/></Grid>
 		<Grid item xs={12}>
 			<Typography variant="h5" paragraph>Der neue DJ-Junkies WEB-Client zum Musik hören...</Typography>

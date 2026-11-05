@@ -27,7 +27,7 @@ export const CommentDialog: React.FC<Props> = ({open,item,handleClose,handleComm
         <DialogTitle>Kommentar</DialogTitle>
         <DialogContent>
             <DialogContentText data-testid="title">{item.title}/{item.artist}</DialogContentText>
-            <TextField inputProps={{"data-testid":"input"}} autoFocus multiline={true} fullWidth margin="dense" rows={3} rowsMax={5}
+            <TextField inputProps={{"data-testid":"input"}} autoFocus multiline={true} fullWidth margin="dense" minRows={3} maxRows={5}
                        label="dein Kommentar" type="text" value={value} onChange={handleInputChange}/>
         </DialogContent>
         <DialogActions>

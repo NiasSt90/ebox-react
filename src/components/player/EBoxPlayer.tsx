@@ -105,7 +105,7 @@ export const EBoxPlayer: React.FC<Props> = ({
 
 	return <>
 		<Paper className={classes.root} elevation={6}>
-			<Grid container item justify="space-around" xs={12}>
+			<Grid container item justifyContent="space-around" xs={12}>
 				<Tooltip title="aktuelle Playlist anzeigen">
 					<IconButton onClick={playlistControls.show}><PlaylistPlayIcon /></IconButton>
 				</Tooltip>
@@ -184,7 +184,7 @@ export const EBoxPlayer: React.FC<Props> = ({
 			}
 			<Divider/>
 
-			<Grid container item direction="column" justify="flex-start" xs={12}>
+			<Grid container item direction="column" justifyContent="flex-start" xs={12}>
 				<Grid item>
 					<Box display="flex" justifyContent="space-between">
 						<Box pl={1} pr={1}>
@@ -209,7 +209,7 @@ export const EBoxPlayer: React.FC<Props> = ({
 					/>
 				</Grid>
 
-				<Grid container item justify="space-between">
+				<Grid container item justifyContent="space-between">
 					<Box pl={1}>
 						<Typography variant={"overline"}>{readableTime(audioState.time)}</Typography>
 					</Box>

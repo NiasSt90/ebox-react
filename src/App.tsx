@@ -2,7 +2,7 @@ import React, {Suspense} from "react";
 import './App.css';
 import {BrowserRouter as Router} from 'react-router-dom'
 
-import {CircularProgress, createMuiTheme, CssBaseline} from "@material-ui/core";
+import {CircularProgress, createTheme, CssBaseline} from "@material-ui/core";
 import {makeStyles, ThemeProvider} from '@material-ui/core/styles';
 import {darkTheme, lightTheme} from "./bundles/common/MyThemes";
 import {useAtom} from "jotai";
@@ -35,7 +35,7 @@ const useStyles = makeStyles(theme => ({
 function App() {
 	const classes = useStyles();
 	const [darkState] = useAtom(darkStateAtom);
-	const appliedTheme = createMuiTheme(darkState ? darkTheme : lightTheme);
+	const appliedTheme = createTheme(darkState ? darkTheme : lightTheme);
 	return (
 		<ThemeProvider theme={appliedTheme}>
 			<Suspense fallback={<CircularProgress variant={"indeterminate"}/>}>

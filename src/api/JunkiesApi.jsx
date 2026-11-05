@@ -60,6 +60,7 @@ export const junkiesApi = (authTokenSupplier) => {
 				.then(response => response.json());
 	}
 
+	/** @param {number|null} [id] ohne ID liefert der Server alle Filter des Benutzers */
 	const filterlist = (id = null) => {
 		const params = {
 			...id && {id: id},
