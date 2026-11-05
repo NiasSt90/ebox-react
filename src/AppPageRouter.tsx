@@ -9,13 +9,13 @@ import {EBoxPlayerContainer} from "./components/player/EBoxPlayerContainer";
 import React from "react";
 import {LoadingIndicator} from "./bundles/common/LoadingIndicator";
 import {Logo} from "./components/Logo";
-import {Box} from "@material-ui/core";
+import {Box} from "@mui/material";
 
 export const AppPageRouter = () => {
 	const logoMatch = useRouteMatch("/logo");
 	return <>
 		{logoMatch ?
-			<Box p={4}><Logo/></Box> :
+			<Box sx={{p: 4}}><Logo/></Box> :
 			<PersistentDrawerLeft>
 				<Route exact path="/"><Redirect to="/home"/></Route>
 				<Route path="/home" component={Home}/>

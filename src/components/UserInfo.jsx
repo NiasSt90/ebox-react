@@ -1,8 +1,8 @@
 import {Link, useHistory} from "react-router-dom";
-import {Box, IconButton, Tooltip, Typography} from "@material-ui/core";
+import {Box, IconButton, Tooltip, Typography} from "@mui/material";
 
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import LockOpenIcon from '@material-ui/icons/LockOpen';
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
+import LockOpenIcon from '@mui/icons-material/LockOpen';
 import React from "react";
 import useAuthService from "../hooks/useAuthService";
 

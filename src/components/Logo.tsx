@@ -1,5 +1,6 @@
 import React from "react";
-import {makeStyles} from "@material-ui/core/styles";
+import {Box} from "@mui/material";
+import type {SxProps, Theme} from "@mui/material/styles";
 
 const cubeDist = "102px";
 
@@ -7,7 +8,7 @@ const cubeDist = "102px";
 const logoFont1 = "'Orbitron', sans-serif";
 const logoFont2 = "'Monoton', cursive;";
 
-const useStyles = makeStyles((theme) => ({
+const styles = {
 	root: {
 		perspective: 1000,
 		//perspectiveOrigin: "50% -120%",
@@ -105,10 +106,9 @@ const useStyles = makeStyles((theme) => ({
 		fontSize: 50,
 		textAlign: "center",
 	}
-}));
+} satisfies Record<string, SxProps<Theme>>;
 
 export const Logo = () => {
-	const classes = useStyles();
 	const speaker =
 		<svg height="100%" width="100%">
 			<circle stroke="rgba(0,0,0,0.8)" r="65" cx="100" cy="80" strokeWidth="15" fill="transparent"/>
@@ -125,27 +125,27 @@ export const Logo = () => {
 			<ellipse cx="50%" cy="15" rx="50%" ry="15" fill="url(#grad1)"/>
 		</svg>
 	return <>
-		<div className={classes.root}>
-			<div className={classes.cube}>
-				<div className={classes.cubeFaceFront}>
+		<Box sx={styles.root}>
+			<Box sx={styles.cube}>
+				<Box sx={styles.cubeFaceFront}>
 					<div>{speaker}</div>
 					<span>Electro</span>
-				</div>
-				<div className={classes.cubeFaceBack}>
+				</Box>
+				<Box sx={styles.cubeFaceBack}>
 					<span>Electro</span>
-				</div>
-				<div className={classes.cubeFaceRight}>
+				</Box>
+				<Box sx={styles.cubeFaceRight}>
 					<div>{speaker}</div>
 					<span>Box</span>
-				</div>
-				<div className={classes.cubeFaceLeft}>
+				</Box>
+				<Box sx={styles.cubeFaceLeft}>
 					<span>Box</span>
-				</div>
-				<div className={classes.cubeFaceTop}/>
-				<div className={classes.cubeFaceBottom}/>
-			</div>
-			<div className={classes.shadow}>{shadow}</div>
-			<div className={classes.bottomText}>WEB</div>
-		</div>
+				</Box>
+				<Box sx={styles.cubeFaceTop}/>
+				<Box sx={styles.cubeFaceBottom}/>
+			</Box>
+			<Box sx={styles.shadow}>{shadow}</Box>
+			<Box sx={styles.bottomText}>WEB</Box>
+		</Box>
 	</>
 }

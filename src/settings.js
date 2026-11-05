@@ -1,5 +1,5 @@
 const settings = {
-	// Vorgabe und Umschaltung auf das Testsystem stehen in vite.config.ts.
+	// Vorgabe und Umschaltung auf das Testsystem stehen in vite.config.mts.
 	REST_API_URL: import.meta.env.VITE_REST_API_URL,
 };
 export default settings;

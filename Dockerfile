@@ -3,7 +3,7 @@ FROM oven/bun:1 AS build
 WORKDIR /usr/src/app
 COPY package.json bun.lock /usr/src/app/
 RUN bun install --frozen-lockfile
-COPY tsconfig.json tsconfig.node.json vite.config.ts index.html /usr/src/app/
+COPY tsconfig.json tsconfig.node.json vite.config.mts index.html /usr/src/app/
 COPY public /usr/src/app/public
 COPY src /usr/src/app/src
 ARG GIT_COMMIT

@@ -1,22 +1,21 @@
-import {Backdrop, CircularProgress, makeStyles} from "@material-ui/core";
+import {Backdrop, CircularProgress} from "@mui/material";
 import React from "react";
 import {useAtom} from "jotai";
 import {loadingAtom} from "../../context/atoms";
 
-const useStyles = makeStyles(theme => ({
+const styles = {
 	backdrop: {
-		zIndex: theme.zIndex.drawer + 1,
+		zIndex: theme => theme.zIndex.drawer + 1,
 		color: '#fff',
 	}
-}));
+};
 
 export const LoadingIndicator = () => {
-	const classes = useStyles();
 	const [ loading ] = useAtom(loadingAtom);
 
 	return <>
 		{loading &&
-						 <Backdrop className={classes.backdrop} open={true}>
+						 <Backdrop sx={styles.backdrop} open={true}>
 							 <CircularProgress color="inherit" />
 						 </Backdrop>
 			}

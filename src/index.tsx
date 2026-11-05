@@ -1,18 +1,17 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import {createRoot} from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import {Provider} from "jotai";
 import {ServiceWorkerProvider} from "./ServiceWorkerProvider";
 
-ReactDOM.render(
+createRoot(document.getElementById('root')!).render(
 	<ServiceWorkerProvider>
 		<Provider>
 			<App/>
 		</Provider>
-	</ServiceWorkerProvider>,
-	document.getElementById('root')
+	</ServiceWorkerProvider>
 );
 
 // If you want to start measuring performance in your app, pass a function
