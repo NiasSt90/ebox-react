@@ -1,7 +1,7 @@
 import SearchIcon from "@mui/icons-material/Search";
 import {alpha, Box, InputBase} from "@mui/material";
 import ClearIcon from "@mui/icons-material/Clear";
-import React, {useState} from "react";
+import {useState} from "react";
 import useDebounce from "../hooks/useDebounce";
 
 const styles = {

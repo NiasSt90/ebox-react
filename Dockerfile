@@ -16,7 +16,7 @@ RUN bun run build
 #		--build-arg GIT_COMMIT=$(git rev-parse HEAD) \
 #		--build-arg GIT_VERSION="$(git log --pretty='format:%h %s' -q -1)" .
 FROM nginx:1.19-alpine
-COPY nginx/default.conf.template /etc/nginx/templates/
+COPY nginx/default.conf /etc/nginx/conf.d/default.conf
 COPY --from=build /usr/src/app/build /usr/share/nginx/html
 EXPOSE 3000
 ARG GIT_COMMIT

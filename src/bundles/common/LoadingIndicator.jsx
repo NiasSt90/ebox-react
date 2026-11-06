@@ -1,5 +1,4 @@
 import {Backdrop, CircularProgress} from "@mui/material";
-import React from "react";
 import {useAtom} from "jotai";
 import {loadingAtom} from "../../context/atoms";
 

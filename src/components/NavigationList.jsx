@@ -1,9 +1,8 @@
 import {List, ListItemButton, ListItemIcon, ListItemText} from "@mui/material";
-import {Link} from "react-router-dom";
+import {Link} from "react-router";
 import HomeIcon from "@mui/icons-material/Home";
 import FolderSharedIcon from '@mui/icons-material/FolderShared';
 import FolderSpecialIcon from '@mui/icons-material/FolderSpecial';
-import React from "react";
 
 export const NavigationList = ({filters}) => {
 	return <List>

@@ -8,7 +8,7 @@ import {EBoxFilter, EBoxSearchParams, EBoxSet} from "../../hooks/types";
 
 export const SetCardListContainer = () => {
 	const junkiesApi = useJunkiesService()
-	const {id} = useParams<any>()
+	const id = Number(useParams().id)
 	const [ sets, setSets ] = useState<EBoxSet[]>([] as EBoxSet[])
 	const [ filterDefinition, setFilterDefinition ] = useState<EBoxFilter|undefined>();
 	const [ , setPageTitle] = useAtom(pageTitleAtom);
@@ -43,7 +43,6 @@ export const SetCardListContainer = () => {
 			console.log("FETCH NEXT:", searchParams)
 			junkiesApi.setlist(searchParams).then(res => setSets([...sets, ...res]));
 		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [searchParams])
 
 	return <SetCardList sets={sets} filter={filterDefinition} onNextPage={loadNextPage}/>

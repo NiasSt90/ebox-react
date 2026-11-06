@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import {useState} from "react";
 import {useTheme} from '@mui/material/styles';
 import {Box, Switch, Tooltip} from "@mui/material";
 import Drawer from '@mui/material/Drawer';
@@ -21,7 +21,7 @@ import LockOpenIcon from "@mui/icons-material/LockOpen";
 import LockIcon from '@mui/icons-material/Lock';
 import SystemUpdateIcon from '@mui/icons-material/SystemUpdate';
 import useAuthService from "../hooks/useAuthService";
-import {Link, useHistory} from "react-router-dom";
+import {Link, useNavigate} from "react-router";
 import {ToolbarSearch} from "./ToolbarSearch";
 import settings, {appVersion} from "../settings";
 import {useServiceWorker} from "../ServiceWorkerProvider";
@@ -96,7 +96,7 @@ const styles = {
 };
 
 export default function PersistentDrawerLeft(props) {
-	const history = useHistory();
+	const navigate = useNavigate();
 	const authService = useAuthService();
 	const theme = useTheme();
 	const [open, setOpen] = useState(false);
@@ -151,7 +151,7 @@ export default function PersistentDrawerLeft(props) {
 							}
 							{authService.isAuthenticated &&
 							 <Tooltip title={"Angemeldet als " + authService.user.name + " auf " + settings.REST_API_URL}>
-								 <IconButton edge="end" onClick={() => authService.signout(() => history.push('/'))}>
+								 <IconButton edge="end" onClick={() => authService.signout(() => navigate('/'))}>
 									 <LockIcon htmlColor={"white"} />
 								 </IconButton>
 							 </Tooltip>

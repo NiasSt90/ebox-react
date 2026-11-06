@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useState} from "react";
+import {useEffect, useMemo, useState} from "react";
 import {EBoxPlayer} from "./EBoxPlayer";
 import {useAudio} from "./hooks/useAudio";
 import {useMediaSession} from "./hooks/useMediaSession";

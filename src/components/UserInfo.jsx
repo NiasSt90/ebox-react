@@ -1,13 +1,12 @@
-import {Link, useHistory} from "react-router-dom";
+import {Link, useNavigate} from "react-router";
 import {Box, IconButton, Tooltip, Typography} from "@mui/material";
 
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import LockOpenIcon from '@mui/icons-material/LockOpen';
-import React from "react";
 import useAuthService from "../hooks/useAuthService";
 
 const UserInfo = () => {
-	const history = useHistory();
+	const navigate = useNavigate();
 	const authService = useAuthService();
 	return <Box>
 		{authService.isAuthenticated === true ?
@@ -15,7 +14,7 @@ const UserInfo = () => {
 				{authService.user.name}
 				<Tooltip title="Abmelden">
 					<IconButton onClick={() => {
-						authService.signout(() => history.push('/'))
+						authService.signout(() => navigate('/'))
 					}}>
 						<ExitToAppIcon/>
 					</IconButton>

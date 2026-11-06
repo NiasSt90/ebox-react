@@ -1,10 +1,8 @@
-import React from "react";
 import {Box} from "@mui/material";
 import type {SxProps, Theme} from "@mui/material/styles";
 
 const cubeDist = "102px";
 
-//const logoFont =  "'Fredoka One'";
 const logoFont1 = "'Orbitron', sans-serif";
 const logoFont2 = "'Monoton', cursive;";
 

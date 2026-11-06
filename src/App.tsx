@@ -1,6 +1,5 @@
-import React, {Suspense} from "react";
-import './App.css';
-import {BrowserRouter as Router} from 'react-router-dom'
+import {Suspense} from "react";
+import {BrowserRouter} from 'react-router'
 
 import {Box, CircularProgress, CssBaseline} from "@mui/material";
 import {createTheme, ThemeProvider} from '@mui/material/styles';
@@ -18,9 +17,9 @@ function App() {
 			<Suspense fallback={<CircularProgress variant={"indeterminate"}/>}>
 				<Box sx={{display: "flex"}}>
 					<CssBaseline/>
-					<Router>
+					<BrowserRouter>
 						<AppPageRouter/>
-					</Router>
+					</BrowserRouter>
 				</Box>
 			</Suspense>
 		</ThemeProvider>

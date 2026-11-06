@@ -1,5 +1,5 @@
 import React from "react";
-import {Redirect, useLocation} from "react-router-dom";
+import {Navigate, useLocation} from "react-router";
 import {
 	Button,
 	Dialog,
@@ -38,10 +38,10 @@ const LoginDialog = () => {
 	let location = useLocation();
 	const {from} = location.state || {from: {pathname: '/'}}
 	if (values.redirectToReferrer === true) {
-		return <Redirect to={from}/>
+		return <Navigate to={from} replace/>
 	}
 	if (values.redirectToHome) {
-		return <Redirect to={values.redirectToHome}/>
+		return <Navigate to={values.redirectToHome} replace/>
 	}
 
 	return <Dialog open={true}>

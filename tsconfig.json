@@ -9,8 +9,7 @@
     "types": [
       "vite/client",
       "vitest/globals",
-      "@testing-library/jest-dom",
-      "wicg-mediasession"
+      "@testing-library/jest-dom"
     ],
     "allowJs": true,
     "skipLibCheck": true,
