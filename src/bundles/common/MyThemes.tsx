@@ -1,12 +1,12 @@
-import {ThemeOptions} from "@material-ui/core";
+import {ThemeOptions} from "@mui/material/styles";
 
-export const lightTheme :ThemeOptions = {
+export const lightTheme: ThemeOptions = {
 	palette: {
-		type: "light"
+		mode: "light",
 	}
 };
-export const darkTheme :ThemeOptions = {
+export const darkTheme: ThemeOptions = {
 	palette: {
-		type: "dark"
+		mode: "dark",
 	}
 }

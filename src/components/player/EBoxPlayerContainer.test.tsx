@@ -1,4 +1,4 @@
-import React, {Suspense} from 'react';
+import {Suspense} from "react";
 import {Provider} from "jotai";
 import {act} from "react-dom/test-utils";
 import {EBoxPlayerContainer} from "./EBoxPlayerContainer";

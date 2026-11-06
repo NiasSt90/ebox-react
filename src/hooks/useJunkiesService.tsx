@@ -48,7 +48,7 @@ export const useJunkiesService = (): JunkiesService => {
     const [user] = useAtom(userAtom);
     const [, setLoading] = useAtom(loadingAtom);
     const [, setNotifyMessage] = useAtom(notifyMessageAtom);
-    const showError = useCallback((error) => {
+    const showError = useCallback((error: Error) => {
         console.log(error);
         setNotifyMessage({
             message: error.message,

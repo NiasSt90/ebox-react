@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {
 	Box,
-	Grid,
 	ListItemIcon,
 	ListItemText,
 	Menu,
@@ -10,63 +9,52 @@ import {
 	Slider,
 	Tooltip,
 	Typography
-} from "@material-ui/core";
-import IconButton from "@material-ui/core/IconButton";
-import ThumbUpIcon from "@material-ui/icons/ThumbUp";
-import ThumbsUpDownIcon from "@material-ui/icons/ThumbsUpDown";
-import ThumbDownIcon from "@material-ui/icons/ThumbDown";
-import HighlightOffIcon from '@material-ui/icons/HighlightOff';
-import AddCommentIcon from '@material-ui/icons/AddComment';
-import SkipPreviousIcon from "@material-ui/icons/SkipPrevious";
-import SkipNextIcon from "@material-ui/icons/SkipNext";
-import FastForwardIcon from '@material-ui/icons/FastForward';
-import PlayArrowIcon from '@material-ui/icons/PlayArrow';
-import PauseIcon from '@material-ui/icons/Pause';
-import FastRewindIcon from '@material-ui/icons/FastRewind';
-import PlaylistPlayIcon from '@material-ui/icons/PlaylistPlay';
-import Divider from "@material-ui/core/Divider";
-import {makeStyles} from "@material-ui/core/styles";
-import MoreIcon from "@material-ui/icons/MoreVert";
-import {Repeat, RepeatOne} from "@material-ui/icons";
+} from "@mui/material";
+import type {SxProps, Theme} from "@mui/material/styles";
+import IconButton from "@mui/material/IconButton";
+import ThumbUpIcon from "@mui/icons-material/ThumbUp";
+import ThumbsUpDownIcon from "@mui/icons-material/ThumbsUpDown";
+import ThumbDownIcon from "@mui/icons-material/ThumbDown";
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
+import AddCommentIcon from '@mui/icons-material/AddComment';
+import SkipPreviousIcon from "@mui/icons-material/SkipPrevious";
+import SkipNextIcon from "@mui/icons-material/SkipNext";
+import FastForwardIcon from '@mui/icons-material/FastForward';
+import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import PauseIcon from '@mui/icons-material/Pause';
+import FastRewindIcon from '@mui/icons-material/FastRewind';
+import PlaylistPlayIcon from '@mui/icons-material/PlaylistPlay';
+import Divider from "@mui/material/Divider";
+import MoreIcon from "@mui/icons-material/MoreVert";
+import Repeat from "@mui/icons-material/Repeat";
+import RepeatOne from "@mui/icons-material/RepeatOne";
 import {AudioControls, AudioState} from "./types";
 import {readableTime} from "../../bundles/common/helper";
 import {EBoxVote, PlaylistItem} from "../../hooks/types";
 import {PlaylistControls, PlaylistState} from "../playlist/types";
 
-const useStyles = makeStyles((theme) => ({
+const styles = {
 	root: {
 		position: "fixed",
 		zIndex: 10,
 		bottom: "0%",
-		[theme.breakpoints.down('sm')]: {
-			width: "100%",
-			right: "0%",
-			left: "0%"
-		},
-		[theme.breakpoints.up('md')]: {
-			width: "80%",
-			right: "10%",
-			left: "10%"
-		},
-		[theme.breakpoints.up('lg')]: {
-			width: "60%",
-			right: "20%",
-			left: "20%"
-		},
-		[theme.breakpoints.up('xl')]: {
-			width: "40%",
-			right: "30%",
-			left: "30%"
-		},
+		width: {xs: "100%", md: "80%", lg: "60%", xl: "40%"},
+		left: {xs: "0%", md: "10%", lg: "20%", xl: "30%"},
+		right: {xs: "0%", md: "10%", lg: "20%", xl: "30%"},
 	},
+	// Seitlich mindestens die halbe Thumb-Breite (20px), sonst ragt der Thumb an den Enden aus dem Player.
 	sliderContainer: {
 		flex: '1 1 auto',
-		margin: '-16px 8px -8px 8px'
+		margin: '-16px 12px -8px 12px'
 	},
+	// Ab MUI 5 bekommt der Slider auf Touch-Geräten zusätzliches Padding, das hier ebenfalls entfällt.
 	slider: {
-		padding: '0',
+		padding: 0,
+		'@media (pointer: coarse)': {
+			padding: 0,
+		},
 	}
-}))
+} satisfies Record<string, SxProps<Theme>>;
 
 interface Props {
 	audioState: AudioState;
@@ -85,7 +73,6 @@ export const EBoxPlayer: React.FC<Props> = ({
 	voteFunction,
 	startCommentFunction
 }: Props) => {
-	const classes = useStyles();
 	const [anchorEl, setAnchorEl] = React.useState<Element | null>();
 	const handleClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
 		setAnchorEl(event.currentTarget);
@@ -98,14 +85,14 @@ export const EBoxPlayer: React.FC<Props> = ({
 		setSeekbarTime(audioState.time)
 	}, [audioState.time])
 
-	const onSeekChange = (event: React.ChangeEvent<{}>, progress: number | number[]) => {
+	const onSeekChange = (event: Event, progress: number | number[]) => {
 		setSeekbarTime(progress as number)
 		audioControls.seek(progress as number);
 	}
 
 	return <>
-		<Paper className={classes.root} elevation={6}>
-			<Grid container item justify="space-around" xs={12}>
+		<Paper sx={styles.root} elevation={6}>
+			<Box sx={{display: "flex", flexWrap: "wrap", justifyContent: "space-around"}}>
 				<Tooltip title="aktuelle Playlist anzeigen">
 					<IconButton onClick={playlistControls.show}><PlaylistPlayIcon /></IconButton>
 				</Tooltip>
@@ -141,7 +128,7 @@ export const EBoxPlayer: React.FC<Props> = ({
 				{playlistState.currentTrack && <Tooltip title="Weitere Aktionen">
 					<IconButton size={"small"} onClick={handleClick}><MoreIcon/></IconButton>
 				</Tooltip>}
-			</Grid>
+			</Box>
 
 			{playlistState.currentTrack &&
 			<Menu anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose}>
@@ -184,41 +171,41 @@ export const EBoxPlayer: React.FC<Props> = ({
 			}
 			<Divider/>
 
-			<Grid container item direction="column" justify="flex-start" xs={12}>
-				<Grid item>
-					<Box display="flex" justifyContent="space-between">
-						<Box pl={1} pr={1}>
+			<Box sx={{display: "flex", flexDirection: "column"}}>
+				<Box>
+					<Box sx={{display: "flex", justifyContent: "space-between"}}>
+						<Box sx={{px: 1}}>
 							<Typography noWrap variant={"overline"}>{playlistControls.curPos() + "/"
 							+ playlistControls.length()} Track(s)</Typography>
 						</Box>
-						<Box pr={1} style={{display: "inline-grid"}}>
+						<Box sx={{pr: 1, display: "inline-grid"}}>
 							{playlistState.currentTrack && <Typography noWrap component={"span"} variant={"overline"}>{
 								(playlistState.currentTrack.artist ? (playlistState.currentTrack.artist + " / ") : "")
 								+ playlistState.currentTrack.title}</Typography>}
 						</Box>
 					</Box>
-				</Grid>
+				</Box>
 
-				<Grid item className={classes.sliderContainer}>
-					<Slider classes={{root: classes.slider}}
+				<Box sx={styles.sliderContainer}>
+					<Slider sx={styles.slider}
 							  min={0} max={audioState.duration}
 							  value={seekbarTime}
 							  valueLabelDisplay={"off"}
 							  valueLabelFormat={(value: number, index: number) => readableTime(value)}
 							  onChange={onSeekChange}
 					/>
-				</Grid>
+				</Box>
 
-				<Grid container item justify="space-between">
-					<Box pl={1}>
+				<Box sx={{display: "flex", justifyContent: "space-between"}}>
+					<Box sx={{pl: 1}}>
 						<Typography variant={"overline"}>{readableTime(audioState.time)}</Typography>
 					</Box>
-					<Box pr={1}>
+					<Box sx={{pr: 1}}>
 						<Typography variant={"overline"}>{readableTime(
 							audioState.duration - audioState.time)}</Typography>
 					</Box>
-				</Grid>
-			</Grid>
+				</Box>
+			</Box>
 		</Paper>
 	</>
 }

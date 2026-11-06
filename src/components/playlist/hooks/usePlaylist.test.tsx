@@ -1,7 +1,7 @@
 import {usePlaylist} from "./usePlaylist";
 import {AllTheProviders} from "../../../setupTests";
 import {EBoxArtist, EBoxSet, EBoxTrack} from "../../../hooks/types";
-import {act, renderHook} from '@testing-library/react-hooks'
+import {act, renderHook} from '@testing-library/react'
 
 const set:EBoxSet = {
 	nid:1, title: "title", artists:[1], duration: new Date(2*3600), created: new Date(),

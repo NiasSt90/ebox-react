@@ -1,27 +1,33 @@
 import PersistentDrawerLeft from "./components/NavigationDrawer";
-import {Redirect, Route, useRouteMatch} from "react-router-dom";
+import {Navigate, Route, Routes, useMatch, useParams} from "react-router";
 import {Home} from "./bundles/home/Home";
 import LoginDialog from "./bundles/login/LoginDialog";
-import {PrivateRoute} from "./bundles/common/PrivateRoute";
+import {RequireAuth} from "./bundles/common/RequireAuth";
 import {SetCardListContainer} from "./bundles/filter/SetCardListContainer";
 import {NotifierMessageContainer} from "./bundles/common/NotifierMessageContainer";
 import {EBoxPlayerContainer} from "./components/player/EBoxPlayerContainer";
-import React from "react";
 import {LoadingIndicator} from "./bundles/common/LoadingIndicator";
 import {Logo} from "./components/Logo";
-import {Box} from "@material-ui/core";
+import {Box} from "@mui/material";
+
+// Eigener key je Filter-ID, damit beim Wechsel zwischen Filtern der komplette Listen-State neu beginnt.
+const FilterPage = () => {
+	const {id} = useParams();
+	return <SetCardListContainer key={id ?? 'empty'}/>;
+}
 
 export const AppPageRouter = () => {
-	const logoMatch = useRouteMatch("/logo");
+	const logoMatch = useMatch("/logo");
 	return <>
 		{logoMatch ?
-			<Box p={4}><Logo/></Box> :
+			<Box sx={{p: 4}}><Logo/></Box> :
 			<PersistentDrawerLeft>
-				<Route exact path="/"><Redirect to="/home"/></Route>
-				<Route path="/home" component={Home}/>
-				<Route path="/login"><LoginDialog/></Route>
-				<PrivateRoute path='/filter/:id'
-								  render={props => <SetCardListContainer key={props.match.params.id || 'empty'}/>}/>
+				<Routes>
+					<Route path="/" element={<Navigate to="/home" replace/>}/>
+					<Route path="/home" element={<Home/>}/>
+					<Route path="/login" element={<LoginDialog/>}/>
+					<Route path="/filter/:id" element={<RequireAuth><FilterPage/></RequireAuth>}/>
+				</Routes>
 				<NotifierMessageContainer/>
 				<EBoxPlayerContainer/>
 			</PersistentDrawerLeft>

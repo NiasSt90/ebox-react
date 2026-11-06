@@ -6,7 +6,7 @@ import {
     DialogContentText,
     DialogTitle,
     TextField
-} from "@material-ui/core";
+} from "@mui/material";
 import {PlaylistItem} from "../../hooks/types";
 import {ChangeEvent, useState} from "react";
 
@@ -27,7 +27,7 @@ export const CommentDialog: React.FC<Props> = ({open,item,handleClose,handleComm
         <DialogTitle>Kommentar</DialogTitle>
         <DialogContent>
             <DialogContentText data-testid="title">{item.title}/{item.artist}</DialogContentText>
-            <TextField inputProps={{"data-testid":"input"}} autoFocus multiline={true} fullWidth margin="dense" rows={3} rowsMax={5}
+            <TextField slotProps={{htmlInput: {"data-testid": "input"}}} autoFocus multiline={true} fullWidth margin="dense" minRows={3} maxRows={5}
                        label="dein Kommentar" type="text" value={value} onChange={handleInputChange}/>
         </DialogContent>
         <DialogActions>

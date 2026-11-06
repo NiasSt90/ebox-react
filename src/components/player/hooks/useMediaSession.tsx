@@ -2,8 +2,8 @@ import {useEffect} from 'react';
 
 interface Props {
   element: any;
-  mediaMetadata: MediaMetadata;
-  controls?: { [action in MediaSessionAction]?: ((e: MediaSessionActionDetails) => void) | null };
+  mediaMetadata: MediaMetadataInit;
+  controls?: Partial<Record<MediaSessionAction, MediaSessionActionHandler | null>>;
 }
 
 export const useMediaSession = ({
@@ -15,12 +15,9 @@ export const useMediaSession = ({
     if (!element || !('mediaSession' in navigator)) {
       return;
     }
-    // @ts-ignore
     navigator.mediaSession.metadata = new MediaMetadata(mediaMetadata);
-    // @ts-ignore
-    Object.keys(controls)
-        // @ts-ignore
-        .forEach((c) => navigator.mediaSession.setActionHandler(c, controls[c]));
+    Object.entries(controls ?? {})
+        .forEach(([action, handler]) => navigator.mediaSession.setActionHandler(action as MediaSessionAction, handler));
     return () => {
       //TODO: check if necessary to remove the event handlers?
     }

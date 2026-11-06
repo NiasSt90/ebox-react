@@ -1,14 +1,14 @@
 import React from "react";
-import {Redirect, useLocation} from "react-router-dom";
+import {Navigate, useLocation} from "react-router";
 import {
 	Button,
 	Dialog,
 	DialogActions,
 	DialogContent,
 	DialogTitle, FormControl, FormHelperText,
-	Grid,
+	Stack,
 	TextField, Typography
-} from "@material-ui/core";
+} from "@mui/material";
 import useAuthService from "../../hooks/useAuthService";
 import settings from "../../settings";
 
@@ -38,10 +38,10 @@ const LoginDialog = () => {
 	let location = useLocation();
 	const {from} = location.state || {from: {pathname: '/'}}
 	if (values.redirectToReferrer === true) {
-		return <Redirect to={from}/>
+		return <Navigate to={from} replace/>
 	}
 	if (values.redirectToHome) {
-		return <Redirect to={values.redirectToHome}/>
+		return <Navigate to={values.redirectToHome} replace/>
 	}
 
 	return <Dialog open={true}>
@@ -51,29 +51,25 @@ const LoginDialog = () => {
 		<DialogContent>
 			<form onSubmit={login}>
 				<FormControl fullWidth variant="outlined" margin="normal" error={values.loginError}>
-					<Grid container spacing={2} direction={"column"}>
-						<Grid item>
-							<TextField name="username" label="Username" variant="outlined" InputLabelProps={{shrink: true}}
-										  value={values.username} onChange={handleInputChange}
-										  onKeyPress={(ev) => {
-											  if (ev.key === 'Enter') {
-												  ev.preventDefault();//no submit if there were a button with type form
-												  login();
-											  }
-										  }}/>
-						</Grid>
-						<Grid item>
-							<TextField name="password" type="password" label="Passwort" variant="outlined"
-										  InputLabelProps={{shrink: true}}
-										  value={values.password} onChange={handleInputChange}
-										  onKeyPress={(ev) => {
-											  if (ev.key === 'Enter') {
-												  ev.preventDefault();//no submit if there were a button with type form
-												  login();
-											  }
-										  }}/>
-						</Grid>
-					</Grid>
+					<Stack spacing={2} sx={{alignItems: "flex-start"}}>
+						<TextField name="username" label="Username" variant="outlined" slotProps={{inputLabel: {shrink: true}}}
+									  value={values.username} onChange={handleInputChange}
+									  onKeyDown={(ev) => {
+										  if (ev.key === 'Enter') {
+											  ev.preventDefault();//no submit if there were a button with type form
+											  login();
+										  }
+									  }}/>
+						<TextField name="password" type="password" label="Passwort" variant="outlined"
+									  slotProps={{inputLabel: {shrink: true}}}
+									  value={values.password} onChange={handleInputChange}
+									  onKeyDown={(ev) => {
+										  if (ev.key === 'Enter') {
+											  ev.preventDefault();//no submit if there were a button with type form
+											  login();
+										  }
+									  }}/>
+					</Stack>
 					<FormHelperText>{values.loginError}</FormHelperText>
 				</FormControl>
 			</form>

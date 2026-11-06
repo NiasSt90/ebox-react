@@ -7,10 +7,9 @@ import {
 	DialogContent,
 	DialogContentText,
 	DialogTitle, Divider, IconButton,
-	List, ListItem, ListItemAvatar, ListItemSecondaryAction, ListItemText,
-	Paper, Typography
-} from "@material-ui/core";
-import DeleteIcon from '@material-ui/icons/Delete';
+	List, ListItem, ListItemAvatar, ListItemButton, ListItemText
+} from "@mui/material";
+import DeleteIcon from '@mui/icons-material/Delete';
 import React from "react";
 
 interface Props {
@@ -29,19 +28,20 @@ export const EBoxPlaylistDialog: React.FC<Props> = ({playlist}: Props) => {
 				<List>
 					{playlist.controls.items().map((item, idx) => {
 						return <React.Fragment key={idx}>
-							<ListItem button dense={true} alignItems="flex-start"
-										 onClick={() => playlist.controls.goto(idx)}
-										 selected={(idx+1) === playlist.controls.curPos()}>
-								<ListItemAvatar>
-									<Avatar alt={item.artist} src={item.artwork.small}/>
-								</ListItemAvatar>
-								<ListItemText
-									primary={item.artist}
-									secondary={item.title}>
-								</ListItemText>
-								<ListItemSecondaryAction>
-									<IconButton onClick={() => playlist.controls.remove(idx)}><DeleteIcon/></IconButton>
-								</ListItemSecondaryAction>
+							<ListItem disablePadding secondaryAction={
+								<IconButton edge="end" onClick={() => playlist.controls.remove(idx)}><DeleteIcon/></IconButton>
+							}>
+								<ListItemButton dense={true} alignItems="flex-start"
+												onClick={() => playlist.controls.goto(idx)}
+												selected={(idx+1) === playlist.controls.curPos()}>
+									<ListItemAvatar>
+										<Avatar alt={item.artist} src={item.artwork.small}/>
+									</ListItemAvatar>
+									<ListItemText
+										primary={item.artist}
+										secondary={item.title}>
+									</ListItemText>
+								</ListItemButton>
 							</ListItem>
 							<Divider variant="inset" component="li"/>
 						</React.Fragment>
@@ -49,7 +49,7 @@ export const EBoxPlaylistDialog: React.FC<Props> = ({playlist}: Props) => {
 				</List>
 			</DialogContent>
 			<DialogActions>
-				<Button color="default" onClick={playlist.controls.hide}>Close</Button>
+				<Button color="inherit" onClick={playlist.controls.hide}>Close</Button>
 				<Button color="primary" onClick={playlist.controls.shuffle} disabled={playlist.controls.length() === 0}>Shuffle</Button>
 				<Button color="secondary" onClick={playlist.controls.clear} disabled={playlist.controls.length() === 0}>Clear</Button>
 			</DialogActions>

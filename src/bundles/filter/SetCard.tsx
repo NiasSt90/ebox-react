@@ -1,25 +1,24 @@
 import React from 'react';
-import {makeStyles} from '@material-ui/core/styles';
-import clsx from 'clsx';
-import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader';
-import CardMedia from '@material-ui/core/CardMedia';
-import CardContent from '@material-ui/core/CardContent';
-import CardActions from '@material-ui/core/CardActions';
-import Collapse from '@material-ui/core/Collapse';
-import Avatar from '@material-ui/core/Avatar';
-import IconButton from '@material-ui/core/IconButton';
-import Typography from '@material-ui/core/Typography';
-import {red} from '@material-ui/core/colors';
-import FavoriteIcon from '@material-ui/icons/Favorite';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
-import PlayArrowIcon from "@material-ui/icons/PlayArrow";
-import QueueIcon from "@material-ui/icons/Queue";
-import {Box, Divider, List, ListItem, ListItemText, Tooltip} from "@material-ui/core";
+import type {SxProps, Theme} from '@mui/material/styles';
+import Card from '@mui/material/Card';
+import CardHeader from '@mui/material/CardHeader';
+import CardMedia from '@mui/material/CardMedia';
+import CardContent from '@mui/material/CardContent';
+import CardActions from '@mui/material/CardActions';
+import Collapse from '@mui/material/Collapse';
+import Avatar from '@mui/material/Avatar';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
+import {red} from '@mui/material/colors';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import PlayArrowIcon from "@mui/icons-material/PlayArrow";
+import QueueIcon from "@mui/icons-material/Queue";
+import {Box, Divider, List, ListItem, ListItemText, Tooltip} from "@mui/material";
 import {EBoxSet} from "../../hooks/types";
 
-const useStyles = makeStyles((theme) => ({
+const styles = {
 	root: {
 		width: 250
 	},
@@ -27,34 +26,30 @@ const useStyles = makeStyles((theme) => ({
 		height: 0,
 		paddingTop: '56.25%', // 16:9
 	},
-	cardHeaderRoot: {
-		overflow: "hidden"
+	cardHeader: {
+		overflow: "hidden",
+		"& .MuiCardHeader-content": {
+			overflow: "hidden"
+		},
 	},
-	cardHeaderContent: {
-		overflow: "hidden"
-	},
-	expand: {
+	expand: theme => ({
 		transform: 'rotate(0deg)',
 		marginLeft: 'auto',
 		transition: theme.transitions.create('transform', {
 			duration: theme.transitions.duration.shortest,
 		}),
-	},
-	genreListItem: {
-		paddingTop: "2",
-		paddingBottom: "2",
+	}),
+	expandOpen: {
+		transform: 'rotate(180deg)',
 	},
 	genreListItemText: {
 		marginTop: 0,
 		writingMode: "vertical-rl"
 	},
-	expandOpen: {
-		transform: 'rotate(180deg)',
-	},
 	avatar: {
 		backgroundColor: red[500],
 	},
-}));
+} satisfies Record<string, SxProps<Theme>>;
 
 interface Props {
 	nummer: number;
@@ -65,7 +60,6 @@ interface Props {
 }
 
 export default function SetCard({nummer, cardData, playAction, enqueueAction, bookmarkAction}:Props) {
-	const classes = useStyles();
 	const [expanded, setExpanded] = React.useState(false);
 	const handleExpandClick = () => {
 		setExpanded(!expanded);
@@ -74,22 +68,22 @@ export default function SetCard({nummer, cardData, playAction, enqueueAction, bo
 							 + "h:" + String(cardData.duration.getUTCMinutes()).padStart(2,"0")+"m";
 
 	return (
-			<Box display="flex">
+			<Box sx={{display: "flex"}}>
 				<Box>
-					<Card className={classes.root} raised={true}>
-						<CardHeader classes={{root: classes.cardHeaderRoot, content: classes.cardHeaderContent}}
-										avatar={<Avatar aria-label="recipe" className={classes.avatar}>{nummer}</Avatar>}
-										title={cardData.title} titleTypographyProps={{noWrap: true}}
+					<Card sx={styles.root} raised={true}>
+						<CardHeader sx={styles.cardHeader}
+										avatar={<Avatar aria-label="recipe" sx={styles.avatar}>{nummer}</Avatar>}
+										title={cardData.title} slotProps={{title: {noWrap: true}}}
 										subheader={"produziert am " + cardData.created.toLocaleDateString()}
 										action={<IconButton aria-label="settings"><MoreVertIcon/></IconButton>}
 						/>
 
-						<CardMedia className={classes.media} image={cardData.artistDetails[0].artwork.large} title={cardData.title}/>
+						<CardMedia sx={styles.media} image={cardData.artistDetails[0].artwork.large} title={cardData.title}/>
 						<CardContent>
-							<Typography variant="body2" color="textPrimary" component="p" gutterBottom>
+							<Typography variant="body2" color="text.primary" component="p" gutterBottom>
 								{cardData.title}
 							</Typography>
-							{cardData.lastheard && <Typography variant="body2" color="textSecondary" component="p">
+							{cardData.lastheard && <Typography variant="body2" color="text.secondary" component="p">
 								{"zuletzt gehört am " + cardData.lastheard.toLocaleDateString() + " um "
 								 + cardData.lastheard.toLocaleTimeString() + " Uhr"}
 							</Typography>}
@@ -107,15 +101,15 @@ export default function SetCard({nummer, cardData, playAction, enqueueAction, bo
 								</IconButton>
 							</Tooltip>
 							<IconButton
-									className={clsx(classes.expand, {[classes.expandOpen]: expanded,})}
+									sx={[styles.expand, expanded && styles.expandOpen]}
 									onClick={handleExpandClick}>
 								<ExpandMoreIcon/>
 							</IconButton>
 						</CardActions>
 						<Collapse in={expanded} timeout="auto" unmountOnExit>
 							<CardContent>
-								<Typography paragraph>Tracks:</Typography>
-								<Typography paragraph>TODO:implement</Typography>
+								<Typography sx={{mb: 2}}>Tracks:</Typography>
+								<Typography sx={{mb: 2}}>TODO:implement</Typography>
 							</CardContent>
 						</Collapse>
 					</Card>
@@ -123,14 +117,14 @@ export default function SetCard({nummer, cardData, playAction, enqueueAction, bo
 				<Box>
 					<List disablePadding={true}>
 						<Divider/>
-						<ListItem selected={false} disableGutters={true} classes={{root: classes.genreListItem}}>
-							<ListItemText classes={{root: classes.genreListItemText}}>{durationHHMM}</ListItemText>
+						<ListItem disableGutters={true}>
+							<ListItemText sx={styles.genreListItemText}>{durationHHMM}</ListItemText>
 						</ListItem>
 						<Divider/>
 						{cardData.genres && cardData.genres.filter(g => g.name !== "set").slice(0, 3).map(genre => (
 								<React.Fragment key={genre.tid}>
-									<ListItem selected={false} disableGutters={true} classes={{root: classes.genreListItem}}>
-										<ListItemText classes={{root: classes.genreListItemText}}>{genre.name}</ListItemText>
+									<ListItem disableGutters={true}>
+										<ListItemText sx={styles.genreListItemText}>{genre.name}</ListItemText>
 									</ListItem>
 									<Divider/>
 								</React.Fragment>

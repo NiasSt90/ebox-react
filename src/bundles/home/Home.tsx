@@ -1,5 +1,5 @@
-import {Divider, Grid, Link, List, ListItem, ListItemIcon, ListItemText, Typography} from "@material-ui/core";
-import DoneIcon from '@material-ui/icons/Done';
+import {Divider, Grid, Link, List, ListItem, ListItemIcon, ListItemText, Typography} from "@mui/material";
+import DoneIcon from '@mui/icons-material/Done';
 import React, {useEffect} from "react";
 import {useAtom} from "jotai";
 import {pageTitleAtom} from "../../context/atoms";
@@ -35,20 +35,20 @@ export const Home = () => {
 			"Filter bauen, anzeigen und persistent auf dj-junkies speichern/bearbeiten/löschen", false),
 		createRoadmapEntry("Artist-Anzeige", "Suche und Anzeige von DJs", false),
 	]
-	return <Grid container direction="row" justify="center" alignItems="center">
-		<Grid item xs={12}><Logo/></Grid>
-		<Grid item xs={12}>
-			<Typography variant="h5" paragraph>Der neue DJ-Junkies WEB-Client zum Musik hören...</Typography>
+	return <Grid container sx={{justifyContent: "center", alignItems: "center"}}>
+		<Grid size={12}><Logo/></Grid>
+		<Grid size={12}>
+			<Typography variant="h5" sx={{mb: 2}}>Der neue DJ-Junkies WEB-Client zum Musik hören...</Typography>
 		</Grid>
-		<Grid item xs={12}>
+		<Grid size={12}>
 			<Typography gutterBottom data-testid="home">
-				Das Projekt ist OpenSource und der Quellcode ist
+				Das Projekt ist OpenSource und der Quellcode ist{" "}
 				<Link target="_blank" rel="noreferrer" href="https://github.com/NiasSt90/ebox-react">hier</Link> zu
 				finden.
 			</Typography>
 		</Grid>
 
-		<Grid item xs={12}>
+		<Grid size={12}>
 			aktueller Stand/Roadmap:
 			<List>
 				{roadmapEntries.map((entry, index) => <React.Fragment key={index}>

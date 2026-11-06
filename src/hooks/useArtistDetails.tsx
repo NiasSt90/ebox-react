@@ -4,7 +4,7 @@ import {useAtom} from "jotai";
 import {userAtom} from "../context/atoms";
 import {junkiesApi} from "../api/JunkiesApi";
 
-export const defaultImageUrl = process.env.PUBLIC_URL + "/images/dj_silhouette.png";
+export const defaultImageUrl = import.meta.env.BASE_URL + "images/dj_silhouette.png";
 
 interface Props {
 	artists: number[];

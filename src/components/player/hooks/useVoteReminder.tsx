@@ -3,7 +3,7 @@ import {AudioState} from "../types";
 import {PlaylistItem} from "../../../hooks/types";
 import {PlaylistState} from "../../playlist/types";
 
-export const notifyImageUrl = process.env.PUBLIC_URL + "/images/logo.png";
+export const notifyImageUrl = import.meta.env.BASE_URL + "images/logo.png";
 
 export interface Props {
 	playlistState: PlaylistState;
@@ -37,7 +37,6 @@ function nextVoteState(state: VoteReminderState, event: VoteReminderEvents): Vot
 function sendNotification(item: PlaylistItem) {
 	let options: NotificationOptions = {
 		body: `Das gerade gehörte Set ${item.title} wurde noch nicht bewertet.\nJetzt bewerten und dann bessere Vorschläge bekommen..`,
-		renotify: false,
 		icon: notifyImageUrl,
 		dir: "ltr"
 	};
