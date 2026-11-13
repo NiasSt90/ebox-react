@@ -19,7 +19,7 @@ RUN bun run build
 #		--build-arg REST_API_URL=https://www.dj-junkies.de \
 #		--build-arg GIT_COMMIT=$(git rev-parse HEAD) \
 #		--build-arg GIT_VERSION="$(git log --pretty='format:%h %s' -q -1)" .
-FROM nginx:1.19-alpine
+FROM nginx:1.30-alpine
 COPY nginx/default.conf /etc/nginx/conf.d/default.conf
 COPY --from=build /usr/src/app/build /usr/share/nginx/html
 EXPOSE 3000
