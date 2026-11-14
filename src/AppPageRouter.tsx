@@ -5,6 +5,8 @@ import LoginDialog from "./bundles/login/LoginDialog";
 import {RequireAuth} from "./bundles/common/RequireAuth";
 import {SetCardListContainer} from "./bundles/filter/SetCardListContainer";
 import {SetDetailContainer} from "./bundles/set/SetDetailContainer";
+import {PlayingContainer} from "./bundles/playing/PlayingContainer";
+import {LastGoodVotedContainer} from "./bundles/lastgood/LastGoodVotedContainer";
 import {NotifierMessageContainer} from "./bundles/common/NotifierMessageContainer";
 import {EBoxPlayerContainer} from "./components/player/EBoxPlayerContainer";
 import {LoadingIndicator} from "./bundles/common/LoadingIndicator";
@@ -35,6 +37,8 @@ export const AppPageRouter = () => {
 					<Route path="/login" element={<LoginDialog/>}/>
 					<Route path="/filter/:id" element={<RequireAuth><FilterPage/></RequireAuth>}/>
 					<Route path="/set/:nid" element={<RequireAuth><SetDetailPage/></RequireAuth>}/>
+					<Route path="/playing" element={<RequireAuth><PlayingContainer/></RequireAuth>}/>
+					<Route path="/lastgood" element={<RequireAuth><LastGoodVotedContainer/></RequireAuth>}/>
 				</Routes>
 				<NotifierMessageContainer/>
 				<EBoxPlayerContainer/>

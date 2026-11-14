@@ -130,6 +130,17 @@ export const useJunkiesService = (): JunkiesService => {
                     .finally(() => setLoading(false))
             },
 
+            playing: () => {
+                return junkiesApi(user).playing()
+                    .then((plays: any[]) => plays.map(p => ({
+                        timestamp: datum(p.timestamp),
+                        uid: zahl(p.uid),
+                        name: p.name ?? "",
+                        caller: p.caller ?? "",
+                        set: mapFromJsonSet(junkiesApi(user), p.set),
+                    })))
+            },
+
             playinform: (nid: number) => {
                 return junkiesApi(user).playinform(nid).catch(showError)
             },

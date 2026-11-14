@@ -8,9 +8,10 @@ import {useJunkiesService} from "../../hooks/useJunkiesService";
 interface Props {
 	nummer: number;
 	cardData: EBoxSet;
+	hinweis?: string;
 }
 
-export const SetCardContainer = ({nummer, cardData }:Props) => {
+export const SetCardContainer = ({nummer, cardData, hinweis}:Props) => {
 	const playlist = usePlaylist();
 	const junkiesService = useJunkiesService();
 	const artistDetails = useArtistDetails({artists:cardData.artists});
@@ -36,6 +37,6 @@ export const SetCardContainer = ({nummer, cardData }:Props) => {
 		junkiesService.bookmark(details.nid, !details.bookmarked)
 			.then(() => setDetails({...details, bookmarked: !details.bookmarked}))
 	}
-	return <SetCard nummer={nummer} cardData={details}
+	return <SetCard nummer={nummer} cardData={details} hinweis={hinweis}
 					playAction={playAction} enqueueAction={enqueueAction} bookmarkAction={bookmarkAction}/>
 }

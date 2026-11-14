@@ -57,12 +57,13 @@ const styles = {
 interface Props {
 	nummer: number;
 	cardData: EBoxSet;
+	hinweis?: string;
 	playAction():void;
 	enqueueAction():void;
 	bookmarkAction():void;
 }
 
-export default function SetCard({nummer, cardData, playAction, enqueueAction, bookmarkAction}:Props) {
+export default function SetCard({nummer, cardData, hinweis, playAction, enqueueAction, bookmarkAction}:Props) {
 	const [expanded, setExpanded] = React.useState(false);
 	const handleExpandClick = () => {
 		setExpanded(!expanded);
@@ -87,6 +88,7 @@ export default function SetCard({nummer, cardData, playAction, enqueueAction, bo
 							<Typography variant="body2" color="text.primary" component="p" gutterBottom>
 								{cardData.title}
 							</Typography>
+							{hinweis && <Typography variant="body2" color="text.secondary" component="p" gutterBottom>{hinweis}</Typography>}
 							{cardData.lastheard && <Typography variant="body2" color="text.secondary" component="p">
 								{"zuletzt gehört am " + cardData.lastheard.toLocaleDateString() + " um "
 								 + cardData.lastheard.toLocaleTimeString() + " Uhr"}
