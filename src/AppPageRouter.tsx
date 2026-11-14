@@ -4,6 +4,7 @@ import {Home} from "./bundles/home/Home";
 import LoginDialog from "./bundles/login/LoginDialog";
 import {RequireAuth} from "./bundles/common/RequireAuth";
 import {SetCardListContainer} from "./bundles/filter/SetCardListContainer";
+import {SetDetailContainer} from "./bundles/set/SetDetailContainer";
 import {NotifierMessageContainer} from "./bundles/common/NotifierMessageContainer";
 import {EBoxPlayerContainer} from "./components/player/EBoxPlayerContainer";
 import {LoadingIndicator} from "./bundles/common/LoadingIndicator";
@@ -14,6 +15,12 @@ import {Box} from "@mui/material";
 const FilterPage = () => {
 	const {id} = useParams();
 	return <SetCardListContainer key={id ?? 'empty'}/>;
+}
+
+// Eigener key je Set, damit beim Wechsel (z. B. aus dem Player) kein alter Stand stehen bleibt.
+const SetDetailPage = () => {
+	const {nid} = useParams();
+	return <SetDetailContainer key={nid}/>;
 }
 
 export const AppPageRouter = () => {
@@ -27,6 +34,7 @@ export const AppPageRouter = () => {
 					<Route path="/home" element={<Home/>}/>
 					<Route path="/login" element={<LoginDialog/>}/>
 					<Route path="/filter/:id" element={<RequireAuth><FilterPage/></RequireAuth>}/>
+					<Route path="/set/:nid" element={<RequireAuth><SetDetailPage/></RequireAuth>}/>
 				</Routes>
 				<NotifierMessageContainer/>
 				<EBoxPlayerContainer/>

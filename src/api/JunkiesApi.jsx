@@ -60,6 +60,15 @@ export const junkiesApi = (authTokenSupplier) => {
 				.then(response => response.json());
 	}
 
+	/** @param {number} nid ein Set (retrieve), Antwort ein Mxlnode bzw. leeres Objekt */
+	const retrieve = (nid) => {
+		const params = {...authToken.token && {token: authToken.token}};
+		const paramsStr = Object.entries(params).map(pair => pair.map(encodeURIComponent).join('=')).join("&")
+		const url = `${settings.REST_API_URL}/js-api/mischungxl/${encodeURIComponent(nid)}?${paramsStr}`;
+		return customFetch(url, "GET")
+				.then(response => response.json());
+	}
+
 	/** @param {number|null} [id] ohne ID liefert der Server alle Filter des Benutzers */
 	const filterlist = (id = null) => {
 		const params = {
@@ -128,7 +137,8 @@ export const junkiesApi = (authTokenSupplier) => {
 		}
 		const paramsStr = Object.entries(params).map(pair => pair.map(encodeURIComponent).join('=')).join("&")
 		const url = `${settings.REST_API_URL}/js-api/comment?${paramsStr}`;
-		return customFetch(url, "POST", {nid:nid, subject:"ReactWeb", comment:commentText})
+		// ohne subject leitet der Server den Betreff aus dem Text ab
+		return customFetch(url, "POST", {nid:nid, comment:commentText})
 				.then(response => response.json());
 	}
 
@@ -145,6 +155,7 @@ export const junkiesApi = (authTokenSupplier) => {
 		login,
 		connect,
 		setlist,
+		retrieve,
 		filterlist,
 		artistinfo,
 		playinform,
