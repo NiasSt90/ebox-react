@@ -69,6 +69,15 @@ export const junkiesApi = (authTokenSupplier) => {
 				.then(response => response.json());
 	}
 
+	/** Plays der letzten 120 min, neueste zuerst: [{timestamp, uid, name, caller, set: Mxlnode}] */
+	const playing = () => {
+		const params = {...authToken.token && {token: authToken.token}};
+		const paramsStr = Object.entries(params).map(pair => pair.map(encodeURIComponent).join('=')).join("&")
+		const url = `${settings.REST_API_URL}/js-api/mischungxl/playing?${paramsStr}`;
+		return customFetch(url, "GET")
+				.then(response => response.json());
+	}
+
 	/** @param {number|null} [id] ohne ID liefert der Server alle Filter des Benutzers */
 	const filterlist = (id = null) => {
 		const params = {
@@ -156,6 +165,7 @@ export const junkiesApi = (authTokenSupplier) => {
 		connect,
 		setlist,
 		retrieve,
+		playing,
 		filterlist,
 		artistinfo,
 		playinform,

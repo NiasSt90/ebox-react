@@ -10,6 +10,8 @@ export interface JunkiesService {
     setlist(searchParams: any):Promise<EBoxSet[]>;
     /** ein Set mit allen Details; undefined, wenn es nicht (mehr) aktiv ist */
     set(nid: number):Promise<EBoxSet|undefined>;
+    /** „Gerade gehört“: Plays der letzten 120 min, neueste zuerst */
+    playing():Promise<EBoxPlay[]>;
     playinform(nid: number):Promise;
     vote(nid: number, vote: EBoxVote):Promise;
     bookmark(nid: number, createBookmark: boolean): Promise;
@@ -25,6 +27,8 @@ export interface EBoxSearchParams {
     page: number;
     filterid?:number;
     s?: string;
+    /** Basisfilter, z. B. 12 = zuletzt gut bewertet */
+    votings?: number;
 }
 
 export interface EBoxGenre {
@@ -70,6 +74,15 @@ export interface EBoxVotes {
     all: EBoxUserVote[];
     /** wer das Set als erster gut bewertet hat */
     firstGood?: EBoxUserVote;
+}
+
+export interface EBoxPlay {
+    timestamp: Date;
+    uid: number;
+    name: string;
+    /** Client, der den Play gemeldet hat (App-Version, "XBMC", …) */
+    caller: string;
+    set: EBoxSet;
 }
 
 export interface EBoxComment {
