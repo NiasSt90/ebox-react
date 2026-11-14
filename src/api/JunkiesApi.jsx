@@ -1,5 +1,17 @@
 import settings, {appVersion} from "../settings";
 
+/**
+ * Query-String wie ihn die Legacy-API (PHP) erwartet: Arrays als `name[]=a&name[]=b`,
+ * undefined/null werden weggelassen.
+ * @param {Object<string, any>} params
+ */
+export const queryString = (params) => Object.entries(params)
+		.filter(([, wert]) => wert !== undefined && wert !== null)
+		.flatMap(([name, wert]) => Array.isArray(wert)
+				? wert.map(w => encodeURIComponent(name + "[]") + "=" + encodeURIComponent(w))
+				: [encodeURIComponent(name) + "=" + encodeURIComponent(wert)])
+		.join("&");
+
 export const junkiesApi = (authTokenSupplier) => {
 	const authToken = authTokenSupplier;
 	const defaultHeader = () => {
@@ -54,8 +66,7 @@ export const junkiesApi = (authTokenSupplier) => {
 			...authToken.token && {token: authToken.token},
 			...searchParams
 		};
-		const paramsStr = Object.entries(params).map(pair => pair.map(encodeURIComponent).join('=')).join("&")
-		const url = `${settings.REST_API_URL}/js-api/mischungxl?${paramsStr}`;
+		const url = `${settings.REST_API_URL}/js-api/mischungxl?${queryString(params)}`;
 		return customFetch(url, "GET")
 				.then(response => response.json());
 	}
@@ -75,6 +86,36 @@ export const junkiesApi = (authTokenSupplier) => {
 		const paramsStr = Object.entries(params).map(pair => pair.map(encodeURIComponent).join('=')).join("&")
 		const url = `${settings.REST_API_URL}/js-api/mischungxl/playing?${paramsStr}`;
 		return customFetch(url, "GET")
+				.then(response => response.json());
+	}
+
+	/**
+	 * Filter anlegen (ohne filterid) oder ändern; mit ersetzen=1 ersetzt ebox-backend die gespeicherten Kriterien
+	 * vollständig. Antwort {successful, filter} bzw. {successful: false, message}.
+	 */
+	const editfilter = (params) => {
+		const all = {...params, ...authToken.token && {token: authToken.token}};
+		const url = `${settings.REST_API_URL}/js-api/mischungxl/editfilter?${queryString(all)}`;
+		return customFetch(url, "POST").then(response => response.json());
+	}
+
+	const deletefilter = (filterid) => {
+		const all = {filterid, ...authToken.token && {token: authToken.token}};
+		const url = `${settings.REST_API_URL}/js-api/mischungxl/deletefilter?${queryString(all)}`;
+		return customFetch(url, "POST").then(response => response.json());
+	}
+
+	/** Genres und Tags: [{tid, vid, vocabulary, name, parent, weight}] */
+	const genres = () => {
+		const all = {...authToken.token && {token: authToken.token}};
+		return customFetch(`${settings.REST_API_URL}/js-api/mischungxl/genres?${queryString(all)}`, "GET")
+				.then(response => response.json());
+	}
+
+	/** Artist-Suche: {s: "teil"} oder {djid: [1, 2]} → [{djid, nid, name}] */
+	const artists = (suche) => {
+		const all = {...suche, ...authToken.token && {token: authToken.token}};
+		return customFetch(`${settings.REST_API_URL}/js-api/mischungxl/artists?${queryString(all)}`, "GET")
 				.then(response => response.json());
 	}
 
@@ -167,6 +208,10 @@ export const junkiesApi = (authTokenSupplier) => {
 		retrieve,
 		playing,
 		filterlist,
+		editfilter,
+		deletefilter,
+		genres,
+		artists,
 		artistinfo,
 		playinform,
 		vote,

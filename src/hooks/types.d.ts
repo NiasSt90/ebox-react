@@ -1,3 +1,5 @@
+import {FilterEntwurf} from "../bundles/filtereditor/filterModel";
+
 export interface NotifyMessage {
     message: string;
     severity: "success"|"info"|"warning"|"error";
@@ -10,6 +12,12 @@ export interface JunkiesService {
     setlist(searchParams: any):Promise<EBoxSet[]>;
     /** ein Set mit allen Details; undefined, wenn es nicht (mehr) aktiv ist */
     set(nid: number):Promise<EBoxSet|undefined>;
+    genres():Promise<EBoxGenreTerm[]>;
+    /** Artist-Suche nach Namensteil oder zu djids */
+    artists(suche: {s: string} | {djid: number[]}):Promise<EBoxArtistTreffer[]>;
+    /** speichert (ersetzt) den Filter; liefert den gespeicherten Filter (getfilters-Format), wirft bei Fehler */
+    saveFilter(entwurf: FilterEntwurf):Promise<any>;
+    deleteFilter(filterid: number):Promise<void>;
     /** „Gerade gehört“: Plays der letzten 120 min, neueste zuerst */
     playing():Promise<EBoxPlay[]>;
     playinform(nid: number):Promise;
@@ -21,6 +29,23 @@ export interface JunkiesService {
 export interface EBoxFilter {
     filterid: number;
     filtername: string;
+    is_preset?: boolean;
+    [kriterium: string]: any;
+}
+
+export interface EBoxGenreTerm {
+    tid: number;
+    vid: number;
+    vocabulary: "genre" | "tag";
+    name: string;
+    parent: number;
+    weight: number;
+}
+
+export interface EBoxArtistTreffer {
+    djid: number;
+    nid: number;
+    name: string;
 }
 
 export interface EBoxSearchParams {

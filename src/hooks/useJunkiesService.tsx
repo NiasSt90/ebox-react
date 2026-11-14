@@ -5,6 +5,7 @@ import {junkiesApi} from "../api/JunkiesApi";
 import {defaultImageUrl} from "./useArtistDetails";
 import {EBoxComment, EBoxSet, EBoxUserVote, EBoxVote, EBoxVotes, JunkiesService, NotifyMessage} from "./types";
 import {htmlZuText} from "../bundles/common/text";
+import {alsParameter, FilterEntwurf} from "../bundles/filtereditor/filterModel";
 import {mapEBoxVoteToNumber, mapNumberToEBoxVote} from "../bundles/common/helper";
 
 const zahl = (wert: any): number => Number.parseInt(String(wert));
@@ -129,6 +130,32 @@ export const useJunkiesService = (): JunkiesService => {
                     .then(json => json && json.nid ? mapFromJsonSet(junkiesApi(user), json) : undefined)
                     .finally(() => setLoading(false))
             },
+
+            genres: () => junkiesApi(user).genres(),
+
+            artists: (suche: {s: string} | {djid: number[]}) => junkiesApi(user).artists(suche),
+
+            saveFilter: (entwurf: FilterEntwurf) => {
+                const params = {
+                    ...alsParameter(entwurf.kriterien),
+                    ...entwurf.filterid && {filterid: entwurf.filterid},
+                    filtername: entwurf.filtername.trim(),
+                    is_preset: entwurf.is_preset ? 1 : 0,
+                    ersetzen: 1,
+                };
+                return junkiesApi(user).editfilter(params).then((antwort: any) => {
+                    if (!antwort?.successful) {
+                        throw new Error(antwort?.message || "Filter konnte nicht gespeichert werden");
+                    }
+                    return antwort.filter;
+                });
+            },
+
+            deleteFilter: (filterid: number) => junkiesApi(user).deletefilter(filterid).then((antwort: any) => {
+                if (!antwort?.successful) {
+                    throw new Error(antwort?.message || "Filter konnte nicht gelöscht werden");
+                }
+            }),
 
             playing: () => {
                 return junkiesApi(user).playing()
