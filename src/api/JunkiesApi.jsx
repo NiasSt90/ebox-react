@@ -61,6 +61,13 @@ export const junkiesApi = (authTokenSupplier) => {
 				.then(response => response.json());
 	}
 
+	/** connect mit Keycloak-Access-Token (ebox-backend, ab S5): Nutzer samt Legacy-Token */
+	const connectMitBearer = (accessToken) => {
+		const headers = {...defaultHeader(), Authorization: `Bearer ${accessToken}`};
+		return customFetch(`${settings.REST_API_URL}/js-api/mischungxl/connect`, "POST", false, "application/json", headers)
+				.then(response => response.json());
+	}
+
 	const setlist = (searchParams) => {
 		const params = {
 			...authToken.token && {token: authToken.token},
@@ -204,6 +211,7 @@ export const junkiesApi = (authTokenSupplier) => {
 	return {
 		login,
 		connect,
+		connectMitBearer,
 		setlist,
 		retrieve,
 		playing,
