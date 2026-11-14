@@ -2,6 +2,8 @@ import PersistentDrawerLeft from "./components/NavigationDrawer";
 import {Navigate, Route, Routes, useMatch, useParams} from "react-router";
 import {Home} from "./bundles/home/Home";
 import LoginDialog from "./bundles/login/LoginDialog";
+import OidcLogin from "./bundles/login/OidcLogin";
+import {oidcAktiv} from "./auth/oidc";
 import {RequireAuth} from "./bundles/common/RequireAuth";
 import {SetCardListContainer} from "./bundles/filter/SetCardListContainer";
 import {SetDetailContainer} from "./bundles/set/SetDetailContainer";
@@ -48,7 +50,7 @@ export const AppPageRouter = () => {
 				<Routes>
 					<Route path="/" element={<Navigate to="/home" replace/>}/>
 					<Route path="/home" element={<Home/>}/>
-					<Route path="/login" element={<LoginDialog/>}/>
+					<Route path="/login" element={oidcAktiv ? <OidcLogin/> : <LoginDialog/>}/>
 					<Route path="/filter/neu" element={<RequireAuth><FilterEditorContainer key="neu"/></RequireAuth>}/>
 					<Route path="/filter/:id/bearbeiten" element={<RequireAuth><FilterEditorPage/></RequireAuth>}/>
 					<Route path="/filter/:id" element={<RequireAuth><FilterPage/></RequireAuth>}/>

@@ -11,6 +11,9 @@ ENV VITE_GIT_SHA=$GIT_COMMIT
 # Pflicht: Backend der Zielumgebung, z. B. https://www.dj-junkies.de (live) oder https://test.dj-junkies.de (test)
 ARG REST_API_URL
 ENV VITE_REST_API_URL=$REST_API_URL
+# Optional: Keycloak-Realm für die Anmeldung (E5), z. B. https://auth.dj-junkies.de/realms/electrobox; leer = Login-Formular
+ARG KEYCLOAK_URL=""
+ENV VITE_KEYCLOAK_URL=$KEYCLOAK_URL
 RUN bun run build
 
 ### STAGE 2: Production Environment ###
