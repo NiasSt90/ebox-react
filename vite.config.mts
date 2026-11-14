@@ -13,8 +13,8 @@ const gitSha = (() => {
 	}
 })();
 
-// Lokale Umgebung aus electrobox-infra (deploy/local): nginx auf Port 8080.
-const LOCAL_API_URL = "http://localhost:8080";
+// Lokale Umgebung aus electrobox-infra (deploy/local): nginx-Server „nach Umschaltung“ auf Port 8082.
+const LOCAL_API_URL = "http://localhost:8082";
 
 export default defineConfig(({command, mode}) => {
 	// Vorgaben in process.env setzen, damit Vite sie auch in index.html
