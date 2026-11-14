@@ -6,6 +6,7 @@ import FolderSpecialIcon from '@mui/icons-material/FolderSpecial';
 import HeadphonesIcon from '@mui/icons-material/Headphones';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import AddIcon from '@mui/icons-material/Add';
+import PersonSearchIcon from '@mui/icons-material/PersonSearch';
 
 export const NavigationList = ({filters}) => {
 	return <List>
@@ -20,6 +21,10 @@ export const NavigationList = ({filters}) => {
 		<ListItemButton component={Link} to="/lastgood">
 			<ListItemIcon><ThumbUpIcon/></ListItemIcon>
 			<ListItemText primary="Zuletzt gut bewertet"/>
+		</ListItemButton>
+		<ListItemButton component={Link} to="/artists">
+			<ListItemIcon><PersonSearchIcon/></ListItemIcon>
+			<ListItemText primary="Artists"/>
 		</ListItemButton>
 		<ListItemButton component={Link} to="/filter/neu">
 			<ListItemIcon><AddIcon/></ListItemIcon>

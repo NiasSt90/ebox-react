@@ -11,10 +11,12 @@ export const NavigationListContainer = () => {
 	useEffect(() => {
 		junkiesApi.filterlist()
 				.then((res) => {
-					const newFilters = res.filter(f => f.filtername !== "")
+					// ohne Anmeldung bzw. bei Fehlern kommt keine Liste
+					const newFilters = (Array.isArray(res) ? res : []).filter(f => f.filtername !== "")
 							.map(f => ({id: f.filterid, name:f.filtername, user: !f.is_preset}));
 					setFilter(newFilters)
-				});
+				})
+				.catch(() => setFilter([]));
 	}, [junkiesApi,setFilter,filterVersion])
 
 	return <>

@@ -31,7 +31,7 @@ export const Home = () => {
 		createRoadmapEntry("Gerade gehört / Zuletzt gut bewertet", "wer gerade was hört und welche Sets zuletzt gut bewertet wurden", true),
 		createRoadmapEntry("Filter-Editor",
 			"Filter bauen, Vorschau ansehen und persistent auf dj-junkies speichern/bearbeiten/löschen", true),
-		createRoadmapEntry("Artist-Anzeige", "Suche und Anzeige von DJs", false),
+		createRoadmapEntry("Artist-Anzeige", "Artists suchen, Bio, ähnliche Artists und alle Sets eines Artists", true),
 	]
 	return <Grid container sx={{justifyContent: "center", alignItems: "center"}}>
 		<Grid size={12}><Logo/></Grid>
