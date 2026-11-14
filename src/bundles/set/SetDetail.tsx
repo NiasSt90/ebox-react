@@ -12,6 +12,7 @@ import {
 	List,
 	ListItem,
 	ListItemAvatar,
+	Link,
 	ListItemText,
 	Rating,
 	Stack,
@@ -28,6 +29,7 @@ import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import ThumbsUpDownIcon from "@mui/icons-material/ThumbsUpDown";
 import ThumbDownIcon from "@mui/icons-material/ThumbDown";
 import {EBoxSet, EBoxTrack, EBoxVote} from "../../hooks/types";
+import {Link as RouterLink} from "react-router";
 import {readableTime} from "../common/helper";
 
 export interface SetDetailActions {
@@ -118,7 +120,8 @@ export const SetDetail = ({set, actions, canWrite}: Props) => {
 				{set.artistDetails.map(a =>
 					<ListItem key={a.nid} alignItems="flex-start" disableGutters>
 						<ListItemAvatar><Avatar src={a.artwork.small ?? a.artwork.large} alt={a.name}/></ListItemAvatar>
-						<ListItemText primary={a.name + (a.country ? ` (${a.country.toUpperCase()})` : "")}
+						<ListItemText primary={<Link component={RouterLink} to={"/artist/" + a.nid} color="inherit" underline="hover">
+											  {a.name + (a.country ? ` (${a.country.toUpperCase()})` : "")}</Link>}
 										  secondary={a.bio} slotProps={{secondary: {sx: {whiteSpace: "pre-line"}}}}/>
 					</ListItem>)}
 			</List>

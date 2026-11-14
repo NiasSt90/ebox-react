@@ -70,6 +70,8 @@ export interface EBoxArtist {
     /** Kurz-Bio von last.fm als reiner Text */
     bio?: string;
     country?: string;
+    /** ähnliche Artists (nids) laut last.fm, bester Treffer zuerst */
+    similar?: number[];
     artwork: {[size in ArtistImageSizes]?: string}
 }
 
