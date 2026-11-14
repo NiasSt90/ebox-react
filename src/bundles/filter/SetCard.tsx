@@ -17,6 +17,9 @@ import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import QueueIcon from "@mui/icons-material/Queue";
 import {Box, Divider, List, ListItem, ListItemText, Tooltip} from "@mui/material";
 import {EBoxSet} from "../../hooks/types";
+import {Link as RouterLink} from "react-router";
+import Link from "@mui/material/Link";
+import {readableTime} from "../common/helper";
 
 const styles = {
 	root: {
@@ -73,9 +76,10 @@ export default function SetCard({nummer, cardData, playAction, enqueueAction, bo
 					<Card sx={styles.root} raised={true}>
 						<CardHeader sx={styles.cardHeader}
 										avatar={<Avatar aria-label="recipe" sx={styles.avatar}>{nummer}</Avatar>}
-										title={cardData.title} slotProps={{title: {noWrap: true}}}
+										title={<Link component={RouterLink} to={"/set/" + cardData.nid} color="inherit" underline="hover">{cardData.title}</Link>}
+										slotProps={{title: {noWrap: true}}}
 										subheader={"produziert am " + cardData.created.toLocaleDateString()}
-										action={<IconButton aria-label="settings"><MoreVertIcon/></IconButton>}
+										action={<Tooltip title="Set-Details"><IconButton aria-label="Set-Details" component={RouterLink} to={"/set/" + cardData.nid}><MoreVertIcon/></IconButton></Tooltip>}
 						/>
 
 						<CardMedia sx={styles.media} image={cardData.artistDetails[0].artwork.large} title={cardData.title}/>
@@ -108,8 +112,15 @@ export default function SetCard({nummer, cardData, playAction, enqueueAction, bo
 						</CardActions>
 						<Collapse in={expanded} timeout="auto" unmountOnExit>
 							<CardContent>
-								<Typography sx={{mb: 2}}>Tracks:</Typography>
-								<Typography sx={{mb: 2}}>TODO:implement</Typography>
+								<Typography variant="subtitle2">Tracks:</Typography>
+								<List dense disablePadding>
+									{cardData.tracks.map((track, i) =>
+										<ListItem key={track.url} disableGutters>
+											<ListItemText primary={`${i + 1}. ${track.title}`}
+															  secondary={track.duration ? readableTime(track.duration) : undefined}/>
+										</ListItem>)}
+								</List>
+								<Link component={RouterLink} to={"/set/" + cardData.nid} variant="body2">alle Details</Link>
 							</CardContent>
 						</Collapse>
 					</Card>

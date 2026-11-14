@@ -3,6 +3,7 @@ import {ArtistImageSizes, EBoxArtist} from "./types";
 import {useAtom} from "jotai";
 import {userAtom} from "../context/atoms";
 import {junkiesApi} from "../api/JunkiesApi";
+import {htmlZuText} from "../bundles/common/text";
 
 export const defaultImageUrl = import.meta.env.BASE_URL + "images/dj_silhouette.png";
 
@@ -34,7 +35,14 @@ export const useArtistDetails = ({artists}:Props):EBoxArtist[] => {
 						if (images) {
 							images.forEach((img:any) => data.artwork[img.size as ArtistImageSizes] = img["#text"])
 						}
-						data.name = artistInfo["lastfm_artistinfo"]["name"];
+						data.name = artistInfo["lastfm_artistinfo"]["name"] || data.name;
+						const bio = htmlZuText(artistInfo["lastfm_artistinfo"]["bio"]?.["summary"]);
+						if (bio) {
+							data.bio = bio;
+						}
+					}
+					if (artistInfo?.country) {
+						data.country = artistInfo.country;
 					}
 					if (mounted) {
 						setArtistDetails((curData) => [...curData && [...curData], data]);
