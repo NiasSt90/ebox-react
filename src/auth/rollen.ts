@@ -48,6 +48,9 @@ export interface SetEigentum {
 	status?: number;
 	/** Anzahl Tracks */
 	tracks: number;
+	/** aus dem Block pflege der Pflege-Endpunkte; fehlt bei getnodes */
+	unfertig?: boolean;
+	deaktiviert?: boolean;
 }
 
 export type SetAktion = "bearbeiten" | "hochladen" | "trackscan" | "deaktivieren" | "reaktivieren";
@@ -56,8 +59,13 @@ export type SetAktion = "bearbeiten" | "hochladen" | "trackscan" | "deaktivieren
 export const darfSetPflegen = (r: Rollen, set: SetEigentum): boolean =>
 	r.admin || (r.uploader && set.uid !== undefined && set.uid === r.uid);
 
-/** Status 0 ohne Tracks: angelegt, aber Upload nicht abgeschlossen (deaktivierte Sets haben Tracks). */
-export const istUnfertig = (set: SetEigentum): boolean => set.status === 0 && set.tracks === 0;
+/** Upload nicht abgeschlossen: laut Block pflege, ohne ihn geschätzt als status 0 ohne Tracks. */
+export const istUnfertig = (set: SetEigentum): boolean =>
+	set.unfertig ?? (set.status === 0 && set.tracks === 0);
+
+/** deaktiviert (nicht unfertig): laut Block pflege, ohne ihn status 0 mit Tracks. */
+export const istDeaktiviert = (set: SetEigentum): boolean =>
+	set.deaktiviert ?? (set.status === 0 && set.tracks > 0);
 
 /** Einträge des ⋮-Menüs an der Set-Karte; leer = kein Pflege-Menü. */
 export const setAktionen = (r: Rollen, set: SetEigentum): SetAktion[] => {
@@ -65,9 +73,9 @@ export const setAktionen = (r: Rollen, set: SetEigentum): SetAktion[] => {
 		return [];
 	}
 	const aktionen: SetAktion[] = ["bearbeiten", "hochladen", "trackscan"];
-	if (set.status === 0) {
-		// reaktivieren nur Admin und nur mit Tracks (ebox-backend antwortet sonst 406)
-		if (r.admin && set.tracks > 0) {
+	if (set.status === 0 || istUnfertig(set) || istDeaktiviert(set)) {
+		// reaktivieren nur Admin, nur deaktivierte Sets mit Tracks (ebox-backend antwortet sonst 406)
+		if (r.admin && istDeaktiviert(set) && set.tracks > 0) {
 			aktionen.push("reaktivieren");
 		}
 	} else {

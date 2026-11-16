@@ -51,4 +51,9 @@ test("Eigentümer, Status und djids für die Pflege", () => {
 	const ohne = mapFromJsonSet(api, json);
 	expect(ohne.uid).toBeUndefined();
 	expect(ohne.status).toBeUndefined();
+	expect(ohne.pflege).toBeUndefined();
+	const mitPflege = mapFromJsonSet(api, {...json, pflege: {unfertig: true, deaktiviert: false, herkunft: "upload",
+		artistdetection_disabled: true, taxonomy_by_dj: false, fulltitle: "Deep Session 2026"}});
+	expect(mitPflege.pflege).toEqual({unfertig: true, deaktiviert: false, herkunft: "upload",
+		artistdetection_disabled: true, taxonomy_by_dj: false, fulltitle: "Deep Session 2026"});
 });

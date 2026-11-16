@@ -40,6 +40,17 @@ test("Formular aus einem Set: Datum, nur Genres (keine Tags)", () => {
 	expect(datumAlsText(new Date(0))).toBe("");
 });
 
+test("Formular mit Block pflege: Originaltitel und echte Schalter", () => {
+	const set = {
+		nid: 1, title: "nova kestrel - Wintermix", created: new Date(Number.NaN), genres: [], tracks: [],
+		pflege: {unfertig: false, deaktiviert: false, herkunft: "upload", artistdetection_disabled: true, taxonomy_by_dj: true,
+			fulltitle: "Nova Kestrel – Wintermix 2026"},
+	} as unknown as EBoxSet;
+	expect(formularAusSet(set, [], [])).toMatchObject({
+		title: "Nova Kestrel – Wintermix 2026", setcreated: "", artistErkennung: false, genresVomArtist: true,
+	});
+});
+
 test("Fehler: Feldfehler am Feld, Rest allgemein", () => {
 	expect(fehlerAufteilen(new PflegeFehler(406, "Titel fehlt", {title: "Titel fehlt"}), SET_FELDER))
 		.toEqual({felder: {title: "Titel fehlt"}});
@@ -55,4 +66,9 @@ test("Hinweis an der Karte: unfertig oder deaktiviert", () => {
 	expect(statusHinweis(set(undefined, 0))).toBeUndefined();
 	expect(statusHinweis(set(0, 2))).toBe("deaktiviert");
 	expect(statusHinweis(set(0, 0))).toMatch(/unfertig/);
+	const mitPflege = (status: number, tracks: number, unfertig: boolean, deaktiviert: boolean) =>
+		({...set(status, tracks), pflege: {unfertig, deaktiviert, herkunft: "upload", artistdetection_disabled: false, taxonomy_by_dj: false, fulltitle: ""}} as EBoxSet);
+	expect(statusHinweis(mitPflege(0, 2, true, false))).toMatch(/unfertig/);
+	expect(statusHinweis(mitPflege(0, 0, false, true))).toBe("deaktiviert");
+	expect(statusHinweis(mitPflege(1, 2, false, false))).toBeUndefined();
 });

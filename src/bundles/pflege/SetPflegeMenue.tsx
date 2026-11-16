@@ -14,6 +14,7 @@ import {notifyMessageAtom} from "../../context/atoms";
 import {usePflege} from "../../hooks/usePflege";
 import {istUnfertig, SetAktion, setAktionen} from "../../auth/rollen";
 import {SetBearbeitenDialog} from "./SetBearbeitenDialog";
+import {setEigentum} from "./pflegeModel";
 import {UploadWizard} from "./UploadWizard";
 
 interface Props {
@@ -22,8 +23,6 @@ interface Props {
 	onGeaendert(mxlnode: any): void;
 }
 
-/** Aktionen am Set für die Rechte-Prüfung */
-export const setEigentum = (set: EBoxSet) => ({uid: set.uid, status: set.status, tracks: set.tracks.length});
 
 /**
  * ⋮-Menü an der Set-Karte: „Set-Details“ für alle; für Admins und den Uploader am eigenen Set zusätzlich

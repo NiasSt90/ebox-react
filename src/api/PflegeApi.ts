@@ -132,6 +132,8 @@ export const pflegeApi = (accessToken: string, basis: string = settings.REST_API
 		setBearbeiten: (nid: number, daten: SetDaten) => aufruf<any>("POST", url("setbearbeiten", {nid}), daten),
 		/** aktiv=false deaktivieren (Eigentümer, Admin), aktiv=true reaktivieren (Admin) */
 		setStatus: (nid: number, aktiv: boolean) => aufruf<any>("POST", url("setstatus", {nid, status: aktiv ? 1 : 0})),
+		/** das Set mit dem Block pflege (Stand für den Bearbeiten-Dialog) */
+		setPflege: (nid: number) => aufruf<any>("GET", url("setpflege", {nid})),
 		trackScan: (nid: number) => aufruf<TrackScanErgebnis>("POST", url("trackscan", {nid})),
 		meineSets: () => aufruf<any[]>("GET", url("meinesets")),
 		deaktivierteSets: () => aufruf<any[]>("GET", url("deaktiviertesets")),

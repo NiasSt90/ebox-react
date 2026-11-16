@@ -47,6 +47,13 @@ test("setbearbeiten, setstatus, trackscan mit nid in der Query", async () => {
 	expect(aufruf(t.fetchFn).init.method).toBe("POST");
 });
 
+test("setpflege per GET mit nid", async () => {
+	const t = mitFetch(200, {nid: 12, pflege: {unfertig: false}});
+	await expect(t.api.setPflege(12)).resolves.toMatchObject({nid: 12});
+	expect(aufruf(t.fetchFn)).toMatchObject({url: `${BASIS}/js-api/mischungxl/setpflege?nid=12`, init: {method: "GET"}});
+	expect(aufruf(t.fetchFn).headers.Authorization).toBe("Bearer jwt-123");
+});
+
 test("meinesets und deaktiviertesets per GET", async () => {
 	let t = mitFetch(200, [{nid: 1}]);
 	await expect(t.api.meineSets()).resolves.toEqual([{nid: 1}]);

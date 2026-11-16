@@ -6,8 +6,8 @@ import {usePlaylist} from "../../components/playlist/hooks/usePlaylist";
 import {mapFromJsonSet, useJunkiesService} from "../../hooks/useJunkiesService";
 import {usePflege} from "../../hooks/usePflege";
 import {setAktionen} from "../../auth/rollen";
-import {setEigentum, SetPflegeMenue} from "../pflege/SetPflegeMenue";
-import {statusHinweis} from "../pflege/pflegeModel";
+import {SetPflegeMenue} from "../pflege/SetPflegeMenue";
+import {setEigentum, statusHinweis} from "../pflege/pflegeModel";
 
 interface Props {
 	nummer: number;

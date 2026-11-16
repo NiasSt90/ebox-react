@@ -88,6 +88,14 @@ export function mapFromJsonSet(api: any, set: any): EBoxSet {
         ...set.uid !== null && set.uid !== undefined && {uid: zahl(set.uid)},
         ...set.status !== null && set.status !== undefined && {status: zahl(set.status)},
         djids: (set.artists ?? []).map((a: any) => zahl(a.djid)).filter((d: number) => d > 0),
+        ...set.pflege && {pflege: {
+            unfertig: Boolean(set.pflege.unfertig),
+            deaktiviert: Boolean(set.pflege.deaktiviert),
+            herkunft: set.pflege.herkunft ?? null,
+            artistdetection_disabled: Boolean(set.pflege.artistdetection_disabled),
+            taxonomy_by_dj: Boolean(set.pflege.taxonomy_by_dj),
+            fulltitle: set.pflege.fulltitle ?? "",
+        }},
     } as EBoxSet;
 }
 

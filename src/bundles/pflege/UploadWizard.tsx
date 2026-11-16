@@ -8,7 +8,8 @@ import {EBoxSet} from "../../hooks/types";
 import {mapFromJsonSet, useJunkiesService} from "../../hooks/useJunkiesService";
 import {usePflege} from "../../hooks/usePflege";
 import {pruefeUploadDatei, TrackScanErgebnis, UPLOAD_ENDUNGEN, UploadAuftrag} from "../../api/PflegeApi";
-import {datumAlsText, fehlerAufteilen, neuesSet, SET_FELDER, SetFormular} from "./pflegeModel";
+import {datumAlsText, fehlerAufteilen, neuesSet, SET_FELDER, setEigentum, SetFormular} from "./pflegeModel";
+import {istUnfertig} from "../../auth/rollen";
 import {SetFelder} from "./SetFelder";
 import {SetBearbeitenDialog} from "./SetBearbeitenDialog";
 
@@ -173,7 +174,7 @@ export const UploadWizard = ({set, onClose, onGeaendert}: Props) => {
 		}
 	};
 
-	const unfertig = aktuellesSet?.status === 0 && aktuellesSet.tracks.length === 0 && !(scan && scan.tracks > 0);
+	const unfertig = aktuellesSet !== undefined && istUnfertig(setEigentum(aktuellesSet)) && !(scan && scan.tracks > 0);
 	const offen = dateien.some(d => d.status !== "fertig");
 
 	return <Dialog open onClose={laeuft ? undefined : onClose} fullWidth maxWidth="sm">

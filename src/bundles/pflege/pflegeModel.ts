@@ -1,5 +1,12 @@
 import {SetDaten} from "../../api/PflegeApi";
 import {EBoxGenreTerm, EBoxSet} from "../../hooks/types";
+import {istDeaktiviert, istUnfertig, SetEigentum} from "../../auth/rollen";
+
+/** Set für die Rechte-Prüfung; unfertig/deaktiviert aus dem Block pflege, falls vorhanden */
+export const setEigentum = (set: EBoxSet): SetEigentum => ({
+	uid: set.uid, status: set.status, tracks: set.tracks.length,
+	...set.pflege && {unfertig: set.pflege.unfertig, deaktiviert: set.pflege.deaktiviert},
+});
 
 /** Inhalt des Bearbeiten-Dialogs (und des ersten Wizard-Schritts) */
 export interface SetFormular {
@@ -22,15 +29,15 @@ export const datumAlsText = (d?: Date): string => {
 };
 
 /**
- * Formular aus einem Set. Ob Artist-Erkennung und „Genres vom Artist“ gesetzt sind, steht nicht im Mxlnode; das
- * Formular nimmt Erkennung an und schickt beides nur, wenn es geändert wurde.
+ * Formular aus einem Set. Titel, Artist-Erkennung und „Genres vom Artist“ aus dem Block pflege (setpflege); ohne ihn
+ * Anzeigetitel, Erkennung an, Genres nicht vom Artist.
  */
 export const formularAusSet = (set: EBoxSet, artistnames: string[], genreTerms: EBoxGenreTerm[]): SetFormular => ({
-	title: set.title ?? "",
+	title: set.pflege?.fulltitle || set.title || "",
 	setcreated: datumAlsText(set.created),
-	artistErkennung: true,
+	artistErkennung: !(set.pflege?.artistdetection_disabled ?? false),
 	artistnames,
-	genresVomArtist: false,
+	genresVomArtist: set.pflege?.taxonomy_by_dj ?? false,
 	// nur Begriffe aus dem Vokabular Genres (Tags pflegt der Dialog nicht)
 	genres: (set.genres ?? []).map(g => g.tid)
 		.filter(tid => genreTerms.some(t => t.tid === tid && t.vocabulary === "genre")),
@@ -76,10 +83,11 @@ export const neuesSet = (f: Pick<SetFormular, "title" | "setcreated" | "artistna
 
 /** Hinweis an der Set-Karte für Sets, die nur Berechtigte sehen */
 export const statusHinweis = (set: EBoxSet): string | undefined => {
-	if (set.status !== 0) {
+	if (set.status !== 0 && !set.pflege) {
 		return undefined;
 	}
-	return set.tracks.length === 0 ? "unfertig – Upload fortsetzen über ⋮" : "deaktiviert";
+	const eigentum = setEigentum(set);
+	return istUnfertig(eigentum) ? "unfertig – Upload fortsetzen über ⋮" : istDeaktiviert(eigentum) ? "deaktiviert" : undefined;
 };
 
 /**

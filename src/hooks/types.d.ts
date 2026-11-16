@@ -146,6 +146,18 @@ export interface EBoxSet {
     status?: number;
     /** djids der Artists (für die Pflege: Namen per artists-Suche) */
     djids?: number[];
+    /** nur in Antworten der Pflege-Endpunkte (E6) */
+    pflege?: EBoxSetPflege;
+}
+
+/** Block `pflege` der Pflege-Endpunkte: Stand, den der Mxlnode nicht enthält */
+export interface EBoxSetPflege {
+    unfertig: boolean;
+    deaktiviert: boolean;
+    herkunft: "upload" | "import" | "manuell" | null;
+    artistdetection_disabled: boolean;
+    taxonomy_by_dj: boolean;
+    fulltitle: string;
 }
 
 export interface PlaylistItem {

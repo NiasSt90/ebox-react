@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react";
 import {Alert, Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle} from "@mui/material";
 import {EBoxGenreTerm, EBoxSet} from "../../hooks/types";
-import {useJunkiesService} from "../../hooks/useJunkiesService";
+import {mapFromJsonSet, useJunkiesService} from "../../hooks/useJunkiesService";
 import {usePflege} from "../../hooks/usePflege";
 import {aenderungen, fehlerAufteilen, formularAusSet, SET_FELDER, SetFormular} from "./pflegeModel";
 import {SetFelder} from "./SetFelder";
@@ -24,27 +24,34 @@ export const SetBearbeitenDialog = ({set, onClose, onGespeichert}: Props) => {
 	const [allgemein, setAllgemein] = useState<string | undefined>();
 	const [speichert, setSpeichert] = useState(false);
 
+	// beim Öffnen den echten Stand per setpflege laden (Titel, Artist-Erkennung, Genres vom Artist)
 	useEffect(() => {
 		let aktuell = true;
-		const djids = set.djids ?? [];
-		Promise.all([
-			junkies.genres().catch(() => [] as EBoxGenreTerm[]),
-			djids.length > 0 ? junkies.artists({djid: djids}).catch(() => []) : Promise.resolve([]),
-		]).then(([terme, artists]) => {
-			if (!aktuell) {
-				return;
-			}
-			const nurGenres = (terme as EBoxGenreTerm[]).filter(t => t.vocabulary === "genre");
-			const namen = djids.map(d => artists.find(a => a.djid === d)?.name).filter((n): n is string => Boolean(n));
-			const f = formularAusSet(set, namen, nurGenres);
-			setGenres(nurGenres);
-			setAusgang(f);
-			setFormular(f);
-		});
+		pflege.api()
+			.then(api => api.setPflege(set.nid))
+			.then(async json => {
+				const stand = mapFromJsonSet(junkies, json);
+				const djids = stand.djids ?? [];
+				const [terme, artists] = await Promise.all([
+					junkies.genres().catch(() => [] as EBoxGenreTerm[]),
+					djids.length > 0 ? junkies.artists({djid: djids}).catch(() => []) : Promise.resolve([]),
+				]);
+				if (!aktuell) {
+					return;
+				}
+				const nurGenres = (terme as EBoxGenreTerm[]).filter(t => t.vocabulary === "genre");
+				const namen = djids.map(d => artists.find(a => a.djid === d)?.name).filter((n): n is string => Boolean(n));
+				const f = formularAusSet(stand, namen, nurGenres);
+				setGenres(nurGenres);
+				setAusgang(f);
+				setFormular(f);
+			})
+			.catch((e: Error) => aktuell && setAllgemein(e.message));
 		return () => {
 			aktuell = false;
 		};
-	}, [junkies, set]);
+		// nur beim Öffnen laden, nicht bei jeder Token-Erneuerung
+	}, [junkies, set.nid]);
 
 	const speichern = () => {
 		if (!ausgang || !formular) {
@@ -78,7 +85,7 @@ export const SetBearbeitenDialog = ({set, onClose, onGespeichert}: Props) => {
 			{allgemein && <Alert severity="error" sx={{mb: 1}}>{allgemein}</Alert>}
 			{formular && genres
 				? <SetFelder formular={formular} onChange={setFormular} fehler={fehler} genres={genres}/>
-				: <CircularProgress size={24}/>}
+				: !allgemein && <CircularProgress size={24}/>}
 		</DialogContent>
 		<DialogActions>
 			<Button onClick={onClose}>Abbrechen</Button>

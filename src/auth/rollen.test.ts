@@ -1,4 +1,4 @@
-import {darfAdminPflege, darfArtistAnlegen, darfHochladen, ermittleRollen, istUnfertig, realmRollen, Rollen, setAktionen} from "./rollen";
+import {darfAdminPflege, darfArtistAnlegen, darfHochladen, ermittleRollen, istDeaktiviert, istUnfertig, realmRollen, Rollen, setAktionen} from "./rollen";
 
 /** unsigniertes JWT mit dem Payload (Signatur spielt im Frontend keine Rolle) */
 const jwt = (payload: object) => {
@@ -52,7 +52,19 @@ test("⋮-Menü: Admin an allen Sets, reaktivieren nur deaktivierte mit Tracks",
 	expect(setAktionen(ADMIN, unfertig(99))).toEqual(["bearbeiten", "hochladen", "trackscan"]);
 });
 
-test("unfertig = status 0 ohne Tracks", () => {
+test("Block pflege schlägt die Schätzung über Tracks", () => {
+	// unfertig mit schon gescannten Tracks (Status noch 0): kein Reaktivieren
+	const unfertigMitTracks = {uid: 99, status: 0, tracks: 2, unfertig: true, deaktiviert: false};
+	expect(istUnfertig(unfertigMitTracks)).toBe(true);
+	expect(istDeaktiviert(unfertigMitTracks)).toBe(false);
+	expect(setAktionen(ADMIN, unfertigMitTracks)).toEqual(["bearbeiten", "hochladen", "trackscan"]);
+	const deaktiviertOhneTracks = {uid: 99, status: 0, tracks: 0, unfertig: false, deaktiviert: true};
+	expect(istUnfertig(deaktiviertOhneTracks)).toBe(false);
+	expect(istDeaktiviert(deaktiviertOhneTracks)).toBe(true);
+	expect(setAktionen(ADMIN, {...aktiv(99), unfertig: false, deaktiviert: false})).toContain("deaktivieren");
+});
+
+test("ohne Block pflege: unfertig = status 0 ohne Tracks", () => {
 	expect(istUnfertig(unfertig(3))).toBe(true);
 	expect(istUnfertig(deaktiviert(3))).toBe(false);
 	expect(istUnfertig(aktiv(3))).toBe(false);
