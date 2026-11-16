@@ -58,17 +58,20 @@ interface Props {
 	nummer: number;
 	cardData: EBoxSet;
 	hinweis?: string;
+	/** ersetzt den Link „Set-Details“ oben rechts, z. B. durch das Pflege-Menü */
+	menue?: React.ReactNode;
 	playAction():void;
 	enqueueAction():void;
 	bookmarkAction():void;
 }
 
-export default function SetCard({nummer, cardData, hinweis, playAction, enqueueAction, bookmarkAction}:Props) {
+export default function SetCard({nummer, cardData, hinweis, menue, playAction, enqueueAction, bookmarkAction}:Props) {
 	const [expanded, setExpanded] = React.useState(false);
 	const handleExpandClick = () => {
 		setExpanded(!expanded);
 	};
-	var durationHHMM = String(cardData.duration.getUTCHours()).padStart(2,"0")
+	// unfertige Sets (Upload, E6) haben noch keine Dauer
+	var durationHHMM = Number.isNaN(cardData.duration.getTime()) ? "–" : String(cardData.duration.getUTCHours()).padStart(2,"0")
 							 + "h:" + String(cardData.duration.getUTCMinutes()).padStart(2,"0")+"m";
 
 	return (
@@ -79,8 +82,8 @@ export default function SetCard({nummer, cardData, hinweis, playAction, enqueueA
 										avatar={<Avatar aria-label="recipe" sx={styles.avatar}>{nummer}</Avatar>}
 										title={<Link component={RouterLink} to={"/set/" + cardData.nid} color="inherit" underline="hover">{cardData.title}</Link>}
 										slotProps={{title: {noWrap: true}}}
-										subheader={"produziert am " + cardData.created.toLocaleDateString()}
-										action={<Tooltip title="Set-Details"><IconButton aria-label="Set-Details" component={RouterLink} to={"/set/" + cardData.nid}><MoreVertIcon/></IconButton></Tooltip>}
+										subheader={Number.isNaN(cardData.created.getTime()) ? "ohne Aufnahmedatum" : "produziert am " + cardData.created.toLocaleDateString()}
+										action={menue ?? <Tooltip title="Set-Details"><IconButton aria-label="Set-Details" component={RouterLink} to={"/set/" + cardData.nid}><MoreVertIcon/></IconButton></Tooltip>}
 						/>
 
 						<CardMedia sx={styles.media} image={cardData.artistDetails[0].artwork.large} title={cardData.title}/>

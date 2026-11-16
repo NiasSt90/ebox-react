@@ -42,3 +42,13 @@ test("Set ohne Votes und Kommentare (Drupal liefert [] statt Objekt)", () => {
 	expect(set.comments).toEqual([]);
 	expect(set.genres).toEqual([]);
 });
+
+test("Eigentümer, Status und djids für die Pflege", () => {
+	const set = mapFromJsonSet(api, {...json, uid: 3, status: 0, artists: [{djid: 1, artistnid: 1001}, {djid: 5, artistnid: null}]});
+	expect(set.uid).toBe(3);
+	expect(set.status).toBe(0);
+	expect(set.djids).toEqual([1, 5]);
+	const ohne = mapFromJsonSet(api, json);
+	expect(ohne.uid).toBeUndefined();
+	expect(ohne.status).toBeUndefined();
+});

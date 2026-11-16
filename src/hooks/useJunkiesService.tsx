@@ -84,6 +84,10 @@ export function mapFromJsonSet(api: any, set: any): EBoxSet {
         votes: mapVotes(set.votes),
         comments: mapComments(set.comments),
         ...set.dj?.name && {djName: set.dj.name},
+        // für die Pflege (E6): Eigentümer, Status, djids der Artists
+        ...set.uid !== null && set.uid !== undefined && {uid: zahl(set.uid)},
+        ...set.status !== null && set.status !== undefined && {status: zahl(set.status)},
+        djids: (set.artists ?? []).map((a: any) => zahl(a.djid)).filter((d: number) => d > 0),
     } as EBoxSet;
 }
 

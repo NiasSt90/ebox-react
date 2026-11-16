@@ -1,5 +1,10 @@
 import {useEffect, useState} from "react";
-import {useSearchParams} from "react-router";
+import {useNavigate, useSearchParams} from "react-router";
+import {Button} from "@mui/material";
+import PersonAddIcon from "@mui/icons-material/PersonAdd";
+import {usePflege} from "../../hooks/usePflege";
+import {darfAdminPflege, darfArtistAnlegen} from "../../auth/rollen";
+import {ArtistDialog, NeuerArtistDialog} from "../pflege/ArtistDialog";
 import {useAtom} from "jotai";
 import {pageTitleAtom} from "../../context/atoms";
 import {useJunkiesService} from "../../hooks/useJunkiesService";
@@ -15,6 +20,10 @@ export const ArtistSucheContainer = () => {
 	const suche = params.get("s") ?? "";
 	const verzoegert = useDebouncedValue(suche.trim(), 300);
 	const [treffer, setTreffer] = useState<EBoxArtistTreffer[] | null>(null);
+	const pflege = usePflege();
+	const navigate = useNavigate();
+	const [neu, setNeu] = useState(false);
+	const [bearbeiten, setBearbeiten] = useState<number | null>(null);
 
 	useEffect(() => setPageTitle("Artists"), [setPageTitle]);
 	useEffect(() => {
@@ -31,6 +40,14 @@ export const ArtistSucheContainer = () => {
 		};
 	}, [junkies, verzoegert]);
 
-	return <ArtistSuche suche={suche} treffer={treffer}
-							  onSuche={text => setParams(text ? {s: text} : {}, {replace: true})}/>;
+	return <>
+		<ArtistSuche suche={suche} treffer={treffer}
+					 onSuche={text => setParams(text ? {s: text} : {}, {replace: true})}
+					 onBearbeiten={darfAdminPflege(pflege.rollen) ? setBearbeiten : undefined}
+					 kopfAktion={darfArtistAnlegen(pflege.rollen) &&
+						 <Button size="small" startIcon={<PersonAddIcon/>} onClick={() => setNeu(true)}>Neuer Artist</Button>}/>
+		{neu && <NeuerArtistDialog onClose={() => setNeu(false)} onAngelegt={a => navigate("/artist/" + a.nid)}/>}
+		{bearbeiten !== null && <ArtistDialog nid={bearbeiten} onClose={() => setBearbeiten(null)}
+											  onGespeichert={() => sessionStorage.removeItem("artist_" + bearbeiten)}/>}
+	</>;
 }

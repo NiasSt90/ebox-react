@@ -3,7 +3,11 @@ import {useArtistDetails} from "../../hooks/useArtistDetails";
 import {EBoxSet} from "../../hooks/types";
 import SetCard from "./SetCard";
 import {usePlaylist} from "../../components/playlist/hooks/usePlaylist";
-import {useJunkiesService} from "../../hooks/useJunkiesService";
+import {mapFromJsonSet, useJunkiesService} from "../../hooks/useJunkiesService";
+import {usePflege} from "../../hooks/usePflege";
+import {setAktionen} from "../../auth/rollen";
+import {setEigentum, SetPflegeMenue} from "../pflege/SetPflegeMenue";
+import {statusHinweis} from "../pflege/pflegeModel";
 
 interface Props {
 	nummer: number;
@@ -14,6 +18,7 @@ interface Props {
 export const SetCardContainer = ({nummer, cardData, hinweis}:Props) => {
 	const playlist = usePlaylist();
 	const junkiesService = useJunkiesService();
+	const pflege = usePflege();
 	const artistDetails = useArtistDetails({artists:cardData.artists});
 	const [ details, setDetails ] = useState<EBoxSet>(cardData);
 
@@ -37,6 +42,15 @@ export const SetCardContainer = ({nummer, cardData, hinweis}:Props) => {
 		junkiesService.bookmark(details.nid, !details.bookmarked)
 			.then(() => setDetails({...details, bookmarked: !details.bookmarked}))
 	}
-	return <SetCard nummer={nummer} cardData={details} hinweis={hinweis}
+	// Antwort der Pflege-Endpunkte (Mxlnode): Set neu abbilden, geladene Artist-Bilder behalten
+	const geaendert = (mxlnode: any) => {
+		if (mxlnode?.nid) {
+			setDetails(alt => ({...mapFromJsonSet(junkiesService, mxlnode), artistDetails: alt.artistDetails}));
+		}
+	}
+	const menue = setAktionen(pflege.rollen, setEigentum(details)).length > 0
+		? <SetPflegeMenue set={details} onGeaendert={geaendert}/> : undefined;
+	const hinweise = [statusHinweis(details), hinweis].filter(Boolean).join(" · ") || undefined;
+	return <SetCard nummer={nummer} cardData={details} hinweis={hinweise} menue={menue}
 					playAction={playAction} enqueueAction={enqueueAction} bookmarkAction={bookmarkAction}/>
 }

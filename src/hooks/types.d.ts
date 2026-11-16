@@ -140,6 +140,12 @@ export interface EBoxSet {
     comments?: EBoxComment[];
     /** Name des ersten Artists aus dem Set (ohne artistinfo-Aufruf) */
     djName?: string;
+    /** Eigentümer (node.uid) */
+    uid?: number;
+    /** node.status: 1 aktiv, 0 deaktiviert oder unfertig */
+    status?: number;
+    /** djids der Artists (für die Pflege: Namen per artists-Suche) */
+    djids?: number[];
 }
 
 export interface PlaylistItem {

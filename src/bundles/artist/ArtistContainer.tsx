@@ -1,7 +1,11 @@
 import {useEffect, useState} from "react";
 import {useParams} from "react-router";
 import {useAtom} from "jotai";
-import {Box, Typography} from "@mui/material";
+import {Box, Button, Typography} from "@mui/material";
+import EditIcon from "@mui/icons-material/Edit";
+import {usePflege} from "../../hooks/usePflege";
+import {darfAdminPflege} from "../../auth/rollen";
+import {ArtistDialog} from "../pflege/ArtistDialog";
 import {pageTitleAtom} from "../../context/atoms";
 import {useJunkiesService} from "../../hooks/useJunkiesService";
 import {artistAusInfo, useArtistService} from "../../hooks/useArtistDetails";
@@ -23,12 +27,15 @@ export const ArtistContainer = () => {
 	const [aehnliche, setAehnliche] = useState<EBoxArtist[]>([]);
 	const [sets, setSets] = useState<EBoxSet[]>([]);
 	const [page, setPage] = useState(0);
+	const pflege = usePflege();
+	const [bearbeiten, setBearbeiten] = useState(false);
+	const [version, setVersion] = useState(0);
 
 	useEffect(() => {
 		artistService.artistInfo(nid)
 			.then(info => setArtist(artistAusInfo(info) ?? undefined))
 			.catch(() => setArtist(undefined));
-	}, [artistService, nid]);
+	}, [artistService, nid, version]);
 	useEffect(() => setPageTitle(artist ? artist.name : "Artist"), [artist, setPageTitle]);
 
 	useEffect(() => {
@@ -57,7 +64,13 @@ export const ArtistContainer = () => {
 		return <Typography data-testid="artist-missing">Diesen Artist gibt es nicht.</Typography>;
 	}
 	return <Box sx={{pb: 16}}>
-		<ArtistKopf artist={artist} aehnliche={aehnliche}/>
+		<ArtistKopf artist={artist} aehnliche={aehnliche} aktion={darfAdminPflege(pflege.rollen) &&
+			<Button size="small" startIcon={<EditIcon/>} onClick={() => setBearbeiten(true)}>Bearbeiten</Button>}/>
+		{bearbeiten && <ArtistDialog nid={nid} onClose={() => setBearbeiten(false)} onGespeichert={() => {
+			// artistinfo liegt im sessionStorage; nach dem Speichern neu holen
+			sessionStorage.removeItem("artist_" + nid);
+			setVersion(v => v + 1);
+		}}/>}
 		<SetCardList sets={sets} title={`Sets von ${artist.name}`} onNextPage={() => setPage(p => p + 1)}/>
 	</Box>;
 }

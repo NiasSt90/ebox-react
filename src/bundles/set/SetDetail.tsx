@@ -28,6 +28,7 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import ThumbsUpDownIcon from "@mui/icons-material/ThumbsUpDown";
 import ThumbDownIcon from "@mui/icons-material/ThumbDown";
+import EditIcon from "@mui/icons-material/Edit";
 import {EBoxSet, EBoxTrack, EBoxVote} from "../../hooks/types";
 import {Link as RouterLink} from "react-router";
 import {readableTime} from "../common/helper";
@@ -48,6 +49,8 @@ interface Props {
 	actions: SetDetailActions;
 	/** angemeldet: Vote, Bookmark und Kommentar möglich */
 	canWrite: boolean;
+	/** nur für Admins: Artist-Dialog öffnen */
+	onArtistBearbeiten?(nid: number): void;
 }
 
 const datumZeit = (d: Date) => d.toLocaleDateString() + " " + d.toLocaleTimeString([], {hour: "2-digit", minute: "2-digit"});
@@ -67,7 +70,7 @@ const Abschnitt = ({titel, children}: { titel: string, children: React.ReactNode
 		{children}
 	</Box>;
 
-export const SetDetail = ({set, actions, canWrite}: Props) => {
+export const SetDetail = ({set, actions, canWrite, onArtistBearbeiten}: Props) => {
 	const [kommentar, setKommentar] = useState("");
 	const [sendet, setSendet] = useState(false);
 	const artist = set.artistDetails[0];
@@ -118,7 +121,10 @@ export const SetDetail = ({set, actions, canWrite}: Props) => {
 		<Abschnitt titel={set.artistDetails.length > 1 ? "Artists" : "Artist"}>
 			<List disablePadding>
 				{set.artistDetails.map(a =>
-					<ListItem key={a.nid} alignItems="flex-start" disableGutters>
+					<ListItem key={a.nid} alignItems="flex-start" disableGutters
+							  secondaryAction={onArtistBearbeiten && a.nid > 0 && <Tooltip title="Artist bearbeiten">
+								  <IconButton edge="end" aria-label={`Artist ${a.name} bearbeiten`} onClick={() => onArtistBearbeiten(a.nid)}>
+									  <EditIcon/></IconButton></Tooltip>}>
 						<ListItemAvatar><Avatar src={a.artwork.small ?? a.artwork.large} alt={a.name}/></ListItemAvatar>
 						<ListItemText primary={<Link component={RouterLink} to={"/artist/" + a.nid} color="inherit" underline="hover">
 											  {a.name + (a.country ? ` (${a.country.toUpperCase()})` : "")}</Link>}

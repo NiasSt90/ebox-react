@@ -9,6 +9,9 @@ import {usePlaylist} from "../../components/playlist/hooks/usePlaylist";
 import useAuthService from "../../hooks/useAuthService";
 import {EBoxSet, EBoxTrack, EBoxVote} from "../../hooks/types";
 import {SetDetail, SetDetailActions} from "./SetDetail";
+import {usePflege} from "../../hooks/usePflege";
+import {darfAdminPflege} from "../../auth/rollen";
+import {ArtistDialog} from "../pflege/ArtistDialog";
 
 /** Seite /set/:nid – lädt das Set per retrieve, Artist-Infos per artistinfo. */
 export const SetDetailContainer = () => {
@@ -18,6 +21,8 @@ export const SetDetailContainer = () => {
 	const auth = useAuthService();
 	const [, setPageTitle] = useAtom(pageTitleAtom);
 	const [set, setSet] = useState<EBoxSet | null | undefined>(null);
+	const pflege = usePflege();
+	const [artistDialog, setArtistDialog] = useState<number | null>(null);
 
 	const laden = useCallback(() => junkies.set(nid).then(s => setSet(s)).catch(() => setSet(undefined)), [junkies, nid]);
 	useEffect(() => {
@@ -57,5 +62,10 @@ export const SetDetailContainer = () => {
 				return Boolean(antwort);
 			}),
 	};
-	return <SetDetail set={mitArtists} actions={actions} canWrite={auth.isAuthenticated}/>;
+	return <>
+		<SetDetail set={mitArtists} actions={actions} canWrite={auth.isAuthenticated}
+				   onArtistBearbeiten={darfAdminPflege(pflege.rollen) ? setArtistDialog : undefined}/>
+		{artistDialog !== null && <ArtistDialog nid={artistDialog} onClose={() => setArtistDialog(null)}
+												onGespeichert={() => sessionStorage.removeItem("artist_" + artistDialog)}/>}
+	</>;
 }

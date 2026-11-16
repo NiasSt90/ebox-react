@@ -14,7 +14,8 @@ const oidcConfig: AuthProviderProps = {
 	redirect_uri: `${window.location.origin}/login`,
 	post_logout_redirect_uri: `${window.location.origin}/`,
 	scope: "openid",
-	// Das Token wird nur für connect gebraucht; danach arbeitet die App mit dem Legacy-Token.
+	// Das Token braucht die App für connect und für die Pflege-Endpunkte (E6, Bearer); sonst arbeitet sie mit dem
+	// Legacy-Token. Ein abgelaufenes Token erneuert usePflege bei Bedarf (signinSilent).
 	automaticSilentRenew: false,
 	// code/state aus der Adresse entfernen, damit ein Neuladen nicht erneut einlöst
 	onSigninCallback: () => window.history.replaceState({}, document.title, window.location.pathname),

@@ -7,8 +7,11 @@ import HeadphonesIcon from '@mui/icons-material/Headphones';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import AddIcon from '@mui/icons-material/Add';
 import PersonSearchIcon from '@mui/icons-material/PersonSearch';
+import LibraryMusicIcon from '@mui/icons-material/LibraryMusic';
+import BlockIcon from '@mui/icons-material/Block';
 
-export const NavigationList = ({filters}) => {
+/** meineSets/deaktivierteSets: Presets der Pflege (E6), nur mit Rolle Uploader bzw. Admin */
+export const NavigationList = ({filters, meineSets = false, deaktivierteSets = false}) => {
 	return <List>
 		<ListItemButton component={Link} to="/home">
 			<ListItemIcon><HomeIcon/></ListItemIcon>
@@ -30,6 +33,14 @@ export const NavigationList = ({filters}) => {
 			<ListItemIcon><AddIcon/></ListItemIcon>
 			<ListItemText primary="Neuer Filter"/>
 		</ListItemButton>
+		{meineSets && <ListItemButton component={Link} to="/meinesets">
+			<ListItemIcon><LibraryMusicIcon/></ListItemIcon>
+			<ListItemText primary="Meine Sets"/>
+		</ListItemButton>}
+		{deaktivierteSets && <ListItemButton component={Link} to="/deaktiviertesets">
+			<ListItemIcon><BlockIcon/></ListItemIcon>
+			<ListItemText primary="Deaktivierte Sets"/>
+		</ListItemButton>}
 		{filters.map(({id,name,user}, i) => (
 				<ListItemButton key={i} component={Link} to={"/filter/" + id}>
 					<ListItemIcon>{user?<FolderSpecialIcon/>:<FolderSharedIcon/>}</ListItemIcon>

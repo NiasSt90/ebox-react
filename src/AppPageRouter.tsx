@@ -17,6 +17,8 @@ import {EBoxPlayerContainer} from "./components/player/EBoxPlayerContainer";
 import {LoadingIndicator} from "./bundles/common/LoadingIndicator";
 import {Logo} from "./components/Logo";
 import {Box} from "@mui/material";
+import {PflegeListeContainer} from "./bundles/pflege/PflegeListeContainer";
+import {SetHochladenFab} from "./bundles/pflege/SetHochladenFab";
 
 // Eigener key je Filter-ID, damit beim Wechsel zwischen Filtern der komplette Listen-State neu beginnt.
 const FilterPage = () => {
@@ -59,7 +61,10 @@ export const AppPageRouter = () => {
 					<Route path="/artists" element={<RequireAuth><ArtistSucheContainer/></RequireAuth>}/>
 					<Route path="/artist/:nid" element={<RequireAuth><ArtistPage/></RequireAuth>}/>
 					<Route path="/lastgood" element={<RequireAuth><LastGoodVotedContainer/></RequireAuth>}/>
+					<Route path="/meinesets" element={<RequireAuth><PflegeListeContainer key="meine" liste="meine"/></RequireAuth>}/>
+					<Route path="/deaktiviertesets" element={<RequireAuth><PflegeListeContainer key="deaktiviert" liste="deaktiviert"/></RequireAuth>}/>
 				</Routes>
+				<SetHochladenFab/>
 				<NotifierMessageContainer/>
 				<EBoxPlayerContainer/>
 			</PersistentDrawerLeft>
