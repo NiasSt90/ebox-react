@@ -54,3 +54,19 @@ test('usePlaylist - repeat', () => {
 	expect(result.current.controls.hasNext()).toEqual(false);
 
 })
+test('usePlaylist - setVote ändert alle Tracks des Sets, neue Objekte, Position bleibt', () => {
+	const {result} = renderHook(() => usePlaylist(), {wrapper: AllTheProviders})
+	const zweiTracks: EBoxSet = {...set, nid: 5, myVote: undefined, tracks: [
+		{title: "a", nid: 5, url: "http://localhost/5a"} as EBoxTrack, {title: "b", nid: 5, url: "http://localhost/5b"} as EBoxTrack]};
+	act(() => result.current.controls.replace(zweiTracks));
+	act(() => result.current.controls.addAll(set));
+	act(() => result.current.controls.next());
+	const vorher = result.current.state.currentTrack;
+	act(() => result.current.controls.setVote(5, "bad"));
+	expect(result.current.controls.items().map(i => i.myVote)).toEqual(["bad", "bad", "good"]);
+	expect(result.current.state.currentTrack).not.toBe(vorher);
+	expect(result.current.state.currentTrack?.myVote).toEqual("bad");
+	expect(result.current.controls.curPos()).toEqual(2);
+	act(() => result.current.controls.setVote(5, undefined));
+	expect(result.current.state.currentTrack?.myVote).toBeUndefined();
+})

@@ -1,4 +1,4 @@
-import {EBoxSet, PlaylistItem} from "../../../hooks/types";
+import {EBoxSet, EBoxVote, PlaylistItem} from "../../../hooks/types";
 import {useAtom} from "jotai";
 import {playlistAtom, playlistStateAtom} from "../../../context/atoms";
 import {useCallback, useMemo} from "react";
@@ -136,6 +136,19 @@ export const usePlaylist = ():IPlaylist => {
         },
         hide: () => {
             mergeToState({showPlaylist: false});
+        },
+        setVote: (nid: number, vote?: EBoxVote) => {
+            // neue Objekte statt Änderung an den alten, damit neu gerendert wird; currentTrack zeigt danach auf
+            // das neue Objekt an derselben Stelle (next/prev/curPos suchen per indexOf)
+            const pos = state.currentTrack ? playlist.indexOf(state.currentTrack) : -1;
+            const neu = playlist.map(item => item.nid === nid ? {...item, myVote: vote} : item);
+            setPlaylist(neu);
+            if (pos >= 0) {
+                mergeToState({currentTrack: neu[pos]});
+            }
+            else if (state.currentTrack?.nid === nid) {
+                mergeToState({currentTrack: {...state.currentTrack, myVote: vote}});
+            }
         }
     }}, [state, playlist, setPlaylist, mergeToState])
     return { state, controls };

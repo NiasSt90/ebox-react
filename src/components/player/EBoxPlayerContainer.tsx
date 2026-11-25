@@ -67,13 +67,15 @@ export const EBoxPlayerContainer = () => {
 	}, [audio.controls, playlistCtrl.controls, playlistCtrl.state.repeat])
 	useEffect(() => {audio.controls.setEndedCallback(onEndedCallback)}, [audio.controls, onEndedCallback])
 
-	//send playinform
+	//send playinform – bei Trackwechsel oder Fortsetzen, nicht wenn sich nur der Vote am Track ändert
+	const playNid = playlistCtrl.state.currentTrack?.nid;
+	const playUrl = playlistCtrl.state.currentTrack?.url;
 	useEffect(() => {
-		if (!audio.state.paused && playlistCtrl.state.currentTrack) {
-			console.log("SEND playinform for Track", playlistCtrl.state.currentTrack)
-			junkiesService.playinform(playlistCtrl.state.currentTrack.nid);
+		if (!audio.state.paused && playNid !== undefined) {
+			console.log("SEND playinform for Track", playUrl)
+			junkiesService.playinform(playNid);
 		}
-	}, [audio.state.paused, playlistCtrl.state.currentTrack, junkiesService])
+	}, [audio.state.paused, playNid, playUrl, junkiesService])
 
 	//clear playlist -> stop player
 	useEffect(() => {
@@ -84,8 +86,11 @@ export const EBoxPlayerContainer = () => {
 
 	const voteFunction = (item: PlaylistItem, vote: EBoxVote) => {
 		junkiesService.vote(item.nid, vote)
-			.then(() => {
-				item.myVote = vote !== "canceled" ? vote : undefined;
+			.then(set => {
+				if (!set) {
+					return; // Fehler zeigt der Service schon an
+				}
+				playlistCtrl.controls.setVote(item.nid, set.myVote);
 				setNotifyMessage({
 					message: Messages.voteMsg(vote),
 					severity: "success",
@@ -99,7 +104,7 @@ export const EBoxPlayerContainer = () => {
 	}
 	const submitComment = (text: string, item: PlaylistItem) => {
 		junkiesService.createComment(item.nid, text)
-			.then(setCommentDlgItem(null));
+			.then(() => setCommentDlgItem(null));
 	}
 
 	return <>

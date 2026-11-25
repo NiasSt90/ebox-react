@@ -149,28 +149,28 @@ export const EBoxPlayer: React.FC<Props> = ({
 					<ListItemIcon><AddCommentIcon/></ListItemIcon>
 					<ListItemText>Kommentieren</ListItemText>
 				</MenuItem>
-				<MenuItem onClick={() => {
+				<MenuItem selected={playlistState.currentTrack?.myVote === "good"} onClick={() => {
 					voteFunction(playlistState.currentTrack!, "good");
 					handleClose()
 				}}>
 					<ListItemIcon><ThumbUpIcon/></ListItemIcon>
 					<ListItemText>gut bewerten</ListItemText>
 				</MenuItem>
-				<MenuItem onClick={() => {
+				<MenuItem selected={playlistState.currentTrack?.myVote === "neutral"} onClick={() => {
 					voteFunction(playlistState.currentTrack!, "neutral");
 					handleClose()
 				}}>
 					<ListItemIcon><ThumbsUpDownIcon/></ListItemIcon>
 					<ListItemText>mittelmäßig bewerten</ListItemText>
 				</MenuItem>
-				<MenuItem onClick={() => {
+				<MenuItem selected={playlistState.currentTrack?.myVote === "bad"} onClick={() => {
 					voteFunction(playlistState.currentTrack!, "bad");
 					handleClose()
 				}}>
 					<ListItemIcon><ThumbDownIcon/></ListItemIcon>
 					<ListItemText>schlecht bewerten</ListItemText>
 				</MenuItem>
-				<MenuItem onClick={() => {
+				<MenuItem disabled={!playlistState.currentTrack?.myVote} onClick={() => {
 					voteFunction(playlistState.currentTrack!, "canceled");
 					handleClose()
 				}}>

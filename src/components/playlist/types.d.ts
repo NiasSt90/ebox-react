@@ -1,4 +1,4 @@
-import {PlaylistItem} from "../../hooks/types";
+import {EBoxVote, PlaylistItem} from "../../hooks/types";
 
 type PlaylistRepeat = "single" | "none" | "all";
 
@@ -25,4 +25,6 @@ export interface PlaylistControls {
 	hasNext: () => boolean;
 	show: () => void;
 	hide: () => void;
+	/** eigenen Vote an allen Tracks des Sets setzen (undefined = keiner) */
+	setVote: (nid: number, vote?: EBoxVote) => void;
 }
