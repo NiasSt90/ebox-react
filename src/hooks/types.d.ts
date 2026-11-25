@@ -21,8 +21,10 @@ export interface JunkiesService {
     /** „Gerade gehört“: Plays der letzten 120 min, neueste zuerst */
     playing():Promise<EBoxPlay[]>;
     playinform(nid: number):Promise;
-    vote(nid: number, vote: EBoxVote):Promise;
-    bookmark(nid: number, createBookmark: boolean): Promise;
+    /** das geänderte Set aus der Antwort; undefined bei Fehler */
+    vote(nid: number, vote: EBoxVote): Promise<EBoxSet | undefined>;
+    /** das geänderte Set aus der Antwort; undefined bei Fehler */
+    bookmark(nid: number, createBookmark: boolean): Promise<EBoxSet | undefined>;
     createComment(nid: number, text: string): Promise;
 }
 

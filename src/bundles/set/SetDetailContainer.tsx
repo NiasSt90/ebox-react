@@ -50,12 +50,14 @@ export const SetDetailContainer = () => {
 		enqueue: () => playlist.controls.addAll(mitArtists),
 		playTrack: track => playlist.controls.replace(nurTrack(track)),
 		enqueueTrack: track => playlist.controls.addAll(nurTrack(track)),
+		// vote und bookmark liefern das geänderte Set; nur ohne Antwort (Fehler) neu laden
 		bookmark: () => {
-			junkies.bookmark(mitArtists.nid, !mitArtists.bookmarked).then(laden)
+			junkies.bookmark(mitArtists.nid, !mitArtists.bookmarked).then(s => s ? setSet(s) : laden())
 		},
 		vote: (vote: EBoxVote) => {
-			junkies.vote(mitArtists.nid, vote).then(laden)
+			junkies.vote(mitArtists.nid, vote).then(s => s ? setSet(s) : laden())
 		},
+		// die Antwort enthält nur die cid: neu laden
 		comment: (text: string) => junkies.createComment(mitArtists.nid, text)
 			.then((antwort: any) => {
 				laden();

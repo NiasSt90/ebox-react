@@ -186,15 +186,23 @@ export const useJunkiesService = (): JunkiesService => {
                 return junkiesApi(user).playinform(nid).catch(showError)
             },
 
+            // Antwort ist das geänderte Set (Mxlnode): direkt abbilden statt neu laden
             vote: (nid: number, vote: EBoxVote) => {
-                return junkiesApi(user).vote(nid, mapEBoxVoteToNumber(vote)).catch(showError)
+                const api = junkiesApi(user);
+                return api.vote(nid, mapEBoxVoteToNumber(vote))
+                    .then((json: any) => json?.nid ? mapFromJsonSet(api, json) : undefined)
+                    .catch((e: any) => { showError(e); return undefined; })
             },
 
+            // Antwort ist eine Liste der geänderten Sets (Mxlnode), hier genau eins
             bookmark: (nid: number, createBookmark: boolean) => {
-                if (createBookmark) {
-                    return junkiesApi(user).addbookmark(nid).catch(showError);
-                }
-                return junkiesApi(user).delbookmark(nid).catch(showError)
+                const api = junkiesApi(user);
+                return (createBookmark ? api.addbookmark(nid) : api.delbookmark(nid))
+                    .then((liste: any) => {
+                        const json = Array.isArray(liste) ? liste.find((s: any) => zahl(s?.nid) === nid) : undefined;
+                        return json ? mapFromJsonSet(api, json) : undefined;
+                    })
+                    .catch((e: any) => { showError(e); return undefined; })
             },
 
             createComment: (nid: number, text: string) => {

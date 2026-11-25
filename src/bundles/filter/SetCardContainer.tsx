@@ -39,8 +39,9 @@ export const SetCardContainer = ({nummer, cardData, hinweis}:Props) => {
 		playlist.controls.replace(details)
 	}
 	const bookmarkAction = () => {
+		// Stand aus der Antwort übernehmen (bei Fehler bleibt er), geladene Artist-Bilder behalten
 		junkiesService.bookmark(details.nid, !details.bookmarked)
-			.then(() => setDetails({...details, bookmarked: !details.bookmarked}))
+			.then(s => s && setDetails(alt => ({...s, artistDetails: alt.artistDetails})))
 	}
 	// Antwort der Pflege-Endpunkte (Mxlnode): Set neu abbilden, geladene Artist-Bilder behalten
 	const geaendert = (mxlnode: any) => {
