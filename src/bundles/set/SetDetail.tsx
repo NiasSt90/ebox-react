@@ -96,6 +96,10 @@ export const SetDetail = ({set, actions, canWrite, onArtistBearbeiten}: Props) =
 				{set.lastheard && <Typography variant="body2" color="text.secondary">
 					zuletzt gehört am {datumZeit(set.lastheard)}
 				</Typography>}
+				{set.playsGesamt !== undefined && <Typography variant="body2" color="text.secondary" data-testid="plays">
+					{set.playsGesamt === 1 ? "1-mal gehört" : `${set.playsGesamt}-mal gehört`}
+					{set.playsEigene ? `, davon ${set.playsEigene}-mal von dir` : ""}
+				</Typography>}
 				{set.genres && set.genres.length > 0 &&
 					<Stack direction="row" spacing={1} useFlexGap sx={{flexWrap: "wrap", my: 1}}>
 						{set.genres.map(g => <Chip key={g.tid} label={g.name} size="small"/>)}

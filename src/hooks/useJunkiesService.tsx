@@ -56,6 +56,8 @@ export function mapFromJsonSet(api: any, set: any): EBoxSet {
         duration: new Date(set.duration * 1000),
         created: datum(set.setcreated),
         ...set.lastheard && {lastheard: datum(set.lastheard)},
+        ...set.allplaycount !== null && set.allplaycount !== undefined && {playsGesamt: zahl(set.allplaycount)},
+        ...set.myplaycount !== null && set.myplaycount !== undefined && {playsEigene: zahl(set.myplaycount)},
 
         bookmarked: set.bookmarked,
         myVote: mapNumberToEBoxVote(Number.parseInt(set.votes?.my)),

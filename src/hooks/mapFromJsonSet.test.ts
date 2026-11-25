@@ -57,3 +57,11 @@ test("Eigentümer, Status und djids für die Pflege", () => {
 	expect(mitPflege.pflege).toEqual({unfertig: true, deaktiviert: false, herkunft: "upload",
 		artistdetection_disabled: true, taxonomy_by_dj: false, fulltitle: "Deep Session 2026"});
 });
+
+test("Plays aus allplaycount/myplaycount; null (anonym) lässt sie weg", () => {
+	const set = mapFromJsonSet(api, {...json, allplaycount: "7", myplaycount: 2});
+	expect([set.playsGesamt, set.playsEigene]).toEqual([7, 2]);
+	const anonym = mapFromJsonSet(api, {...json, allplaycount: null, myplaycount: null});
+	expect("playsGesamt" in anonym).toBe(false);
+	expect("playsEigene" in anonym).toBe(false);
+});

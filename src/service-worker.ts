@@ -4,7 +4,7 @@ import { clientsClaim } from 'workbox-core';
 import { ExpirationPlugin } from 'workbox-expiration';
 import {precacheAndRoute, createHandlerBoundToURL} from 'workbox-precaching';
 import { registerRoute } from 'workbox-routing';
-import {CacheFirst, StaleWhileRevalidate} from 'workbox-strategies';
+import {CacheFirst, NetworkFirst, StaleWhileRevalidate} from 'workbox-strategies';
 import settings from "./settings";
 import type {RouteMatchCallback as MatchCallback} from "workbox-core";
 
@@ -35,7 +35,9 @@ registerRoute(matchArtistImages,new StaleWhileRevalidate({cacheName:"artist_imag
 const matchSets:MatchCallback = ({url, request, event}) => {
 	return url.origin === settings.REST_API_URL && url.pathname.startsWith("/js-api/mischungxl");
 };
-registerRoute(matchSets,new StaleWhileRevalidate({cacheName:"sets"}),'GET');
+// Set-Daten zuerst aus dem Netz, der Cache nur offline bzw. ohne Antwort nach 10 s: mit StaleWhileRevalidate kam nach
+// Vote, Bookmark oder Kommentar beim Neuladen noch der alte Stand aus dem Cache (erst F5 zeigte den neuen).
+registerRoute(matchSets,new NetworkFirst({cacheName:"sets", networkTimeoutSeconds: 10}),'GET');
 
 //TODO: POST Requests gehen leider nicht in den Cache -> verboten...
 /*

@@ -130,6 +130,10 @@ export interface EBoxSet {
     duration: Date;
     created: Date;
     lastheard?: Date;
+    /** Plays aller Nutzer (zählen erst 20 min nach dem Start, wie in Drupal); fehlt ohne Angabe */
+    playsGesamt?: number;
+    /** davon eigene (nur angemeldet) */
+    playsEigene?: number;
     bookmarked: boolean;
     myVote?: EBoxVote;
     genres?: EBoxGenre[];

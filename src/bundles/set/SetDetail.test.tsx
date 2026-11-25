@@ -62,3 +62,12 @@ test("ohne Anmeldung keine Schreibaktionen", () => {
 	expect(screen.queryByLabelText("bookmark")).toBeNull();
 	expect(screen.queryByLabelText("gut")).toBeNull();
 });
+
+test("Plays: gesamt und eigene, ohne Angabe nichts", () => {
+	const {rerender} = render(<MemoryRouter><SetDetail set={{...set, playsGesamt: 7, playsEigene: 2}} actions={actions()} canWrite/></MemoryRouter>);
+	expect(screen.getByTestId("plays")).toHaveTextContent("7-mal gehört, davon 2-mal von dir");
+	rerender(<MemoryRouter><SetDetail set={{...set, playsGesamt: 1, playsEigene: 0}} actions={actions()} canWrite/></MemoryRouter>);
+	expect(screen.getByTestId("plays")).toHaveTextContent(/^1-mal gehört$/);
+	rerender(<MemoryRouter><SetDetail set={set} actions={actions()} canWrite/></MemoryRouter>);
+	expect(screen.queryByTestId("plays")).toBeNull();
+});
