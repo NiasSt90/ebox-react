@@ -54,6 +54,15 @@ test("setpflege per GET mit nid", async () => {
 	expect(aufruf(t.fetchFn).headers.Authorization).toBe("Bearer jwt-123");
 });
 
+// Ohne S6b antwortet Drupal auf setpflege/artist mit einem leeren Set (alle Felder null) statt 404
+test("setpflege und artist: Antwort ohne passende nid ist ein Fehler, kein leeres Formular", async () => {
+	const leer = {nid: null, name: null, title: null, trackinfo: []};
+	await expect(mitFetch(200, leer).api.setPflege(12)).rejects.toThrow("noch nicht verfügbar");
+	await expect(mitFetch(200, leer).api.artistLesen(55)).rejects.toThrow("noch nicht verfügbar");
+	await expect(mitFetch(200, {nid: 13}).api.setPflege(12)).rejects.toThrow("noch nicht verfügbar");
+	await expect(mitFetch(200, null).api.artistLesen(55)).rejects.toThrow("noch nicht verfügbar");
+});
+
 test("meinesets und deaktiviertesets per GET", async () => {
 	let t = mitFetch(200, [{nid: 1}]);
 	await expect(t.api.meineSets()).resolves.toEqual([{nid: 1}]);
@@ -66,7 +75,7 @@ test("meinesets und deaktiviertesets per GET", async () => {
 });
 
 test("Artist lesen, anlegen, bearbeiten", async () => {
-	let t = mitFetch();
+	let t = mitFetch(200, {nid: 55, name: "nova kestrel"});
 	await t.api.artistLesen(55);
 	expect(aufruf(t.fetchFn)).toMatchObject({url: `${BASIS}/js-api/mischungxl/artist?nid=55`, init: {method: "GET"}});
 

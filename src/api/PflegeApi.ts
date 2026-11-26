@@ -127,17 +127,29 @@ export const pflegeApi = (accessToken: string, basis: string = settings.REST_API
 		return (text ? JSON.parse(text) : null) as T;
 	};
 
+	/**
+	 * Lesender Pflege-Aufruf für genau eine nid. Solange S6b auf der Umgebung nicht umgeschaltet ist, antwortet Drupal
+	 * mit 200 und einem leeren Set (alle Felder null); das wird zum Fehler statt zu einem leeren oder kaputten Formular.
+	 */
+	const lesen = async <T>(aktion: string, nid: number): Promise<T> => {
+		const ergebnis = await aufruf<any>("GET", url(aktion, {nid}));
+		if (ergebnis?.nid !== nid) {
+			throw new Error("Bearbeiten ist hier noch nicht verfügbar.");
+		}
+		return ergebnis as T;
+	};
+
 	return {
 		setAnlegen: (daten: SetDaten) => aufruf<any>("POST", url("setanlegen"), daten),
 		setBearbeiten: (nid: number, daten: SetDaten) => aufruf<any>("POST", url("setbearbeiten", {nid}), daten),
 		/** aktiv=false deaktivieren (Eigentümer, Admin), aktiv=true reaktivieren (Admin) */
 		setStatus: (nid: number, aktiv: boolean) => aufruf<any>("POST", url("setstatus", {nid, status: aktiv ? 1 : 0})),
 		/** das Set mit dem Block pflege (Stand für den Bearbeiten-Dialog) */
-		setPflege: (nid: number) => aufruf<any>("GET", url("setpflege", {nid})),
+		setPflege: (nid: number) => lesen<any>("setpflege", nid),
 		trackScan: (nid: number) => aufruf<TrackScanErgebnis>("POST", url("trackscan", {nid})),
 		meineSets: () => aufruf<any[]>("GET", url("meinesets")),
 		deaktivierteSets: () => aufruf<any[]>("GET", url("deaktiviertesets")),
-		artistLesen: (nid: number) => aufruf<ArtistPflegeDaten>("GET", url("artist", {nid})),
+		artistLesen: (nid: number) => lesen<ArtistPflegeDaten>("artist", nid),
 		artistAnlegen: (name: string) => aufruf<ArtistPflegeDaten>("POST", url("artistanlegen"), {name}),
 		artistBearbeiten: (nid: number, aenderung: ArtistAenderung) =>
 			aufruf<ArtistPflegeDaten>("POST", url("artistbearbeiten", {nid}), aenderung),
